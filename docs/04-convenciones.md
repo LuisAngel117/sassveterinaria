@@ -39,4 +39,4 @@
     - Todo `docs/**/*.md` termina EXACTO con `<!-- EOF -->`.
     - `scripts/verify/verify-docs-eof.ps1` debe fallar si no cumple.
 
-    <!-- EOF -->
+<!-- EOF -->

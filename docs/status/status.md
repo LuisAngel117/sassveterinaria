@@ -13,8 +13,7 @@ Regla:
 | Item | Título | Estado | Evidencia (commit) | Notas |
 |---|---|---|---|---|
 | T1 | Bootstrap gobernanza docs/scripts | READY_FOR_VALIDATION | TBD | Ejecutar scripts/verify/preflight.ps1 y pegar output en LOG |
-
-| T2 | Docs base detallados (brief+brd+arquitectura+ux+runbook+masters) | READY_FOR_VALIDATION | commit-msg: T2: docs base detallados (brief+brd+arquitectura+ux+runbook+masters) | READY_FOR_VALIDATION | TBD | |
+| T2 | Docs base detallados (brief+brd+arquitectura+ux+runbook+masters) | READY_FOR_VALIDATION | commit-msg: T2: docs base detallados (brief+brd+arquitectura+ux+runbook+masters) | Validado documental |
+| SPR-B001 | Walking Skeleton (Auth + Scope + Base API + Smoke mínimo) | READY_FOR_VALIDATION | PENDING_SPR-B001_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script creado; ejecución local pendiente de backend corriendo con Postgres. |
 
 <!-- EOF -->
-

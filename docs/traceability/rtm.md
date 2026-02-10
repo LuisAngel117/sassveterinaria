@@ -4,14 +4,14 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 
 | BRD-REQ | Descripción | Sprint(s) | Evidencia (commit) | Verificación | Estado | Notas |
 |---|---|---|---|---|---|---|
-| BRD-REQ-001 | Login access+refresh | SPR-B001, SPR-F001 | TBD | smoke+manual | PLANNED |  |
-| BRD-REQ-002 | Refresh con rotación | SPR-B001 | TBD | tests+smoke | PLANNED |  |
-| BRD-REQ-003 | Logout revoca refresh | SPR-B001 | TBD | smoke | PLANNED |  |
+| BRD-REQ-001 | Login access+refresh | SPR-B001, SPR-F001 | PENDING_SPR-B001_COMMIT_HASH | smoke+manual | READY_FOR_VALIDATION | Implementado en backend |
+| BRD-REQ-002 | Refresh con rotación | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests+smoke | READY_FOR_VALIDATION | Rotación y revocación del refresh previo |
+| BRD-REQ-003 | Logout revoca refresh | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | smoke | READY_FOR_VALIDATION | Logout revoca refresh token |
 | BRD-REQ-004 | Permisos granulares | SPR-B001, SPR-B010, SPR-F008 | TBD | tests+manual | PLANNED |  |
 | BRD-REQ-005 | 2FA TOTP admin/superadmin | SPR-B010, SPR-F001 | TBD | manual | PLANNED |  |
 | BRD-REQ-006 | Lockout 4 intentos | SPR-B010 | TBD | tests+manual | PLANNED |  |
-| BRD-REQ-007 | Scope X-Branch-Id validado | SPR-B001 | TBD | tests+smoke | PLANNED |  |
-| BRD-REQ-008 | Respuestas 400/403/401 por scope | SPR-B001 | TBD | tests | PLANNED |  |
+| BRD-REQ-007 | Scope X-Branch-Id validado | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests+smoke | READY_FOR_VALIDATION | Filtro branch scope activo |
+| BRD-REQ-008 | Respuestas 400/403/401 por scope | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests | READY_FOR_VALIDATION | Problem Details para casos de scope/auth |
 | BRD-REQ-009 | Rate limit básico (429) | SPR-B010 | TBD | manual | PLANNED |  |
 | BRD-REQ-010 | CRUD citas + estados | SPR-B002, SPR-F002 | TBD | smoke | PLANNED |  |
 | BRD-REQ-011 | Calendario semana + filtros | SPR-B002, SPR-F002 | TBD | manual | PLANNED |  |
@@ -60,7 +60,8 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-054 | Retención 90 días | SPR-B009 | TBD | manual | PLANNED |  |
 | BRD-REQ-055 | Seed demo | SPR-B011, SPR-F010 | TBD | smoke | PLANNED |  |
 | BRD-REQ-056 | Credenciales demo | SPR-B011, SPR-F001 | TBD | manual | PLANNED |  |
-| BRD-REQ-057 | Runbook + scripts verdad | SPR-B001 | TBD | manual | PLANNED |  |
+| BRD-REQ-057 | Runbook + scripts verdad | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | manual | READY_FOR_VALIDATION | Runbook actualizado + smoke script |
 | BRD-REQ-058 | Smoke flujo core | SPR-B011 | TBD | smoke | PLANNED |  |
 
 <!-- EOF -->
+

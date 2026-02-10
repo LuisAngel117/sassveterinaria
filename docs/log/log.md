@@ -55,5 +55,30 @@ Output:
 - PEGAR OUTPUT AQUÍ
 Resultado:
 - READY_FOR_VALIDATION
+## 2026-02-10T15:50:00-05:00
+Item: SPR-B001
+Qué se hizo:
+- Se creó backend Spring Boot (`backend/`) con Maven wrapper y dependencias del sprint.
+- Se implementó auth (`/api/v1/auth/login`, `/refresh`, `/logout`, `/api/v1/me`) con JWT access + refresh rotativo.
+- Se implementó scoping `X-Branch-Id` contra claim `branch_id` para endpoints branch-scoped.
+- Se implementó caso core mínimo de agenda: `POST/GET /api/v1/appointments`.
+- Se agregaron migraciones Flyway y seed idempotente demo.
+- Se creó smoke script `scripts/smoke/spr-b001.ps1`.
+- Se actualizó runbook, status, RTM y state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- ./mvnw test (en backend)
+- pwsh -File scripts/verify/verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
+
 
