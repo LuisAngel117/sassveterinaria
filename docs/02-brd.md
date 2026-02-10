@@ -1,126 +1,177 @@
-# 02 — BRD (Business Requirements) — contrato funcional
+# 02 — BRD (Business Requirements) — Contrato funcional
 
-## 1) Alcance por módulos (local vs online)
+## 0) Definiciones (importantes)
+
+### 0.1 “Local-first” / “Offline-first” (definición para este proyecto)
+
+- El sistema debe ser usable y vendible SIN depender de Internet:
+  - Backend, DB y Front corren en local (PC del demo) o red local.
+  - No hay llamadas obligatorias a servicios externos para el flujo core.
+- “Online-only” existe, pero:
+  - queda detrás de feature flags
+  - su UI/estructura puede estar preparada, pero NO se implementa integración real en v1 local.
+
+### 0.2 Organización
+
+- Multi-tenant: NO.
+- Multi-sucursal: SÍ (branch).
+- Recursos compartidos entre sucursales: NO (cada sucursal separada).
+
+## 1) Alcance por módulos
 
 | Módulo | Descripción | Prioridad | Local/Online |
 |---|---|---:|---|
-| Auth + roles/permisos + 2FA | Login/refresh, permisos por acción, 2FA TOTP para admin/superadmin | Alta | Local |
-| Sucursales + scoping | Selección de sucursal y scoping por header+claim | Alta | Local |
-| Agenda/turnos | Calendario semanal, estados, no-solape por sala, check-in | Alta | Local |
-| CRM | Clientes y pacientes/mascotas | Alta | Local |
-| Historia clínica (SOAP) | Atención, plantillas SOAP, cierre/reapertura con auditoría | Alta | Local |
-| Servicios + consumos | Catálogo de servicios (duración/precio) + BOM de consumos | Alta | Local |
-| Facturación | Factura interna demo, IVA configurable, pagos mixtos/parciales, export | Alta | Local |
-| Inventario | Productos, stock por sucursal, movimientos, mínimos/alertas, override | Alta | Local |
-| Reportes | 5–8 reportes mínimos + export | Media | Local |
-| Recordatorios | Solo “pendiente de enviar” + feature flag | Baja | Online-only (placeholder) |
-| SRI e-factura | Placeholder (no implementación) | Baja | Online-only (placeholder) |
+| Autenticación y seguridad | Login + refresh + roles/permisos + 2FA para ADMIN/SUPERADMIN | P0 | Local |
+| Sucursales (scope) | Usuario opera con contexto de sucursal | P0 | Local |
+| Agenda/turnos | Calendario + estados + no-solape por sala + check-in | P0 | Local |
+| Clientes | Propietarios y su historial/notas | P0 | Local |
+| Pacientes | Mascotas con alertas/alergias/antecedentes | P0 | Local |
+| Historia clínica (SOAP) | Atenciones con estructura + plantillas + adjuntos | P0 | Local |
+| Servicios | Catálogo con duración y precio base | P0 | Local |
+| Facturación | Factura interna simple, impuestos, pagos y export | P0 | Local |
+| Inventario básico | Productos, stock, movimientos, mínimos, consumo | P0 | Local |
+| Auditoría | Quién cambió qué + before/after en sensibles | P0 | Local |
+| Reportes | 5–8 reportes con filtros + export | P1 | Local |
+| Recordatorios | “pendiente de enviar” en local; envío real online-only | P1 | Online-only (flag) |
 
-## 2) Definición “usable local”
-Se considera usable local si:
-- Backend y frontend levantan sin internet.
-- DB local Postgres está inicializable con migraciones.
-- Existen seeds demo para ejecutar el flujo core en 2–3 min.
-- Hay smoke scripts/documentación para reproducir.
+## 2) Definition of usable local
 
-## 3) Definición “vendible” (demo portafolio)
-Se considera vendible demo si:
-- UX consistente en español, con manejo claro de errores.
-- Flujo core completo (agenda → atención → factura → pago → inventario).
-- Seguridad y auditoría demostrables (roles, acciones sensibles, before/after).
-- Reportes básicos exportables.
+El sistema se considera “usable local” si:
+- corre en local con Postgres y sin Internet,
+- permite al menos:
+  - crear cita (con scope sucursal),
+  - registrar atención SOAP,
+  - cerrar atención,
+  - generar factura,
+  - registrar pago,
+  - descontar inventario (manual o automático según regla),
+  - ver auditoría básica,
+- y existe seed/demo para probarlo en 2–3 minutos.
 
-## 4) Requisitos (IDs estables)
+## 3) Definition of vendible (demo portafolio)
 
-> Regla: todos los requisitos tienen ID `BRD-REQ-###` y se trazan en RTM.
+Además de “usable local”, “vendible demo” requiere:
+- UX en español, clara, con validaciones y errores consistentes.
+- Roles/Permisos aplicados (no solo “backend permite todo”).
+- Evidencia y trazabilidad:
+  - DoR/DoD aplicados
+  - RTM mapeada (BRD-REQ → sprint → evidencia)
+  - Runbook y smoke scripts para flujo core.
 
-### Identidad / scoping
-- **BRD-REQ-001**: El sistema soporta múltiples sucursales (branches) con datos separados por sucursal.
-- **BRD-REQ-002**: Usuario selecciona sucursal al iniciar sesión; se emite access token con `branch_id` activo (claim).
-- **BRD-REQ-003**: API exige `X-Branch-Id` en endpoints scopiados y valida que coincida con claim o privilegio SUPERADMIN.
+## 4) Reglas de negocio críticas (las que rompen sistemas)
 
-### Seguridad
-- **BRD-REQ-010**: Login con usuario+password y JWT access+refresh.
-- **BRD-REQ-011**: Refresh token con rotación; revocación por logout.
-- **BRD-REQ-012**: Lockout por intentos fallidos (4 intentos, ventana) + auditoría.
-- **BRD-REQ-013**: Política de contraseña con complejidad mínima.
-- **BRD-REQ-014**: 2FA TOTP para ADMIN/SUPERADMIN.
-- **BRD-REQ-015**: Formato de errores API con Problem Details (RFC 7807: https://www.rfc-editor.org/rfc/rfc7807).
+- Scope obligatorio por sucursal para endpoints branch-scoped.
+- No-solape por SALA (v1): no se crean dos citas que se crucen en la misma sala, salvo “sobre-cupo” con permiso explícito.
+- Estados de cita: reservado → confirmado → en_atencion → cerrado; cancelado como terminal; control de check-in separado.
+- Historia clínica: puede cerrarse y bloquear edición; reabrir requiere permiso + reason + auditoría before/after.
+- Factura: anulación requiere reason + auditoría before/after; estados: pendiente/pagado/anulado.
+- Inventario: stock por sucursal; egresos/consumo; override para facturar sin stock requiere permiso y auditoría.
 
-### Auditoría
-- **BRD-REQ-020**: Auditoría de acciones clave (crear/editar/cancelar cita; crear/cerrar atención; facturar; pagos; inventario).
-- **BRD-REQ-021**: Auditoría before/after para acciones sensibles (anular factura, cambiar precio, reabrir historia cerrada, ajustes manuales inventario).
-- **BRD-REQ-022**: Auditoría de login/logout/refresh.
-- **BRD-REQ-023**: Retención demo 90 días (configurable a futuro).
+## 5) Requerimientos funcionales (con IDs estables)
 
-### Agenda/turnos
-- **BRD-REQ-030**: Gestión de salas (recurso) por sucursal.
-- **BRD-REQ-031**: Crear/editar/confirmar/cancelar citas con estados: reservado/confirmado/en atención/cerrado/cancelado.
-- **BRD-REQ-032**: Vista calendario semanal por sucursal y sala.
-- **BRD-REQ-033**: Regla de no-solape por sala + buffer configurable (10 min).
-- **BRD-REQ-034**: Check-in separado de “en atención”.
-- **BRD-REQ-035**: Override de no-solape solo con permiso + reason required (para casos excepcionales).
+> Formato: BRD-REQ-### (NO renumerar luego; cambios solo por RFC)
 
-### CRM (clientes/pacientes)
-- **BRD-REQ-040**: CRUD de clientes (nombre, cédula/RUC, teléfono, email, dirección, notas, tags).
-- **BRD-REQ-041**: CRUD de pacientes/mascotas (especie, raza, sexo, fecha nac/edad, peso, esterilizado, alergias/alertas, antecedentes, código interno).
-- **BRD-REQ-042**: 1 mascota → 1 propietario (V1).
-- **BRD-REQ-043**: Consentimientos/privacidad (registro de consentimientos con timestamp).
+### Autenticación / Seguridad / Scope
 
-### Historia clínica (SOAP) y atenciones
-- **BRD-REQ-050**: Atención puede existir sin cita; si existe cita, puede asociarse.
-- **BRD-REQ-051**: SOAP mínimo por atención:
-  - S: motivo, anamnesis
+- BRD-REQ-001 (P0): Login con usuario+password → emite access+refresh JWT.
+- BRD-REQ-002 (P0): Refresh token con rotación (refresh viejo invalidado).
+- BRD-REQ-003 (P0): Logout invalida refresh token activo.
+- BRD-REQ-004 (P0): Roles y permisos por acción (granular).
+- BRD-REQ-005 (P0): 2FA TOTP para ADMIN y SUPERADMIN (enforcement configurable; default ON en demo).
+- BRD-REQ-006 (P0): Bloqueo por intentos fallidos: 4 intentos en ventana 15 min; lock 15 min (valores configurables).
+- BRD-REQ-007 (P0): Scope sucursal obligatorio para endpoints branch-scoped vía header `X-Branch-Id` validado contra claims del JWT.
+- BRD-REQ-008 (P0): Si falta `X-Branch-Id` en endpoint branch-scoped → 400; si no está permitido → 403; token inválido → 401.
+- BRD-REQ-009 (P1): Rate limit/defensa básica: límites distintos para login/refresh/reportes; respuesta estándar 429.
+
+### Agenda/Turnos
+
+- BRD-REQ-010 (P0): CRUD de citas con estados: reservado/confirmado/en_atencion/cerrado/cancelado.
+- BRD-REQ-011 (P0): Vista calendario (semana) con filtros por sala y estado.
+- BRD-REQ-012 (P0): No-solape por sala (regla dura).
+- BRD-REQ-013 (P0): Sobre-cupo permitido solo con permiso; el sistema registra “sobreCupo=true” y deja auditoría.
+- BRD-REQ-014 (P0): Check-in separado de “en atención”.
+- BRD-REQ-015 (P1): Bloqueos manuales (slot bloqueado) para feriados/ocupación no clínica (simple).
+
+### Clientes / Pacientes
+
+- BRD-REQ-016 (P0): CRUD de clientes (propietarios): nombre, identificación (opcional pero si existe debe validar formato), teléfono, email, dirección, notas.
+- BRD-REQ-017 (P0): Búsqueda de clientes por nombre/teléfono/identificación.
+- BRD-REQ-018 (P0): CRUD de mascotas: especie, raza, sexo, fecha nac/edad, peso, esterilizado, alergias/alertas, antecedentes.
+- BRD-REQ-019 (P0): Código interno de mascota por sucursal (único dentro de sucursal).
+- BRD-REQ-020 (P0): Una mascota tiene un solo propietario (v1).
+
+### Servicios / Procedimientos
+
+- BRD-REQ-021 (P0): Catálogo de servicios con: nombre, duraciónMin (default 30), precioBase.
+- BRD-REQ-022 (P0): Duración de cita se toma del servicio (v1); override opcional con permiso (si se implementa, queda auditado).
+- BRD-REQ-023 (P1): “Receta de consumo” por servicio (BOM) para consumo automático de inventario.
+
+### Historia clínica / Atenciones (SOAP)
+
+- BRD-REQ-024 (P0): Atención puede existir sin cita (walk-in), pero puede vincularse a cita si aplica.
+- BRD-REQ-025 (P0): SOAP mínimo por atención:
+  - S: motivo_consulta, anamnesis
   - O: peso, temperatura, hallazgos
-  - A: diagnóstico (texto)
-  - P: tratamiento/indicaciones, recontrol
-- **BRD-REQ-052**: Plantillas SOAP por tipo de servicio.
-- **BRD-REQ-053**: Adjuntos (PDF/JPG/PNG) con tamaño máx definido.
-- **BRD-REQ-054**: Cierre de atención (bloquea edición).
-- **BRD-REQ-055**: Reapertura permitida para VETERINARIO con permiso especial + auditoría + reason required; ADMIN puede ayudar si se bloquea.
+  - A: diagnostico (texto), severidad (opcional)
+  - P: plan_tratamiento, indicaciones, recontrol (fecha opcional)
+- BRD-REQ-026 (P0): Plantillas SOAP por tipo de servicio (seleccionable al crear atención).
+- BRD-REQ-027 (P0): Adjuntos en atención: imagen/pdf; máximo 10MB por archivo; máximo 5 adjuntos por atención (configurable).
+- BRD-REQ-028 (P0): Cerrar atención bloquea edición; reabrir requiere permiso + reason + auditoría before/after.
 
-### Servicios y prescripciones
-- **BRD-REQ-060**: Catálogo de servicios con duración sugerida (30m) y precio base.
-- **BRD-REQ-061**: Prescripción/indicaciones estructuradas: dosis, unidad, frecuencia, duración, vía, notas.
-- **BRD-REQ-062**: Exportar indicaciones (PDF/HTML).
-- **BRD-REQ-063**: Consumo inventario automático por servicio (BOM).
+### Prescripciones / Indicaciones
+
+- BRD-REQ-029 (P0): Prescripción estructurada: medicamento, dosis, unidad, frecuencia, duración, vía, observaciones.
+- BRD-REQ-030 (P1): Exportar indicaciones (PDF/HTML) para impresión.
 
 ### Facturación
-- **BRD-REQ-070**: Factura interna demo (no SRI real).
-- **BRD-REQ-071**: IVA aplicable; tasa configurable (default 15%) solo SUPERADMIN, con auditoría before/after. (Circular SRI NAC-DGECCGC25-00000006, 26-dic-2025).
-- **BRD-REQ-072**: Descuentos: por ítem y por total.
-- **BRD-REQ-073**: Formas de pago mixtas; pagos parciales.
-- **BRD-REQ-074**: Estados factura: pendiente/pagado/anulado.
-- **BRD-REQ-075**: Anulación requiere reason + auditoría before/after.
-- **BRD-REQ-076**: Exportación factura CSV/PDF.
+
+- BRD-REQ-031 (P0): Factura interna simple (no SRI) asociada a una atención.
+- BRD-REQ-032 (P0): IVA configurable (default 15%); solo SUPERADMIN puede cambiar; cambio queda auditado.
+- BRD-REQ-033 (P0): Descuentos por ítem y/o total (v1: ambos).
+- BRD-REQ-034 (P0): Pagos: efectivo/tarjeta/transferencia/mixto; pagos parciales permitidos.
+- BRD-REQ-035 (P0): Estados factura: pendiente/pagado/anulado.
+- BRD-REQ-036 (P0): Anulación requiere reason + auditoría before/after.
+- BRD-REQ-037 (P1): Exportar factura CSV/PDF.
 
 ### Inventario
-- **BRD-REQ-080**: Productos (medicamento/insumo); servicios viven aparte.
-- **BRD-REQ-081**: Unidades (catálogo de unidades).
-- **BRD-REQ-082**: Stock por sucursal.
-- **BRD-REQ-083**: Movimientos: ingreso/egreso/ajuste/consumo por atención.
-- **BRD-REQ-084**: Mínimos y alertas.
-- **BRD-REQ-085**: Sin lotes/caducidad (V1).
-- **BRD-REQ-086**: Costeo: costo promedio.
-- **BRD-REQ-087**: Bloquear facturar si no hay stock, con override por permiso + reason required.
+
+- BRD-REQ-038 (P0): Productos (medicamento/insumo); servicios viven aparte.
+- BRD-REQ-039 (P0): Catálogo de unidades (unidad/ml/tabletas/etc).
+- BRD-REQ-040 (P0): Stock por sucursal.
+- BRD-REQ-041 (P0): Movimientos: ingreso/egreso/ajuste/consumo por atención.
+- BRD-REQ-042 (P0): Mínimos y alertas.
+- BRD-REQ-043 (P0): Costeo: costo promedio (promedio ponderado) por sucursal.
+- BRD-REQ-044 (P0): Bloquear facturar por falta de stock, con override por permiso (auditado).
 
 ### Reportes
-- **BRD-REQ-090**: Reporte citas por período (filtros: sucursal, sala, estado).
-- **BRD-REQ-091**: Ventas por período.
-- **BRD-REQ-092**: Top servicios.
-- **BRD-REQ-093**: Consumo inventario.
-- **BRD-REQ-094**: Clientes/pacientes frecuentes.
-- **BRD-REQ-095**: Exportación reportes (CSV/PDF).
-- **BRD-REQ-096**: Dashboard home por rol.
 
-### Demo / operación
-- **BRD-REQ-100**: Seeds demo completos: usuarios/roles, sucursales, salas, servicios, clientes, mascotas, productos/stock.
-- **BRD-REQ-101**: Flujo demo “2–3 minutos” documentado en runbook.
-- **BRD-REQ-102**: Scripts “verdad” + smoke scripts por flujo crítico.
-- **BRD-REQ-103**: Trazabilidad fuerte (RTM actualizado).
+- BRD-REQ-045 (P1): Reporte “citas por período” con filtros (sucursal, sala, estado).
+- BRD-REQ-046 (P1): Reporte “ventas por período”.
+- BRD-REQ-047 (P1): Reporte “top servicios”.
+- BRD-REQ-048 (P1): Reporte “consumo inventario”.
+- BRD-REQ-049 (P1): Reporte “clientes/pacientes frecuentes”.
+- BRD-REQ-050 (P1): Exportar reportes CSV/PDF.
+- BRD-REQ-051 (P1): Dashboard home por rol.
 
-### Online-only placeholders
-- **BRD-REQ-110**: Recordatorios/confirmaciones: estado “pendiente de enviar”; envío real detrás de feature flag (online).
-- **BRD-REQ-111**: SRI e-factura: placeholder de estructura sin implementación.
+### Auditoría y trazabilidad
+
+- BRD-REQ-052 (P0): Auditoría obligatoria en: login/logout/refresh, cambios de permisos, citas, atenciones, facturas, pagos, inventario, configuración IVA.
+- BRD-REQ-053 (P0): Before/after obligatorio en acciones sensibles (anulación, cambio precio, reabrir historia, ajustes inventario).
+- BRD-REQ-054 (P0): Retención demo: 90 días (purgado/archivado simple).
+
+### Seed/Runbook/Smoke
+
+- BRD-REQ-055 (P0): Seed/demo: usuarios/roles, servicios, clientes, mascotas, 1–2 citas y 1 atención ejemplo.
+- BRD-REQ-056 (P0): Credenciales demo fijas (para prueba rápida).
+- BRD-REQ-057 (P0): Runbook local actualizado + scripts “verdad”.
+- BRD-REQ-058 (P0): Smoke script para flujo core “crear cita → atender → cerrar → facturar”.
+
+## 6) No-objetivos v1 (explícitos)
+
+- Integración SRI / e-factura real.
+- Cliente auto-reserva real (online-only futuro).
+- Multi-tenant real (solo una clínica).
+- Lotes y caducidad en inventario.
+- Offline PWA sin backend local (se asume backend local disponible).
 
 <!-- EOF -->

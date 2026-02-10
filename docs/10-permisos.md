@@ -1,98 +1,117 @@
 # 10 — Permisos (matriz estable)
 
 ## 1) Roles v1
-- SUPERADMIN
-- ADMIN
-- RECEPCION
-- VETERINARIO
 
-## 2) Permisos (códigos)
+- SUPERADMIN: control total (demo/soporte). Puede operar cualquier sucursal (requiere `X-Branch-Id` igualmente).
+- ADMIN: administra operación de clínica (usuarios, configuración, reportes).
+- RECEPCION: agenda, clientes, cobros básicos (según permisos).
+- VETERINARIO: atención clínica, historia clínica, indicaciones.
 
-Agenda:
-- AGENDA_VER
-- AGENDA_CREAR
-- AGENDA_EDITAR
-- AGENDA_CANCELAR
-- AGENDA_CHECKIN
-- AGENDA_INICIAR_ATENCION
-- AGENDA_OVERRIDE_NO_SOLAPE (SENSIBLE, reason required)
+## 2) Convención de permisos
 
-CRM:
-- CRM_CLIENTE_VER
-- CRM_CLIENTE_EDITAR
-- CRM_PACIENTE_VER
-- CRM_PACIENTE_EDITAR
+- Código en inglés, estilo: `MODULE_ACTION_SCOPE`
+- Ejemplos:
+  - `APPT_CREATE`
+  - `INVOICE_VOID`
+  - `INVENTORY_OVERRIDE_STOCK`
 
-Clínica:
-- CLINICA_ATENCION_VER
-- CLINICA_ATENCION_CREAR
-- CLINICA_ATENCION_EDITAR
-- CLINICA_ATENCION_CERRAR
-- CLINICA_REABRIR_ATENCION (SENSIBLE, reason required)
-- CLINICA_ADJUNTOS_GESTIONAR
+## 3) Permisos (lista mínima v1)
 
-Servicios/Catálogos:
-- CATALOGO_VER
-- CATALOGO_EDITAR
-- PRECIO_CAMBIAR (SENSIBLE, reason required)
+### Auth / Admin
+- `USER_READ`
+- `USER_CREATE`
+- `USER_UPDATE`
+- `USER_DISABLE`
+- `ROLE_ASSIGN`
+- `CONFIG_TAX_READ`
+- `CONFIG_TAX_UPDATE` (SENSITIVE)
 
-Facturación:
-- FACTURACION_VER
-- FACTURACION_CREAR
-- FACTURACION_PAGOS_REGISTRAR
-- FACTURACION_ANULAR (SENSIBLE, reason required)
-- FACTURACION_EXPORTAR
+### Branch / Scope
+- `BRANCH_READ`
+- `BRANCH_SELECT` (selección de contexto)
+- `BRANCH_MANAGE` (admin)
 
-Inventario:
-- INVENTARIO_VER
-- INVENTARIO_EDITAR_PRODUCTO
-- INVENTARIO_MOVIMIENTOS_VER
-- INVENTARIO_INGRESO
-- INVENTARIO_EGRESO
-- INVENTARIO_AJUSTE_MANUAL (SENSIBLE, reason required)
-- INVENTARIO_OVERRIDE_STOCK_NEGATIVO (SENSIBLE, reason required)
+### Agenda
+- `APPT_READ`
+- `APPT_CREATE`
+- `APPT_UPDATE`
+- `APPT_CANCEL` (SENSITIVE)
+- `APPT_OVERBOOK` (SENSITIVE)
+- `APPT_CHECKIN`
+- `APPT_START_VISIT`
+- `APPT_CLOSE`
 
-Reportes:
-- REPORTES_VER
-- REPORTES_EXPORTAR
+### Clientes / Mascotas
+- `CLIENT_READ`
+- `CLIENT_CREATE`
+- `CLIENT_UPDATE`
+- `PET_READ`
+- `PET_CREATE`
+- `PET_UPDATE`
 
-Admin/Config:
-- USUARIOS_GESTIONAR
-- CONFIG_IVA_EDITAR (SENSIBLE, solo SUPERADMIN, reason required)
-- AUDITORIA_VER
+### Historia Clínica / Atenciones
+- `VISIT_READ`
+- `VISIT_CREATE`
+- `VISIT_UPDATE`
+- `VISIT_CLOSE`
+- `VISIT_REOPEN` (SENSITIVE)
+- `VISIT_ATTACHMENT_UPLOAD`
 
-## 3) Matriz rol → permisos (mínimo)
+### Servicios
+- `SERVICE_READ`
+- `SERVICE_CREATE`
+- `SERVICE_UPDATE` (SENSITIVE si cambia precio)
+
+### Facturación
+- `INVOICE_READ`
+- `INVOICE_CREATE`
+- `INVOICE_UPDATE` (SENSITIVE si cambia precio/descuento)
+- `INVOICE_PAY`
+- `INVOICE_VOID` (SENSITIVE)
+- `INVOICE_EXPORT`
+
+### Inventario
+- `PRODUCT_READ`
+- `PRODUCT_CREATE`
+- `PRODUCT_UPDATE`
+- `STOCK_READ`
+- `STOCK_MOVE_CREATE` (ingreso/egreso)
+- `STOCK_ADJUST` (SENSITIVE)
+- `STOCK_OVERRIDE_INVOICE` (SENSITIVE)
+
+### Reportes
+- `REPORT_READ`
+- `REPORT_EXPORT`
+
+### Auditoría
+- `AUDIT_READ`
+
+## 4) Matriz rol → permisos (v1)
 
 | Permiso | SUPERADMIN | ADMIN | RECEPCION | VETERINARIO |
 |---|:--:|:--:|:--:|:--:|
-| AGENDA_VER | ✅ | ✅ | ✅ | ✅ |
-| AGENDA_CREAR/EDITAR/CANCELAR | ✅ | ✅ | ✅ | ❌ |
-| AGENDA_CHECKIN/INICIAR_ATENCION | ✅ | ✅ | ✅ | ✅ (iniciar desde cola) |
-| AGENDA_OVERRIDE_NO_SOLAPE | ✅ | ✅ | ❌ | ❌ |
-| CRM_*_VER | ✅ | ✅ | ✅ | ✅ |
-| CRM_*_EDITAR | ✅ | ✅ | ✅ | ✅ (si se decide; v1: ✅) |
-| CLINICA_* | ✅ | ✅ | ❌ | ✅ |
-| CLINICA_REABRIR_ATENCION | ✅ | ✅ | ❌ | ✅ (si permiso otorgado) |
-| CATALOGO_EDITAR | ✅ | ✅ | ❌ | ❌ |
-| PRECIO_CAMBIAR | ✅ | ✅ | ❌ | ❌ |
-| FACTURACION_* | ✅ | ✅ | ✅ | ❌ |
-| FACTURACION_ANULAR | ✅ | ✅ | ❌ | ❌ |
-| INVENTARIO_*_VER | ✅ | ✅ | ✅ (solo ver) | ❌ |
-| INVENTARIO_EDITAR/INGRESO/EGRESO | ✅ | ✅ | ❌ | ❌ |
-| INVENTARIO_AJUSTE_MANUAL | ✅ | ✅ | ❌ | ❌ |
-| INVENTARIO_OVERRIDE_STOCK_NEGATIVO | ✅ | ✅ | ❌ | ❌ |
-| REPORTES_VER/EXPORTAR | ✅ | ✅ | ✅ | ✅ (solo lectura) |
-| CONFIG_IVA_EDITAR | ✅ | ❌ | ❌ | ❌ |
-| AUDITORIA_VER | ✅ | ✅ | ❌ | ❌ |
-| USUARIOS_GESTIONAR | ✅ | ✅ | ❌ | ❌ |
+| USER_* / ROLE_ASSIGN | ✅ | ✅ | ❌ | ❌ |
+| CONFIG_TAX_* | ✅ | ✅(read) | ❌ | ❌ |
+| BRANCH_* | ✅ | ✅ | ✅(select/read) | ✅(select/read) |
+| APPT_* | ✅ | ✅ | ✅ | ✅(read + start/close) |
+| CLIENT_* / PET_* | ✅ | ✅ | ✅ | ✅(read) |
+| VISIT_* | ✅ | ✅ | ❌ | ✅ |
+| SERVICE_* | ✅ | ✅ | ✅(read) | ✅(read) |
+| INVOICE_* | ✅ | ✅ | ✅(create/pay/read) | ✅(read) |
+| INVENTORY_* | ✅ | ✅ | ❌ | ✅(read) |
+| REPORT_* | ✅ | ✅ | ✅(read limitado) | ✅(read limitado) |
+| AUDIT_READ | ✅ | ✅ | ❌ | ✅(solo sus acciones si se implementa filtro) |
 
-## 4) Acciones sensibles (reason required)
-- AGENDA_OVERRIDE_NO_SOLAPE
-- CLINICA_REABRIR_ATENCION
-- PRECIO_CAMBIAR
-- FACTURACION_ANULAR
-- INVENTARIO_AJUSTE_MANUAL
-- INVENTARIO_OVERRIDE_STOCK_NEGATIVO
-- CONFIG_IVA_EDITAR
+## 5) Acciones sensibles (reason required)
+
+- `INVOICE_VOID`
+- `INVOICE_UPDATE` cuando cambia precio/descuento
+- `SERVICE_UPDATE` cuando cambia precio
+- `VISIT_REOPEN`
+- `APPT_OVERBOOK`
+- `APPT_CANCEL` (si ya estaba confirmado/en atención)
+- `STOCK_ADJUST`
+- `STOCK_OVERRIDE_INVOICE`
+- `CONFIG_TAX_UPDATE`
 
 <!-- EOF -->

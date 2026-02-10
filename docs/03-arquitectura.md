@@ -1,126 +1,105 @@
-# 03 — Arquitectura (monolito modular, local-first)
+# 03 — Arquitectura
 
 ## 1) Resumen
-- Arquitectura: **monolito modular** (backend) + **frontend web** (Next.js) + **Postgres local**.
-- Objetivo: maximizar consistencia y trazabilidad, minimizando piezas sueltas.
+
+- Backend: monolito modular (Spring Boot) con módulos por dominio (agenda, clientes, clínica, facturación, inventario, reportes, seguridad, auditoría).
+- Frontend: Next.js (TypeScript) + Tailwind + shadcn/ui.
+- DB: Postgres 17.
+- Migraciones: Flyway.
+- Objetivo: demo local-first (sin dependencias externas obligatorias).
 
 ## 2) Diagrama lógico (texto)
 
 [Frontend Next.js]
-  - UI en Español
-  - Manejo de sesión (access/refresh)
-  - Selección de sucursal
-  - Consumo API REST
+  - Auth UI + selección de sucursal
+  - Pantallas por módulo
+  - Llamadas HTTP a API (JSON)
 
-        │ HTTPS (local)
-        ▼
+        |
+        v
 
 [Backend Spring Boot]
-  Módulos:
-  - auth (login/refresh/logout, 2FA)
-  - scoping (branch)
-  - agenda (citas)
-  - crm (clientes, mascotas)
-  - clinical (atenciones, SOAP, adjuntos, prescripciones)
-  - catalog (salas, servicios, unidades)
-  - billing (facturas, pagos, impuestos, export)
-  - inventory (stock, movimientos, mínimos, consumo)
-  - reports
-  - audit
-  - feature-flags
-        │
-        ▼
+  - Seguridad (JWT + 2FA TOTP)
+  - Scoping sucursal (X-Branch-Id + claims)
+  - Dominios:
+    - Agenda/Turnos
+    - Clientes
+    - Pacientes
+    - Historia Clínica (SOAP)
+    - Servicios
+    - Facturación
+    - Inventario
+    - Reportes
+  - Auditoría (eventos + before/after)
+
+        |
+        v
+
 [Postgres 17]
-  - migraciones por Flyway
-  - datos scopiados por branch_id
+  - Schema migrado por Flyway
+  - Constraints para invariantes
 
-## 3) Decisiones clave (links a ADRs)
-- Stack: ver `docs/decisions/adr-0001-stack.md`
-- Arquitectura modular: ver `docs/decisions/adr-0002-arquitectura.md`
-- Scoping multi-sucursal: ver `docs/decisions/adr-0003-tenancy-scoping.md`
-- Seguridad (JWT+2FA): ver `docs/decisions/adr-0004-seguridad-auth.md`
-- Auditoría: ver `docs/decisions/adr-0005-auditoria.md`
+## 3) Tenancy / Scoping (branch)
 
-## 4) Tenancy & scoping (branch)
+- No hay tenant.
+- Hay sucursal (branch).
+- Regla:
+  - Endpoints branch-scoped EXIGEN `X-Branch-Id`.
+  - El JWT incluye claims que indican qué branches puede usar el usuario.
+  - Validación:
+    - falta header → 400
+    - header no permitido → 403
+    - token inválido/ausente → 401
 
-**Contexto:**
-- No hay multi-tenant (1 clínica).
-- Sí hay multi-sucursal (branch) y **separación de datos**.
+## 4) Seguridad
 
-**Regla de seguridad (anti spoofing):**
-- El access token incluye claim `branch_id` activo.
-- La request incluye header `X-Branch-Id`.
-- Backend valida:
-  - Si falta header en endpoint scopiado → **400** (scope requerido).
-  - Si el token no tiene scope válido (no seleccionó sucursal) → **403**.
-  - Si header no coincide con claim y no es SUPERADMIN → **403**.
-  - Si no hay/expiró token → **401**.
+- JWT access + refresh.
+- Rotación de refresh.
+- Lockout por intentos fallidos (configurable; defaults definidos en BRD).
+- 2FA TOTP para ADMIN/SUPERADMIN.
+- Acciones sensibles requieren `reason` y auditan before/after.
 
-**Excepciones:**
-- Endpoints “globales” (ej. `GET /api/v1/branches` para listar sucursales accesibles) no requieren `X-Branch-Id`.
+## 5) Convenciones API
 
-## 5) Seguridad
+- Endpoints en inglés (consistencia técnica).
+- UI en español.
+- Errores: Problem Details (RFC 7807) como formato estándar.
+- Paginación:
+  - listados: `page`, `size`, `sort` (defaults definidos en implementación; documentar en OpenAPI).
+- Fechas:
+  - ISO-8601 con timezone (`America/Guayaquil` a nivel negocio).
 
-### Auth
-- JWT access token (1h) + refresh token (7 días) con rotación.
-- 2FA TOTP (RFC 6238: https://datatracker.ietf.org/doc/html/rfc6238) para ADMIN/SUPERADMIN.
-- Password hashing: BCrypt/Argon2 (definir en implementación; preferible BCrypt por simplicidad).
+## 6) Data y migraciones
 
-### CORS local
-- Permitir `http://localhost:<puerto-frontend>` → `http://localhost:<puerto-backend>`.
+- Flyway como herramienta de migración.
+- Reglas:
+  - Todas las tablas branch-scoped llevan `branch_id`.
+  - Invariantes (no-solape, estados válidos) se respaldan con constraints + validación app.
+- IDs:
+  - UUID recomendado (o bigint autoincrement si se decide por ADR; por defecto UUID).
 
-### Rate limit / defensa básica
-- Rate-limit fuerte en endpoints de auth.
-- 429 Too Many Requests como respuesta estándar (RFC 6585 define 429: https://datatracker.ietf.org/doc/html/rfc6585).
-- Lockout por intentos fallidos (BRD-REQ-012).
+## 7) Money/decimales
 
-## 6) Convenciones de API
+- Montos: BigDecimal.
+- Moneda: USD (implícito Ecuador).
+- IVA configurable.
 
-### Versionado
-- Prefijo: `/api/v1`
+## 8) Archivos adjuntos (historia clínica)
 
-### Naming
-- Endpoints en inglés (consistencia técnica); UI en español.
+- v1: adjuntos en atención (pdf/imagen).
+- Almacenamiento: local filesystem o DB (decisión de implementación en sprint; documentar en ADR si impacta arquitectura).
+- Límites: según BRD.
 
-### Errores
-- RFC 7807 Problem Details (https://www.rfc-editor.org/rfc/rfc7807)
-- Campos mínimos: `type`, `title`, `status`, `detail`, `instance`
-- Extensiones: `errorCode`, `traceId`, `fieldErrors[]` para validación.
+## 9) Estrategia de pruebas y smoke
 
-### Estándar de códigos (mínimo)
-- 400: validación / scope header faltante
-- 401: no autenticado
-- 403: autenticado sin permiso / scope inválido
-- 404: recurso no existe (dentro del scope)
-- 409: conflictos (no-solape, duplicados)
-- 429: rate limit
+- Unit tests donde aplique.
+- Integration tests para repos y reglas críticas (no-solape, scope, facturación).
+- Smoke scripts: PowerShell para flujo core.
 
-## 7) Data / DB
+## 10) Anti-desviación
 
-### IDs
-- UUID para entidades principales.
-
-### Timezone
-- Persistir con `timestamptz` (Postgres) y exponer ISO-8601 con offset.
-- Regla: business timezone `America/Guayaquil`.
-
-### Money
-- `BigDecimal` (backend) con escala definida (ej. 2).
-- Moneda: USD (Ecuador).
-
-### Migraciones
-- Flyway (asegurar compatibilidad con Postgres 17; mínimo Flyway 10.20.1+ recomendado).
-  - Nota: Postgres anunció compatibilidad 12–17 en notas relacionadas a Flyway 10.20.1+ (referencia pública: https://www.postgresql.org/about/news/flyway-community-drift-check-released-2970/)
-
-## 8) Estrategia de pruebas
-- Unit tests (servicios/reglas).
-- Integration tests (repositorios + Postgres Testcontainers si se decide, pero local-first y sin Docker al inicio: dejarlo como “futuro”).
-- Smoke scripts (PowerShell) para flujos críticos.
-
-## 9) Anti-desviación
-- No inventar requisitos.
-- Cambios de alcance: RFC/ADR + changelog.
-- EOF markers obligatorios en docs.
+- NO inventar: si falta decisión crítica → RFC/ADR y detener.
 - Sprints inmutables.
+- EOF en docs.
 
 <!-- EOF -->

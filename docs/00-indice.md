@@ -1,79 +1,62 @@
-# 00 — Índice canónico (fuente de verdad)
+# 00 — Índice y orden de lectura (fuente de verdad)
 
-Este repositorio trabaja **local-first** y con **gobernanza por docs**:
-- La conversación NO es fuente de verdad.
-- La fuente de verdad vive en `docs/**` y se aplica por tandas/sprints.
-- Sprints son **inmutables**: cambios SOLO por RFC/ADR/CHANGELOG.
+## Propósito
 
-## 1) Orden de lectura obligatorio (para agentes y humanos)
+Este repo se gobierna por documentación dentro de `docs/**`. El chat NO es fuente de verdad.
 
-**Antes de tocar código, SIEMPRE leer (mínimo):**
-1. `docs/project-lock.md`
-2. `AGENTS.md` (si existe)
-3. `docs/00-indice.md` (este archivo)
-4. `docs/state/state.md`
-5. `docs/quality/definition-of-ready.md`
-6. `docs/quality/definition-of-done.md`
-7. Sprint actual `docs/sprints/<SPR-XXX>.md` (cuando existan)
-8. `docs/status/status.md` + `docs/log/log.md`
-
-## 2) Mapa de documentos (tabla canónica)
-
-| Archivo | Propósito | ¿Siempre leer antes de codificar? |
-|---|---|---|
-| `docs/project-lock.md` | Candado de identidad del proyecto | Sí |
-| `docs/state/state.md` | Snapshot de estado + próximo sprint recomendado | Sí |
-| `docs/quality/definition-of-ready.md` | Gate DoR (bloquea sprints) | Sí |
-| `docs/quality/definition-of-done.md` | Gate DoD (bloquea READY_FOR_VALIDATION) | Sí |
-| `docs/01-brief.md` | Contexto de negocio + glosario | Sí |
-| `docs/02-brd.md` | Requisitos (BRD-REQ-###) | Sí |
-| `docs/03-arquitectura.md` | Arquitectura, datos, seguridad, convenciones API | Sí |
-| `docs/04-convenciones.md` | Normas duras (naming, git, scripts, casing) | Sí |
-| `docs/05-seguridad.md` | Modelo auth/2FA/rate-limit/auditoría | Sí |
-| `docs/06-dominio-parte-a.md` | Dominio: entidades y reglas (A) | Sí |
-| `docs/06-dominio-parte-b.md` | Dominio: entidades y reglas (B) | Sí |
-| `docs/07-ux-ui-parte-a.md` | UX/UI vendible (A) | Sí |
-| `docs/07-ux-ui-parte-b.md` | UX/UI vendible (B) | Sí |
-| `docs/08-runbook.md` | Operación local (setup/run/troubleshoot) | Sí |
-| `docs/09-stage-release.md` | Qué cambia al ir online/stage (futuro) | No (solo si aplica) |
-| `docs/10-permisos.md` | Matriz rol→permisos + acciones sensibles | Sí |
-| `docs/11-entrega.md` | Checklist vendible local + RC | Sí |
-| `docs/traceability/rtm.md` | Trazabilidad Req→Sprint→Evidencia | Sí |
-| `docs/handoff/handoff-back-to-front.md` | Contrato real backend→frontend (cuando exista) | Front: Sí |
-| `docs/status/status.md` | Tabla de estados de tandas/sprints | Sí |
-| `docs/log/log.md` | Bitácora append-only (evidencia) | Sí |
-| `docs/changelog.md` | Cambios (append-only) | Sí |
-| `docs/rfcs/*.md` | Propuestas de cambio | Cuando aplique |
-| `docs/decisions/*.md` | Decisiones (ADRs) | Cuando aplique |
-| `docs/sprints/*.md` | Planes maestros y sprints (inmutables) | Cuando existan |
-
-## 3) Casing Linux-friendly (evitar duplicados)
-
-- Todo en `docs/**` va en minúsculas y rutas canónicas como arriba.
-- Si aparece histórico como `LOG.md`, se interpreta como `docs/log/log.md`. **No crear duplicados**.
-
-## 4) Estados y evidencia
-
-- `READY_FOR_VALIDATION`: Codex terminó implementación/doc y dejó evidencia/placeholder en LOG/STATUS.
-- `DONE`: SOLO usuario tras validar local y pegar outputs en `docs/log/log.md`.
-
-## 5) Cómo se hacen cambios
-
-- No se editan sprints ya emitidos.
-- Cambios solo por:
-  - `docs/rfcs/RFC-00xx-*.md`
-  - `docs/decisions/ADR-00xx-*.md`
-  - `docs/changelog.md`
-
-## 6) Multi-conversación (BACK/FRONT)
-
-- BACK y FRONT se trabajan en conversaciones separadas.
-- Ambas deben basarse solo en `docs/**`.
-- FRONT no debe “inventar” contratos: requiere `docs/handoff/handoff-back-to-front.md` cuando backend esté listo.
-
-## 7) EOF obligatorio
+## Reglas clave (resumen)
 
 - Todo `.md` bajo `docs/**` termina EXACTO con `<!-- EOF -->`.
-- Script verificador: `scripts/verify/verify-docs-eof.ps1`.
+- Sprints (cuando existan) son inmutables: cambios SOLO por RFC/ADR/CHANGELOG.
+- Evidencia:
+  - `docs/log/log.md` append-only
+  - `docs/status/status.md` tabla de control
+- Estados:
+  - `READY_FOR_VALIDATION` = implementado pero falta validación local del usuario
+  - `DONE/APROBADO` = SOLO cuando el usuario ejecuta validación local y deja evidencia en LOG
+
+## Orden de lectura obligatorio para agentes (Codex)
+
+1) `docs/project-lock.md` (identidad / anti-mezcla)
+2) `AGENTS.md` (conducta del agente)
+3) `docs/state/state.md` (snapshot actual)
+4) `docs/quality/definition-of-ready.md` (DoR — gate de inicio)
+5) `docs/quality/definition-of-done.md` (DoD — gate de cierre)
+6) `docs/01-brief.md`
+7) `docs/02-brd.md` (contrato funcional + IDs BRD-REQ-###)
+8) `docs/03-arquitectura.md`
+9) `docs/04-convenciones.md`
+10) `docs/05-seguridad.md`
+11) `docs/06-dominio-parte-a.md` + `docs/06-dominio-parte-b.md`
+12) `docs/07-ux-ui-parte-a.md` + `docs/07-ux-ui-parte-b.md`
+13) `docs/08-runbook.md`
+14) `docs/09-stage-release.md`
+15) `docs/10-permisos.md`
+16) `docs/11-entrega.md`
+17) `docs/traceability/rtm.md`
+18) `docs/sprints/spr-master-back.md` y/o `docs/sprints/spr-master-front.md` (según pista)
+19) Sprint actual `docs/sprints/SPR-XXX.md` (cuando exista)
+20) `docs/status/status.md`
+21) `docs/log/log.md`
+22) RFC/ADR referenciados por el sprint (si aplica)
+
+## Nombres canónicos linux-friendly
+
+- `docs/log/log.md` (NO crear `LOG.md`)
+- `docs/status/status.md` (NO crear `STATUS.md`)
+- `docs/changelog.md` (NO crear `CHANGELOG.md`)
+- Sin espacios, casing consistente.
+
+## Trabajo por tandas (docs)
+
+- Cada tanda (T1, T2, T3, …) aplica cambios de docs (y solo docs + archivos explícitos como `AGENTS.md`).
+- Codex aplica la tanda con scope estricto y un único commit.
+
+## Pistas BACK y FRONT
+
+- Los sprints detallados se generan en conversaciones separadas:
+  - Conversación BACK: solo sprints backend
+  - Conversación FRONT: solo sprints frontend
+- Ambas conversaciones usan estos `.md` como fuente de verdad.
 
 <!-- EOF -->

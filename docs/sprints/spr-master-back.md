@@ -1,61 +1,75 @@
-# Plan Maestro BACK (spr-master-back)
+# Plan Maestro — BACK (sprints backend)
 
-Regla: este master se acepta “tal cual”. Cambios solo por RFC/ADR/CHANGELOG.
+Regla: este master se acepta “tal cual”. Cambios solo por RFC/ADR.
 
-## Lista de sprints (BACK)
+## Convenciones
 
-### SPR-B001 — Walking skeleton backend (health + db + migraciones + ProblemDetails base)
-- Hace: estructura backend, conexión Postgres, migraciones base, healthcheck, error RFC7807 base
-- No hace: features de dominio completas
-- Riesgo: inventar paths/commands; mitigación: leer índice/runbook
-- Dep: ninguna
-- BRD objetivo: BRD-REQ-015, BRD-REQ-102
+- IDs: `SPR-B001`, `SPR-B002`, ...
+- Cada sprint declara BRD-REQ objetivo.
+- Si un sprint es “Foundation”, debe justificar desbloqueo.
 
-### SPR-B002 — Auth + scoping branch + permisos base + 2FA base
-- Hace: login/refresh/logout, selección branch, claims+header, roles/permisos, lockout, 2FA TOTP
-- No hace: agenda/crm
-- Dep: B001
-- BRD: 001-003, 010-015, 020-022
+## Lista de sprints
 
-### SPR-B003 — Catálogos + seeds demo base (branches/rooms/services/products/units)
-- Hace: CRUD catálogos + seeds (usuarios demo incluidos)
-- Dep: B002
-- BRD: 030, 060, 080-082, 100
+### SPR-B001 — Walking Skeleton (Auth + Scope + Base API + Smoke mínimo)
+- Objetivo: tener un flujo mínimo backend usable: auth + scoping + 1 caso core persistido.
+- Cierra: BRD-REQ-001,002,003,007,008,057
+- Incluye:
+  - JWT access/refresh (rotación)
+  - Scope `X-Branch-Id` validado contra claims
+  - Endpoint mínimo de agenda (crear/listar cita simple) + healthcheck
+  - Base Problem Details
+  - Seed mínimo (usuarios demo básicos)
+- Excluye: reglas completas de no-solape y clínica (viene después)
+- Depende: docs base (BRD/arquitectura/seguridad) cerrados
 
-### SPR-B004 — Agenda (citas + no-solape + buffer + check-in)
-- Dep: B003
-- BRD: 031-035
+### SPR-B002 — Agenda Core (no-solape por sala + estados + check-in)
+- Cierra: BRD-REQ-010..015,022,012,013,014
+- Incluye:
+  - Modelo de cita completo con estados
+  - Regla no-solape por SALA (hard)
+  - Sobre-cupo con permiso + auditoría
+  - Check-in separado
+  - Listado calendario semana (API)
+- Depende: SPR-B001
 
-### SPR-B005 — CRM (clientes + mascotas + alertas)
-- Dep: B003
-- BRD: 040-043
+### SPR-B003 — Clientes y Mascotas (CRUD + búsqueda + invariantes)
+- Cierra: BRD-REQ-016..020
+- Depende: SPR-B001
 
-### SPR-B006 — Clínica (atenciones SOAP + plantillas + cierre/reapertura + adjuntos metadata)
-- Dep: B005
-- BRD: 050-055, 053
+### SPR-B004 — Servicios (catálogo + duración + precio base)
+- Cierra: BRD-REQ-021..022
+- Depende: SPR-B001
 
-### SPR-B007 — Facturación (factura demo + IVA config + pagos mixtos/parciales + anulación + export)
-- Dep: B006
-- BRD: 070-076, 071-075
+### SPR-B005 — Historia Clínica (Atención + SOAP + plantillas + adjuntos + cierre/reapertura)
+- Cierra: BRD-REQ-024..030 (parcial, export puede ir en B006)
+- Depende: SPR-B003, SPR-B004, SPR-B001
 
-### SPR-B008 — Inventario (stock+movimientos+consumo BOM+mínimos+override)
-- Dep: B007
-- BRD: 080-087, 063
+### SPR-B006 — Facturación (factura + IVA config + pagos + export)
+- Cierra: BRD-REQ-031..037,032,033,034,035,036
+- Depende: SPR-B005, SPR-B004
 
-### SPR-B009 — Reportes (citas/ventas/top/consumo/frecuentes + export)
-- Dep: B008
-- BRD: 090-096
+### SPR-B007 — Inventario (stock + movimientos + costeo + override + BOM)
+- Cierra: BRD-REQ-038..044,023
+- Depende: SPR-B006 (si consumo se cruza con facturación) y SPR-B001
 
-### SPR-B010 — Hardening auditoría + políticas sensibles + retención
-- Dep: B009
-- BRD: 020-023, 021
+### SPR-B008 — Reportes (endpoints + export)
+- Cierra: BRD-REQ-045..051
+- Depende: SPR-B002, SPR-B006, SPR-B007
 
-### SPR-B011 — OpenAPI polish + smoke scripts backend + handoff base
-- Dep: B010
-- BRD: 101-103
+### SPR-B009 — Auditoría avanzada (before/after + retención)
+- Cierra: BRD-REQ-052..054,032 (auditar cambio IVA)
+- Depende: SPR-B001
 
-### SPR-RC001 — Release Candidate local (scripts verify/smoke/release-candidate + checklist entrega)
-- Dep: B011 (y FRONT listo)
-- BRD: 102-103
+### SPR-B010 — Hardening de Seguridad (2FA + lockout + rate limit + permisos finos)
+- Cierra: BRD-REQ-004,005,006,009
+- Depende: SPR-B001
+
+### SPR-B011 — Seeds demo + Smoke scripts flujo core
+- Cierra: BRD-REQ-055,056,058
+- Depende: SPR-B002, SPR-B003, SPR-B005, SPR-B006, SPR-B007 (mínimos), SPR-B010 (mínimos)
+
+## Nota
+
+- Los sprints `SPR-RC###` se definen después de tener BACK+FRONT integrados en local.
 
 <!-- EOF -->

@@ -1,36 +1,52 @@
-# AGENTS — Conducta obligatoria para agentes (Codex u otros)
+# AGENTS — Conducta obligatoria para agentes (Codex)
 
-Este repo opera con “docs como fuente de verdad”.
-La conversación NO es fuente de verdad.
+Este archivo define “cómo trabajar” sin depender del chat.
 
-## Orden mínimo de lectura (antes de tocar cualquier cosa)
-1) docs/project-lock.md
-2) docs/00-indice.md
-3) docs/state/state.md
-4) docs/status/status.md
-5) docs/log/log.md
-6) docs/quality/definition-of-ready.md y docs/quality/definition-of-done.md
-7) (si aplica) docs/sprints/spr-master-back.md o spr-master-front.md
-8) Sprint actual (docs/sprints/<SPR-XXX>.md)
-9) RFC/ADR relacionados (si el sprint los referencia)
+## 1) Identidad / anti-mezcla
 
-## Reglas duras (no negociables)
-- NO inventar requisitos, rutas, scripts, usuarios git, comandos ni “supuestos”.
-- NO tocar archivos fuera del scope (lista explícita del sprint o tanda).
-- Sprints son INMUTABLES: no editarlos. Cambios solo por RFC/ADR/CHANGELOG.
-- LOG es append-only: nunca reescribir entradas.
-- DONE/APROBADO solo lo marca el usuario tras validación local con evidencia (en LOG).
-- Mantener consistencia Linux: nombres sin espacios, case consistente.
+ANTES de cualquier acción:
+1) Leer `docs/project-lock.md`
+2) Confirmar que `git remote -v` coincide con `repo_url`
+3) Si no coincide: DETENER (repo mismatch)
 
-## Quality gates (DoR/DoD)
-- Antes de iniciar un sprint: validar DoR (docs/quality/definition-of-ready.md). Si falla → BLOCKED y detener.
-- Antes de dejar READY_FOR_VALIDATION: validar DoD (docs/quality/definition-of-done.md). Si falla → DoD FAIL y detener o dejar IN_PROGRESS según el sprint.
+## 2) Orden mínimo de lectura
 
-## Scripts “verdad” (cuando existan)
-- scripts/verify/preflight.ps1 (siempre antes y después de tandas/sprints de docs)
-- scripts/verify/verify-docs-eof.ps1 (parte del preflight)
+- `docs/project-lock.md`
+- `docs/00-indice.md`
+- `docs/state/state.md`
+- Sprint actual (si aplica)
+- `docs/status/status.md`
+- `docs/log/log.md`
+- RFC/ADR que el sprint referencie
 
-## Formato de reporte (Codex)
-Codex debe responder con [CODEX-REPORT] (ver plantilla en docs/00-indice.md).
+## 3) Reglas duras
 
-<!-- Nota: EOF obligatorio solo para docs/** (AGENTS.md no es obligatorio). -->
+- NO inventar requisitos, rutas, usuarios, comandos.
+- NO tocar archivos fuera del scope indicado.
+- Sprints son inmutables: NO se editan. Cambios solo por RFC/ADR/CHANGELOG.
+- `docs/log/log.md` es append-only: nunca reescribir entradas.
+- `docs/status/status.md`: nunca marcar DONE (solo usuario con validación local).
+- Si falta información crítica:
+  - crear RFC (y ADR si afecta arquitectura/seguridad/contratos)
+  - y DETENER si bloquea
+
+## 4) Quality Gates
+
+- Antes de iniciar un sprint: validar DoR (`docs/quality/definition-of-ready.md`)
+- Antes de cerrar a READY_FOR_VALIDATION: validar DoD (`docs/quality/definition-of-done.md`)
+- Si falla: dejar BLOCKED / IN_PROGRESS y registrar en LOG.
+
+## 5) Pre-check obligatorio (siempre)
+
+- `git status` limpio o DETENER
+- `git config user.name` y `git config user.email` presentes o DETENER
+- `git remote -v` coincide o DETENER
+- reportar branch
+
+## 6) Evidencia
+
+- Registrar comandos y outputs en `docs/log/log.md`
+- Actualizar `docs/status/status.md` con evidencia (hash commit) cuando aplique
+- Actualizar RTM/state si el sprint toca requisitos
+
+<!-- EOF -->

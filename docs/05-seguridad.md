@@ -1,60 +1,80 @@
-# 05 — Seguridad (auth, permisos, 2FA, rate-limit)
+# 05 — Seguridad (modelo)
 
-## 1) Flujos auth
-- Login: usuario+password (+ TOTP si aplica).
-- Refresh: rotación de refresh token.
-- Logout: revoca refresh token activo.
+## 1) Flujos de autenticación
 
-## 2) Tokens
-- Access: 1 hora.
-- Refresh: 7 días.
-- Rotación: refresh token se invalida y se emite uno nuevo por uso.
+- Login:
+  - usuario + password
+  - si el rol requiere 2FA: challenge TOTP
+  - entrega access + refresh
+- Refresh:
+  - refresh token válido y no revocado
+  - rotación: emite refresh nuevo, invalida anterior
+- Logout:
+  - revoca refresh activo (y opcionalmente familia)
 
-## 3) Password policy (mínimo)
-- Longitud mínima 10
-- Requiere: mayúscula, minúscula, número, símbolo
-- Bloqueo por 4 intentos (ventana definida en config)
+## 2) Política de password (demo, pero seria)
 
-## 4) 2FA TOTP
-- RFC 6238: https://datatracker.ietf.org/doc/html/rfc6238
-- Solo ADMIN/SUPERADMIN.
-- Enrollment: genera secreto y QR; requiere confirmar 2 códigos para activar.
-- Recovery codes: opcional (si se implementa, se audita).
+- Longitud mínima: 10
+- Debe incluir: mayúscula, minúscula, número y símbolo
+- Prohibido: contraseñas comunes (lista básica)
+- Hash: bcrypt/argon2 (decisión en implementación; documentar si aplica)
+
+## 3) Bloqueo por intentos fallidos
+
+- Default:
+  - 4 intentos fallidos en 15 min → lock de 15 min
+- Se audita:
+  - intentos fallidos
+  - lock/unlock
+- Respuesta:
+  - 401 para credenciales inválidas
+  - 423/429 se evalúa en implementación (si se usa, documentar en OpenAPI). En v1 se prioriza claridad UX.
+
+## 4) Rate limit / defensa básica (v1)
+
+- Objetivo: reducir brute force y abuso sin depender de servicios externos.
+- Reglas (defaults; configurables en properties):
+  - Login: límite estricto (ej: 10 intentos / 15 min por usuario+IP)
+  - Refresh: límite medio
+  - Reportes/export: límite más bajo por ser “caro”
+- Respuesta estándar:
+  - HTTP 429 con Problem Details y (si aplica) `Retry-After`.
 
 ## 5) Roles vs permisos
-- Roles v1: SUPERADMIN, ADMIN, RECEPCION, VETERINARIO
-- Permisos por acción (ver `docs/10-permisos.md`).
 
-## 6) Acciones sensibles (reason required + auditoría before/after)
+- Roles v1:
+  - SUPERADMIN (demo/control total)
+  - ADMIN
+  - RECEPCION
+  - VETERINARIO
+- Permisos granulares por acción (ver `docs/10-permisos.md`).
+
+## 6) Acciones sensibles (reason required)
+
 Mínimo:
 - anular factura
-- cambiar precio (servicio o ítem manual)
+- cambiar precio (servicio o ítem)
 - borrar/anular atención
-- editar historia clínica cerrada / reabrir
+- editar historia clínica cerrada
 - ajustes inventario manuales
-- override no-solape
-- override stock negativo
+- cambiar IVA/configuración fiscal
 
-## 7) Rate limit / defensa básica
-Objetivo: reducir brute force/abuso.
-- Rate-limit estricto en:
-  - `/auth/login`
-  - `/auth/refresh`
-  - endpoints 2FA (verify/enable)
-- Respuesta estándar cuando excede: **HTTP 429 Too Many Requests** (RFC 6585: https://datatracker.ietf.org/doc/html/rfc6585).
-- Registrar evento en auditoría cuando se activa rate-limit.
-- Lockout: 4 intentos fallidos → bloqueo temporal + auditoría.
+Regla:
+- `reason` obligatorio (string, min 10 chars).
+- Auditoría before/after obligatoria.
 
-## 8) CORS (local)
-- Permitir localhost del frontend hacia backend.
-- En stage/online se restringe por dominio.
+## 7) CORS (local)
 
-## 9) Formato de errores API (Problem Details)
-- RFC 7807: https://www.rfc-editor.org/rfc/rfc7807
-- Para validación: incluir `fieldErrors[]` (campo, mensaje).
+- Permitir origen del frontend local (localhost) hacia backend local.
+- En stage/online, se restringe por lista blanca (ver `docs/09-stage-release.md`).
 
-## 10) Seguridad de scoping (branch)
-- `X-Branch-Id` requerido en endpoints scopiados.
-- Validación header+claim (ver `docs/03-arquitectura.md`).
+## 8) Auditoría (seguridad y compliance)
+
+- Se audita (mínimo):
+  - login/logout/refresh
+  - cambios de roles/permisos
+  - CRUD citas/atenciones/facturas/pagos/inventario
+  - acciones sensibles con before/after
+- Retención demo: 90 días.
 
 <!-- EOF -->

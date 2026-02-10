@@ -1,21 +1,30 @@
 # Definition of Ready (DoR)
 
-Un sprint NO puede iniciar si falta alguno de estos ítems (=> BLOCKED):
+Un sprint NO puede iniciar si falla cualquiera de estos ítems (o debe crearse RFC/ADR de excepción).
 
 ## Checklist DoR (verificable)
-- [ ] Sprint existe y está inmutable.
-- [ ] Scope cerrado: incluye/excluye claros.
-- [ ] Requisitos objetivo declarados (BRD-REQ-###) o N/A justificado.
-- [ ] Dependencias identificadas (otro sprint/ADR/RFC).
-- [ ] Datos/scoping definidos (branch_id, headers, claims).
-- [ ] Permisos definidos para acciones nuevas (docs/10-permisos.md).
-- [ ] Errores/validaciones mínimas definidas (Problem Details).
-- [ ] Smoke test del sprint definido (comandos exactos o N/A justificado).
-- [ ] Runbook impactado identificado (docs/08-runbook.md).
-- [ ] Trazabilidad: RTM puede mapear req→sprint (si aplica).
 
-## Excepciones
-Solo por RFC:
-- Crear `docs/rfcs/RFC-00xx-*.md` explicando por qué se permite iniciar.
+### Documentación y trazabilidad
+- [ ] Existe el sprint `docs/sprints/SPR-XXX.md` con alcance cerrado (incluye/excluye).
+- [ ] El sprint declara los `BRD-REQ-###` que pretende tocar/cerrar (o “N/A” justificado).
+- [ ] Existe mapeo inicial en `docs/traceability/rtm.md` (req → sprint) para esos IDs.
+- [ ] No hay contradicciones abiertas con BRD/Arquitectura/Seguridad; si hay, existe RFC y el sprint está BLOCKED.
+
+### Entradas técnicas
+- [ ] Backend/Front scripts “verdad” definidos o marcados N/A con razón.
+- [ ] Entorno local descrito en `docs/08-runbook.md` para lo que el sprint toca.
+
+### Datos / scoping / seguridad
+- [ ] Si toca endpoints branch-scoped: regla de `X-Branch-Id` está clara.
+- [ ] Permisos requeridos están definidos en `docs/10-permisos.md`.
+- [ ] Acciones sensibles incluyen “reason required” si aplica.
+
+### QA / smoke
+- [ ] El sprint define smoke manual (comandos + evidencia en LOG).
+- [ ] AC es checklist verificable (no abstracto).
+
+## Regla de bloqueo
+
+- Si falla un ítem crítico: el sprint debe quedar `BLOCKED` en `docs/status/status.md` con nota “DoR FAIL”.
 
 <!-- EOF -->
