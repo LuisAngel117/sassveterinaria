@@ -152,6 +152,30 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T17:17:39-05:00
+Item: SPR-B005
+Qué se hizo:
+- Se implemento modulo clinico backend: visitas, plantillas SOAP, prescripciones y adjuntos con almacenamiento local.
+- Se agrego migracion `V5__clinical_visits.sql` con tablas `visit`, `soap_template`, `prescription` y `visit_attachment`.
+- Se aplicaron reglas de negocio: walk-in, bloqueo por visita cerrada, cierre/reapertura con reason y auditoria before/after.
+- Se agregaron permisos `VISIT_*` en matriz por rol y propiedades configurables de adjuntos en `application.properties`.
+- Se agrego smoke script `scripts/smoke/spr-b005.ps1`.
+- Se actualizo evidencia documental en runbook, status, RTM y state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- ./mvnw test (en backend)
+- pwsh -ExecutionPolicy Bypass -File .\scripts\verify\verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

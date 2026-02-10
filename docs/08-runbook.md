@@ -22,6 +22,9 @@ Credenciales por defecto en `application.properties`:
 - `APP_JWT_SECRET` (minimo 32 bytes)
 - `APP_JWT_ACCESS_SECONDS` (default `3600`)
 - `APP_JWT_REFRESH_SECONDS` (default `604800`)
+- `STORAGE_DIR` (default `storage`, usado por adjuntos de visitas)
+- `APP_VISIT_ATTACHMENTS_MAX_SIZE_BYTES` (default `10485760` = 10MB)
+- `APP_VISIT_ATTACHMENTS_MAX_PER_VISIT` (default `5`)
 
 ## 4) Migraciones
 - Flyway corre al iniciar backend.
@@ -30,6 +33,7 @@ Credenciales por defecto en `application.properties`:
   - `backend/src/main/resources/db/migration/V2__agenda_core.sql`
   - `backend/src/main/resources/db/migration/V3__crm_clients_pets.sql`
   - `backend/src/main/resources/db/migration/V4__services_catalog.sql`
+  - `backend/src/main/resources/db/migration/V5__clinical_visits.sql`
 
 ## 5) Levantar backend (SPR-B001)
 ```powershell
@@ -127,5 +131,22 @@ Flujo que valida:
 7. `PATCH /api/v1/services/{id}` actualizando `durationMinutes`
 8. `PATCH /api/v1/services/{id}` cambiando `priceBase` sin reason (422 esperado)
 9. `PATCH /api/v1/services/{id}` cambiando `priceBase` con reason + verificacion por list
+
+## 12) Smoke script SPR-B005
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b005.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (veterinario)
+3. resolver cliente/mascota/servicio demo
+4. `POST /api/v1/visits` (walk-in)
+5. `PATCH /api/v1/visits/{id}` (SOAP)
+6. `POST /api/v1/visits/{id}/prescriptions`
+7. `POST /api/v1/visits/{id}/attachments` (multipart PNG)
+8. `POST /api/v1/visits/{id}/close`
+9. `POST /api/v1/visits/{id}/reopen` (reason >= 10)
 
 <!-- EOF -->

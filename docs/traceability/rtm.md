@@ -27,13 +27,13 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-021 | Catálogo servicios | SPR-B004 | PENDING_SPR-B004_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | CRUD v1 servicios con `name`, `durationMinutes`, `priceBase` y permisos `SERVICE_*` |
 | BRD-REQ-022 | Duración por servicio | SPR-B004, SPR-B002 | PENDING_SPR-B004_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | B002 mantiene calculo `endsAt` desde `service.durationMinutes`; en B004 se consolida catalogo. Override queda pendiente por no existir permiso explicito en matriz |
 | BRD-REQ-023 | BOM consumo por servicio | SPR-B007 | TBD | tests+manual | PLANNED |  |
-| BRD-REQ-024 | Atención sin cita | SPR-B005, SPR-F004 | TBD | manual | PLANNED |  |
-| BRD-REQ-025 | SOAP mínimo | SPR-B005, SPR-F004 | TBD | manual | PLANNED |  |
-| BRD-REQ-026 | Plantillas SOAP | SPR-B005, SPR-F004 | TBD | manual | PLANNED |  |
-| BRD-REQ-027 | Adjuntos | SPR-B005, SPR-F004 | TBD | manual | PLANNED |  |
-| BRD-REQ-028 | Cerrar/reabrir | SPR-B005, SPR-F004, SPR-F008 | TBD | manual | PLANNED |  |
-| BRD-REQ-029 | Prescripción estructurada | SPR-B005, SPR-F004 | TBD | manual | PLANNED |  |
-| BRD-REQ-030 | Export indicaciones | SPR-B006, SPR-F005 | TBD | manual | PLANNED |  |
+| BRD-REQ-024 | Atención sin cita | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Walk-in y vínculo opcional a appointment implementados en backend |
+| BRD-REQ-025 | SOAP mínimo | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Campos SOAP minimos en visita + PATCH mientras OPEN |
+| BRD-REQ-026 | Plantillas SOAP | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | CRUD v1 de templates por servicio (`BRANCH_MANAGE`) |
+| BRD-REQ-027 | Adjuntos | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Upload/list/download/delete con limite por archivo y por visita, branch-scoped |
+| BRD-REQ-028 | Cerrar/reabrir | SPR-B005, SPR-F004, SPR-F008 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Cierre bloquea edicion; reapertura requiere `VISIT_REOPEN` + reason + auditoria |
+| BRD-REQ-029 | Prescripción estructurada | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Prescripciones estructuradas create/list/patch solo con visita OPEN |
+| BRD-REQ-030 | Export indicaciones | SPR-B006, SPR-F005 | TBD | manual | PLANNED | Permanece pendiente; export diferido a SPR-B006 |
 | BRD-REQ-031 | Factura interna | SPR-B006, SPR-F005 | TBD | smoke | PLANNED |  |
 | BRD-REQ-032 | IVA configurable auditado | SPR-B006, SPR-B009 | TBD | manual | PLANNED |  |
 | BRD-REQ-033 | Descuentos | SPR-B006, SPR-F005 | TBD | manual | PLANNED |  |

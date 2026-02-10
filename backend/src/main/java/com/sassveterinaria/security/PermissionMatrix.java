@@ -25,7 +25,13 @@ public final class PermissionMatrix {
         "PET_UPDATE",
         "SERVICE_READ",
         "SERVICE_CREATE",
-        "SERVICE_UPDATE"
+        "SERVICE_UPDATE",
+        "VISIT_READ",
+        "VISIT_CREATE",
+        "VISIT_UPDATE",
+        "VISIT_CLOSE",
+        "VISIT_REOPEN",
+        "VISIT_ATTACHMENT_UPLOAD"
     );
 
     private static final Map<String, List<String>> ROLE_PERMISSIONS = Map.of(
@@ -56,7 +62,13 @@ public final class PermissionMatrix {
             "APPT_CLOSE",
             "CLIENT_READ",
             "PET_READ",
-            "SERVICE_READ"
+            "SERVICE_READ",
+            "VISIT_READ",
+            "VISIT_CREATE",
+            "VISIT_UPDATE",
+            "VISIT_CLOSE",
+            "VISIT_REOPEN",
+            "VISIT_ATTACHMENT_UPLOAD"
         )
     );
 

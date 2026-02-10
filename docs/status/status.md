@@ -18,5 +18,6 @@ Regla:
 | SPR-B002 | Agenda Core (no-solape por sala + estados + check-in + bloqueos + semana) | READY_FOR_VALIDATION | PENDING_SPR-B002_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b002.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B003 | Clientes y Mascotas (CRUD + búsqueda + invariantes) | READY_FOR_VALIDATION | PENDING_SPR-B003_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b003.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B004 | Servicios (catalogo + duracion + precio base + reason/auditoria) | READY_FOR_VALIDATION | PENDING_SPR-B004_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b004.ps1` creado; ejecucion local pendiente con backend+Postgres. |
+| SPR-B005 | Historia Clinica (atencion + SOAP + plantillas + adjuntos + cierre/reapertura) | READY_FOR_VALIDATION | PENDING_SPR-B005_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b005.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 
 <!-- EOF -->
