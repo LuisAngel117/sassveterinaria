@@ -1,28 +1,60 @@
-# RFC-0001 — Template
+# RFC-0001 - Template
+
+## Metadata
+- RFC ID:
+- Titulo:
+- Autor:
+- Fecha:
+- Estado: DRAFT | REVIEW | ACCEPTED | REJECTED
 
 ## Contexto
-TBD
+Describir situacion actual y por que se necesita cambio.
 
 ## Problema
-TBD
+Definir problema concreto, impacto y alcance.
 
-## Opciones
-- Opción A: TBD
-- Opción B: TBD
+## Objetivos
+- Objetivo 1
+- Objetivo 2
 
-## Decisión propuesta
-TBD
+## No objetivos
+- No objetivo 1
+- No objetivo 2
+
+## Opciones evaluadas
+1. Opcion A
+2. Opcion B
+3. Opcion C
+
+## Decision propuesta
+Describir decision seleccionada y razon tecnica.
 
 ## Impacto
-TBD
+- Arquitectura:
+- Seguridad:
+- Operacion:
+- UX/UI:
+- Riesgos:
 
-## Plan de implementación
-TBD
+## Plan de implementacion
+1. Paso 1
+2. Paso 2
+3. Paso 3
 
-## Riesgos
-TBD
+## Rollback
+Definir como revertir si falla.
 
 ## Archivos a cambiar
-TBD
+- ruta/archivo-1
+- ruta/archivo-2
+
+## Trazabilidad
+- BRD-REQ afectados:
+- ADR relacionados:
+- Sprint(s) afectados:
+
+## Validacion
+- Tests/smoke esperados:
+- Criterio para `READY_FOR_VALIDATION`:
 
 <!-- EOF -->

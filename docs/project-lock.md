@@ -17,3 +17,4 @@ Reglas:
 - Si el prompt menciona otro dominio/proyecto: DETENER (Project mismatch).
 
 <!-- EOF -->
+

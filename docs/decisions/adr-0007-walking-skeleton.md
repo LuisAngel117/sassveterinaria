@@ -1,19 +1,25 @@
-# ADR-0007 — Walking Skeleton (anti “piezas sueltas”)
+# ADR-0007 - Walking Skeleton
 
 ## Contexto
-- Riesgo: construir por capas sin integración.
-- Objetivo: incremento usable temprano.
+Existe riesgo alto de construir piezas aisladas sin integracion real entre auth, agenda, clinica e inventario.
 
-## Decisión
-- Incluir temprano un sprint “walking skeleton” end-to-end:
-  - Auth + selección de sucursal + crear cita + persistencia + runbook + smoke.
-- Solo después ampliar módulos.
+## Decision
+- Priorizar un walking skeleton temprano:
+  - login + scoping de sucursal,
+  - crear cita,
+  - registrar SOAP,
+  - emitir factura,
+  - reflejar auditoria.
+- Expandir funcionalidades solo despues de validar ese flujo.
 
 ## Consecuencias
-TBD
+- Detecta integraciones rotas al inicio.
+- Reduce retrabajo de arquitectura.
+- Obliga a priorizar vertical slices sobre backlog horizontal.
 
 ## Alternativas descartadas
-TBD
+- Construir primero capas completas por separado sin flujo integrado.
+- Posponer validacion end-to-end para etapas tardias.
 
 ## Fecha
 2026-02-10

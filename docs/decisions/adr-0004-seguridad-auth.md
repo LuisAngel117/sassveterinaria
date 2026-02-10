@@ -1,21 +1,26 @@
-# ADR-0004 — Seguridad (AuthN/AuthZ/2FA)
+# ADR-0004 - Seguridad (AuthN/AuthZ/2FA)
 
 ## Contexto
-- Roles: SUPERADMIN, ADMIN, RECEPCION, VETERINARIO
-- Permisos por acción.
-- 2FA TOTP para ADMIN/SUPERADMIN.
+La aplicacion maneja datos clinicos, cobros e inventario; requiere control estricto de identidad y autorizacion.
 
-## Decisión
-- JWT access (1h) + refresh (7d) con rotación.
-- Lockout por intentos fallidos: 4 intentos → lock temporal (15m v1).
-- Errores API: Problem Details (RFC 7807): https://datatracker.ietf.org/doc/html/rfc7807
-- 2FA: TOTP (RFC 6238): https://datatracker.ietf.org/doc/html/rfc6238
+## Decision
+- JWT access token (1h) + refresh token (7d) con rotacion.
+- Lockout por 4 intentos fallidos durante 15 minutos.
+- 2FA TOTP obligatorio para `ADMIN` y `SUPERADMIN`.
+- Autorizacion por permisos de accion, no solo por rol.
+- Errores API en formato RFC 7807.
+
+Referencias:
+- RFC 7807: https://datatracker.ietf.org/doc/html/rfc7807
+- RFC 6238: https://datatracker.ietf.org/doc/html/rfc6238
 
 ## Consecuencias
-TBD
+- Mayor seguridad operativa en acciones criticas.
+- Mayor complejidad UX en login de roles altos.
 
 ## Alternativas descartadas
-TBD
+- Sesiones stateful server-side: validas, pero menos alineadas al contrato API stateless planteado.
+- Omitir 2FA en V1: reduce friccion pero aumenta riesgo.
 
 ## Fecha
 2026-02-10

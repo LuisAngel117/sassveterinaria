@@ -1,34 +1,40 @@
-# Handoff Backend -> Frontend (se llena con backend REAL implementado)
+# Handoff Backend -> Frontend
 
 Regla:
-- Este documento NO se inventa.
-- Se actualiza solo basado en el backend implementado (endpoints reales, auth real, errores reales, seeds reales).
+- Este documento solo refleja backend implementado en codigo.
+- Si una seccion no tiene implementacion real, se marca `N/A`.
 
-## Resumen ejecutivo
-TBD
+## Estado actual
+- Backend funcional aun no implementado.
+- Handoff operativo: `N/A` hasta cierre de SPR-B001 en `READY_FOR_VALIDATION`.
 
-## Endpoints implementados (método, ruta, auth/scope, request/response)
-TBD
+## Contrato minimo esperado para habilitar FRONT
+- Auth: login + refresh + (si aplica) verificacion TOTP.
+- Contexto: endpoint para sucursales permitidas y seleccion de branch activa.
+- Agenda: endpoints create/list/reschedule/cancel con scoping.
+- Error model: RFC 7807 uniforme.
 
-## Errores estándar (Problem Details)
-TBD
+## Endpoints implementados (reales)
+- N/A
 
-## Reglas de negocio realmente implementadas
-TBD
+## Errores estandar implementados
+- N/A
 
-## Seeds/demo reales (usuarios, credenciales demo, branches)
-TBD
+## Reglas de negocio implementadas
+- N/A
+
+## Seeds y credenciales reales
+- N/A
 
 ## Variables de entorno reales
-TBD
-
-## Runbook backend (pasos reales)
-TBD
+- N/A
 
 ## Smoke scripts disponibles
-TBD
+- N/A
 
-## Estado por sprint (DONE/APROBADO vs READY_FOR_VALIDATION)
-TBD
+## Criterio para actualizar este handoff
+- Existe backend ejecutable.
+- Endpoints probados por smoke.
+- Evidencia en log y status.
 
 <!-- EOF -->

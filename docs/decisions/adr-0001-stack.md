@@ -1,25 +1,23 @@
-# ADR-0001 — Stack
+# ADR-0001 - Stack
 
 ## Contexto
-- Proyecto demo local-first/offline-first.
-- Backend Java + DB Postgres + frontend Next.js.
-- Migraciones con Flyway.
+Se requiere una base tecnica mantenible para una demo local-first/offline-first con backend fuerte en reglas de negocio y frontend web moderno.
 
-## Decisión
-- Backend: Java 21 + Spring Boot (3.x)
-- DB: PostgreSQL 17
-- Migraciones: Flyway (usar versión reciente con soporte Postgres 17)
-  - Referencias:
-    - https://documentation.red-gate.com/fd/postgresql-database-277579325.html
-    - https://www.postgresql.org/about/news/flyway-community-drift-check-released-2970/
-- Frontend: Next.js (TypeScript) + Tailwind + shadcn/ui
-- API docs: OpenAPI/Swagger
+## Decision
+- Backend: Java 21 + Spring Boot 3.x.
+- Base de datos: PostgreSQL 17.
+- Migraciones: Flyway (version compatible con Postgres 17).
+- Frontend: Next.js + TypeScript + Tailwind + shadcn/ui.
+- Contrato API: OpenAPI + errores RFC 7807.
 
 ## Consecuencias
-TBD
+- Estandar robusto y conocido para evolucion futura.
+- Curva inicial mayor que stacks minimalistas.
+- Requiere disciplina de versionado y migraciones.
 
 ## Alternativas descartadas
-TBD
+- Node.js full-stack monolitico: mas rapido al inicio, menor separacion de capas para reglas complejas.
+- PHP/Laravel: valida, pero menos alineada al objetivo tecnico del repositorio.
 
 ## Fecha
 2026-02-10

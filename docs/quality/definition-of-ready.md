@@ -1,31 +1,23 @@
-# Definition of Ready (DoR) — Gate para iniciar sprints
+# Definition of Ready (DoR)
 
 Regla:
-- Un sprint NO puede pasar a IN_PROGRESS si falla DoR.
-- Si falla: marcar BLOCKED en docs/status/status.md + registrar en docs/log/log.md.
+- Un sprint no inicia en `IN_PROGRESS` si falla DoR.
+- Si falla, marcar `BLOCKED` en status y registrar causa en log.
 
-## Checklist DoR (verificable)
-1) Sprint existe en docs/sprints/ y está referenciado por el master correspondiente.
-2) El sprint declara:
-   - Objetivo claro
-   - Incluye/Excluye
-   - AC verificables
-   - Smoke test manual con comandos exactos
-3) BRD/RTM:
-   - El sprint declara qué BRD-REQ-### busca cerrar (o “N/A” con justificación si es infra).
-4) Decisiones críticas cerradas (si aplica al sprint):
-   - scoping branch (header + claim) definido
-   - roles/permisos definidos para las acciones tocadas
-   - reglas de negocio duras definidas (no-solape, estados, etc.)
-5) Datos:
-   - migraciones definidas (o N/A)
-   - seeds demo definidos (o N/A)
-6) Seguridad:
-   - auth requerida o N/A explícito
-   - acciones sensibles con reason required listadas si aplica
-7) Runbook:
-   - instrucciones para correr local lo tocado (o TBD justificado solo en sprints muy tempranos)
-8) “No inventar”:
-   - si falta info para implementar, el sprint debe indicar “crear RFC y detener”.
+## Checklist DoR verificable
+1. Sprint existe y esta referenciado en el master correspondiente.
+2. Objetivo del sprint es claro y medible.
+3. Incluye/excluye y AC verificables declarados.
+4. Requisitos BRD (`BRD-REQ-###`) mapeados en RTM.
+5. Dependencias tecnicas identificadas (DB, auth, UI, datos).
+6. Riesgos y bloqueos conocidos registrados.
+7. Smoke test manual definido con comandos reales.
+8. Impacto en seguridad/permisos explicitado.
+9. Plan de trazabilidad definido (`status/log/changelog/rtm/state`).
+10. Si falta informacion critica, el sprint indica "crear RFC y detener".
+
+## Resultado esperado
+- DoR OK -> sprint puede iniciar.
+- DoR FAIL -> no iniciar implementacion.
 
 <!-- EOF -->

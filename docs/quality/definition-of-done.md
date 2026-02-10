@@ -1,28 +1,24 @@
-# Definition of Done (DoD) — Gate para READY_FOR_VALIDATION
+# Definition of Done (DoD)
 
 Regla:
-- Un sprint NO puede quedar READY_FOR_VALIDATION si falla DoD.
-- Si falla: registrar “DoD FAIL” en LOG + dejar IN_PROGRESS o BLOCKED según corresponda.
+- Un item no puede quedar `READY_FOR_VALIDATION` si falla DoD.
+- Si falla, registrar `DoD FAIL` en log y mantener `IN_PROGRESS` o `BLOCKED`.
 
-## Checklist DoD (verificable)
-1) AC del sprint completados (checklist).
-2) Incremento funcional e integrado (vertical slice cuando aplique).
-3) Repositorio compila y/o build pasa:
-   - backend: ./mvnw test (si aplica)
-   - frontend: npm run build (si aplica)
-   - si N/A, justificación explícita en el sprint.
-4) Smoke test definido en el sprint:
-   - comandos ejecutables
-   - evidencia registrada en docs/log/log.md (output o placeholder “PEGAR OUTPUT AQUÍ”).
-5) Docs actualizadas:
-   - docs/status/status.md actualizado (READY_FOR_VALIDATION + commit hash)
-   - docs/log/log.md con entrada append-only
-   - docs/traceability/rtm.md actualizado si tocó/cerró BRD-REQ-###
-   - docs/state/state.md actualizado (snapshot + next step)
-6) Seguridad y auditoría:
-   - acciones sensibles auditadas (si aplica)
-   - no hay bypass de scoping
-7) Repo limpio al final:
-   - git status --porcelain vacío
+## Checklist DoD verificable
+1. AC del item cumplidos y documentados.
+2. Build/test aplicables en verde (o `N/A` justificado).
+3. Smoke test ejecutado con evidencia en `docs/log/log.md`.
+4. Documentacion actualizada:
+   - `docs/status/status.md`
+   - `docs/log/log.md`
+   - `docs/changelog.md`
+   - `docs/traceability/rtm.md`
+   - `docs/state/state.md`
+5. Seguridad validada en lo tocado (auth, permisos, scoping, auditoria).
+6. `pwsh -File scripts/verify/verify-docs-eof.ps1` en verde.
+7. `git status --porcelain` limpio al final.
+
+## Cierre formal
+`DONE` solo lo marca el usuario tras validacion local con evidencia.
 
 <!-- EOF -->

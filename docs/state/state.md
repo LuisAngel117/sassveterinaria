@@ -1,28 +1,34 @@
-# STATE — Snapshot de estado (entrada única para nuevas conversaciones)
+# STATE - Snapshot de estado (entrada unica)
 
 ## Resumen actual
-- Proyecto: SaaSVeterinaria (demo local-first/offline-first real).
-- Fuente de verdad: docs/**.
-- T1 aplicado: gobernanza base + scripts verify/preflight + quality gates + RTM + state.
+- Proyecto: SaaSVeterinaria.
+- Fuente de verdad: `docs/**`.
+- T1 aplicado: gobernanza base y scripts de verificacion.
+- T2 aplicado: docs base detallados (brief, BRD, arquitectura, dominio, UX, runbook, permisos, masters).
 
-## Decisiones clave cerradas (resumen)
-- Single-tenant v1 + multi-sucursal (branch) con selección en login.
-- Scoping: X-Branch-Id obligatorio + branch_id en JWT; deben coincidir.
-- Agenda: no-solape por Sala, slot 30m, buffer 10m, vista semanal, check-in separado.
-- Historia clínica SOAP con plantillas por servicio, adjuntos PDF/imagen (10MB), cierre y reapertura gobernada por permisos.
-- Facturación interna con IVA global configurable (superadmin) y auditoría.
-- Inventario por sucursal + BOM por servicio + costo promedio + override con permiso.
-- Errores: RFC 7807 Problem Details. (ref: https://datatracker.ietf.org/doc/html/rfc7807)
-- 2FA: RFC 6238 TOTP. (ref: https://datatracker.ietf.org/doc/html/rfc6238)
+## Decisiones cerradas vigentes
+- V1 single-tenant + multi-sucursal (branch).
+- `X-Branch-Id` obligatorio y validado contra claim en JWT.
+- Agenda: slot 30m, buffer 10m, no-solape por sala.
+- SOAP con cierre/reapertura controlada y adjuntos 10MB.
+- Facturacion interna con IVA global configurable.
+- Inventario por sucursal + BOM por servicio + costo promedio.
+- Errores RFC 7807 y 2FA TOTP RFC 6238.
 
-## Estado de ejecución
-Ver tabla en: docs/status/status.md
+## Estado de ejecucion
+Ver `docs/status/status.md`.
 
-## Próximo paso recomendado
-- T2: completar contenido real (brief, BRD con BRD-REQ-###, arquitectura, permisos, runbook, UX/UI).
-- Prerrequisito: pasar preflight y registrar output en LOG (T1).
+## Proximo paso recomendado
+- Iniciar SPR-B001 (walking skeleton backend auth + scoping + agenda minima).
+- En paralelo, preparar SPR-F001 para login, 2FA y seleccion de sucursal.
 
-## Riesgos/bloqueos actuales
-- Ninguno registrado aún (pendiente validación T1).
+## Riesgos y bloqueos
+- Sin implementacion de codigo aun (riesgo tecnico esperado en fase documental).
+- Pendiente validar decisiones con primer vertical slice funcional.
+
+## Ultima actualizacion
+- Fecha: 2026-02-10
+- Item: T2
+- Estado: READY_FOR_VALIDATION
 
 <!-- EOF -->

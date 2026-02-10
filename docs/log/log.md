@@ -27,4 +27,21 @@ Output:
 Resultado:
 - READY_FOR_VALIDATION
 
+## 2026-02-10T10:30:00-05:00
+Item: T2
+Que se hizo:
+- Overwrite completo de docs base detallados (brief, BRD, arquitectura, dominio, UX/UI, runbook, permisos, ADR/RFC/sprints).
+- Actualizacion controlada de project-lock sin alterar created_at.
+- Actualizacion append-only de changelog y status.
+- Verificacion final de EOF en docs.
+
+Comandos ejecutados:
+- pwsh -File scripts/verify/verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUI
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
+

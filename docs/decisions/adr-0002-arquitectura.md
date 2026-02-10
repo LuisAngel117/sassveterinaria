@@ -1,17 +1,21 @@
-# ADR-0002 — Arquitectura
+# ADR-0002 - Arquitectura
 
 ## Contexto
-TBD
+El dominio mezcla agenda, clinica, facturacion e inventario; si no se separan modulos y capas, la complejidad crece rapidamente.
 
-## Decisión
-- Monolito modular (backend) con capas claras.
-- Separación fuerte de dominio vs aplicación vs infraestructura.
+## Decision
+- Adoptar monolito modular en backend.
+- Separar capas: dominio, aplicacion, infraestructura, API.
+- Limitar acoplamiento entre modulos por contratos explicitos.
 
 ## Consecuencias
-TBD
+- Mejor mantenibilidad y pruebas por modulo.
+- Mayor disciplina en diseno y fronteras.
+- Facilita evolucion a servicios separados en etapas futuras si fuera necesario.
 
 ## Alternativas descartadas
-TBD
+- Microservicios tempranos: sobrecosto operativo sin necesidad en V1.
+- Monolito anemico sin fronteras: rapido al inicio pero fragil a mediano plazo.
 
 ## Fecha
 2026-02-10
