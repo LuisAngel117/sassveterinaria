@@ -13,6 +13,8 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, UUID> {
 
     Optional<ServiceEntity> findByIdAndBranchId(UUID id, UUID branchId);
 
+    Optional<ServiceEntity> findFirstByBranchIdAndNameIgnoreCase(UUID branchId, String name);
+
     long countByBranchId(UUID branchId);
 
     boolean existsByBranchIdAndNameIgnoreCase(UUID branchId, String name);

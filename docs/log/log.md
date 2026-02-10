@@ -202,6 +202,32 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T18:21:40-05:00
+Item: SPR-B007
+Qué se hizo:
+- Se implemento Inventario v1 backend con migracion `V7__inventory_core.sql` (`unit`, `product`, `product_stock`, `stock_movement`, `service_bom_item`).
+- Se agregaron endpoints branch-scoped de productos/unidades/stock/movimientos/low-stock/BOM/consumo por visita.
+- Se implemento costeo promedio ponderado en `IN`, snapshot de costo en salidas y lock pesimista de `product_stock`.
+- Se integro validacion de stock en facturacion para items `PRODUCT` con bloqueo `insufficient_stock` y override auditado (`STOCK_OVERRIDE_INVOICE` + reason).
+- Se actualizaron permisos por rol para inventario en `PermissionMatrix`.
+- Se agregaron seeds demo de unidades, productos con stock inicial y BOM para servicio `Vacunacion`.
+- Se agrego smoke script `scripts/smoke/spr-b007.ps1`.
+- Se actualizo evidencia documental en runbook/status/RTM/state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- ./mvnw test (en backend)
+- pwsh -ExecutionPolicy Bypass -File .\\scripts\\verify\\verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

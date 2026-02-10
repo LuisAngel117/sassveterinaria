@@ -38,6 +38,7 @@ import com.sassveterinaria.crm.domain.ClientEntity;
 import com.sassveterinaria.crm.domain.PetEntity;
 import com.sassveterinaria.crm.repo.ClientRepository;
 import com.sassveterinaria.crm.repo.PetRepository;
+import com.sassveterinaria.inventory.service.InventoryService;
 import com.sassveterinaria.security.AuthPrincipal;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
@@ -71,6 +72,7 @@ public class BillingService {
     private final PetRepository petRepository;
     private final ClientRepository clientRepository;
     private final PrescriptionRepository prescriptionRepository;
+    private final InventoryService inventoryService;
 
     public BillingService(
         InvoiceRepository invoiceRepository,
@@ -83,7 +85,8 @@ public class BillingService {
         AuditService auditService,
         PetRepository petRepository,
         ClientRepository clientRepository,
-        PrescriptionRepository prescriptionRepository
+        PrescriptionRepository prescriptionRepository,
+        InventoryService inventoryService
     ) {
         this.invoiceRepository = invoiceRepository;
         this.invoiceItemRepository = invoiceItemRepository;
@@ -96,6 +99,7 @@ public class BillingService {
         this.petRepository = petRepository;
         this.clientRepository = clientRepository;
         this.prescriptionRepository = prescriptionRepository;
+        this.inventoryService = inventoryService;
     }
 
     @Transactional
@@ -123,8 +127,9 @@ public class BillingService {
         InvoiceEntity savedInvoice = invoiceRepository.save(invoice);
 
         List<InvoiceItemEntity> items = new ArrayList<>();
+        Map<UUID, BigDecimal> projectedProductQty = new LinkedHashMap<>();
         for (InvoiceCreateItemRequest itemRequest : request.items()) {
-            items.add(buildItemEntity(principal, savedInvoice, itemRequest, now));
+            items.add(buildItemEntity(principal, savedInvoice, itemRequest, now, projectedProductQty));
         }
         invoiceItemRepository.saveAll(items);
         InvoiceEntity recalculated = recalculateAndSave(savedInvoice);
@@ -192,7 +197,7 @@ public class BillingService {
     public InvoiceDetailResponse addItem(AuthPrincipal principal, UUID invoiceId, InvoiceCreateItemRequest request) {
         InvoiceEntity invoice = requireInvoice(principal, invoiceId);
         ensurePending(invoice);
-        InvoiceItemEntity item = buildItemEntity(principal, invoice, request, OffsetDateTime.now());
+        InvoiceItemEntity item = buildItemEntity(principal, invoice, request, OffsetDateTime.now(), null);
         invoiceItemRepository.save(item);
         InvoiceEntity saved = recalculateAndSave(invoice);
         return buildDetail(saved);
@@ -229,6 +234,26 @@ public class BillingService {
             throw validation("discountAmount del item no puede exceder qty * unitPrice.");
         }
         item.setLineTotal(roundCurrency(lineBase.subtract(item.getDiscountAmount())));
+
+        boolean stockValidationRequired = InvoiceItemType.PRODUCT.name().equals(item.getItemType())
+            && (request.qty() != null || Boolean.TRUE.equals(request.override()));
+        if (stockValidationRequired) {
+            BigDecimal otherQty = invoiceItemRepository.sumProductQtyExcludingItem(
+                principal.getBranchId(),
+                invoice.getId(),
+                item.getItemId(),
+                item.getId()
+            );
+            BigDecimal projectedQty = otherQty.add(item.getQty());
+            inventoryService.validateInvoiceProductStock(
+                principal,
+                invoice.getId(),
+                item.getItemId(),
+                projectedQty,
+                Boolean.TRUE.equals(request.override()),
+                request.reason()
+            );
+        }
 
         String reason = null;
         if (sensitiveChange) {
@@ -499,7 +524,8 @@ public class BillingService {
         AuthPrincipal principal,
         InvoiceEntity invoice,
         InvoiceCreateItemRequest request,
-        OffsetDateTime now
+        OffsetDateTime now,
+        Map<UUID, BigDecimal> projectedProductQty
     ) {
         InvoiceItemType itemType = parseItemType(request.itemType());
         UUID itemId = request.itemId();
@@ -523,8 +549,26 @@ public class BillingService {
                 ? service.getPriceBase()
                 : normalizeMoney(request.unitPrice(), "unitPrice debe ser >= 0.");
         } else {
-            description = normalizeRequiredText(request.description(), 200, "description es requerido para PRODUCT.");
+            String productName = inventoryService.requireProductNameForBilling(principal, itemId);
+            description = request.description() == null || request.description().isBlank()
+                ? productName
+                : normalizeRequiredText(request.description(), 200, "description invalida.");
             unitPrice = normalizeMoney(request.unitPrice(), "unitPrice es requerido para PRODUCT y debe ser >= 0.");
+            BigDecimal targetQty;
+            if (projectedProductQty != null) {
+                targetQty = projectedProductQty.merge(itemId, qty, BigDecimal::add);
+            } else {
+                BigDecimal currentQty = invoiceItemRepository.sumProductQty(principal.getBranchId(), invoice.getId(), itemId);
+                targetQty = currentQty.add(qty);
+            }
+            inventoryService.validateInvoiceProductStock(
+                principal,
+                invoice.getId(),
+                itemId,
+                targetQty,
+                Boolean.TRUE.equals(request.override()),
+                request.reason()
+            );
         }
 
         BigDecimal discount = normalizeDiscount(request.discountAmount());

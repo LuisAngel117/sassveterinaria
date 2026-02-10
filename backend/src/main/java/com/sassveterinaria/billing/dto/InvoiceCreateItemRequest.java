@@ -11,6 +11,8 @@ public record InvoiceCreateItemRequest(
     String description,
     @NotNull BigDecimal qty,
     BigDecimal unitPrice,
-    BigDecimal discountAmount
+    BigDecimal discountAmount,
+    Boolean override,
+    String reason
 ) {
 }

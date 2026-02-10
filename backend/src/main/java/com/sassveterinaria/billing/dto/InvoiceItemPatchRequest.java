@@ -7,6 +7,7 @@ public record InvoiceItemPatchRequest(
     BigDecimal qty,
     BigDecimal unitPrice,
     BigDecimal discountAmount,
+    Boolean override,
     String reason
 ) {
 }

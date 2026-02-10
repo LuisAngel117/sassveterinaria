@@ -20,5 +20,6 @@ Regla:
 | SPR-B004 | Servicios (catalogo + duracion + precio base + reason/auditoria) | READY_FOR_VALIDATION | PENDING_SPR-B004_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b004.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B005 | Historia Clinica (atencion + SOAP + plantillas + adjuntos + cierre/reapertura) | READY_FOR_VALIDATION | PENDING_SPR-B005_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b005.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B006 | Facturacion (factura + IVA config + pagos + anulacion + export) | READY_FOR_VALIDATION | PENDING_SPR-B006_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b006.ps1` creado; ejecucion local pendiente con backend+Postgres. |
+| SPR-B007 | Inventario (stock + movimientos + costeo + override + BOM) | READY_FOR_VALIDATION | PENDING_SPR-B007_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b007.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 
 <!-- EOF -->

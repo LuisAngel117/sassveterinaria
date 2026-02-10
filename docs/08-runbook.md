@@ -35,6 +35,7 @@ Credenciales por defecto en `application.properties`:
   - `backend/src/main/resources/db/migration/V4__services_catalog.sql`
   - `backend/src/main/resources/db/migration/V5__clinical_visits.sql`
   - `backend/src/main/resources/db/migration/V6__billing_invoices.sql`
+  - `backend/src/main/resources/db/migration/V7__inventory_core.sql`
 
 ## 5) Levantar backend (SPR-B001)
 ```powershell
@@ -169,5 +170,22 @@ Flujo que valida:
 10. `GET /api/v1/invoices/{id}/export.pdf`
 11. `GET /api/v1/visits/{id}/instructions.pdf`
 12. `POST /api/v1/invoices/{id}/void` y verificacion de bloqueo de pagos en VOID
+
+## 14) Smoke script SPR-B007
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b007.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (superadmin)
+3. `GET /api/v1/units` + `POST /api/v1/products`
+4. `GET /api/v1/products/{id}/stock` (stock inicial)
+5. `POST /api/v1/stock/movements` tipo `IN` (recalculo de promedio)
+6. `PUT /api/v1/services/{serviceId}/bom`
+7. `POST /api/v1/visits/{visitId}/inventory/consume` (`BOM_ONLY`)
+8. `POST /api/v1/visits/{visitId}/invoices` con item `PRODUCT` sin override y qty > stock (bloqueo esperado `insufficient_stock`)
+9. `POST /api/v1/visits/{visitId}/invoices` con override + reason (permitido y auditado)
 
 <!-- EOF -->

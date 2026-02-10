@@ -26,7 +26,7 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-020 | 1 mascota = 1 propietario | SPR-B003 | PENDING_SPR-B003_COMMIT_HASH | manual | READY_FOR_VALIDATION | `pet.client_id` obligatorio y sin endpoint de multi-owner |
 | BRD-REQ-021 | Catálogo servicios | SPR-B004 | PENDING_SPR-B004_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | CRUD v1 servicios con `name`, `durationMinutes`, `priceBase` y permisos `SERVICE_*` |
 | BRD-REQ-022 | Duración por servicio | SPR-B004, SPR-B002 | PENDING_SPR-B004_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | B002 mantiene calculo `endsAt` desde `service.durationMinutes`; en B004 se consolida catalogo. Override queda pendiente por no existir permiso explicito en matriz |
-| BRD-REQ-023 | BOM consumo por servicio | SPR-B007 | TBD | tests+manual | PLANNED |  |
+| BRD-REQ-023 | BOM consumo por servicio | SPR-B007 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoints BOM `GET/PUT /services/{id}/bom` + consumo por visita |
 | BRD-REQ-024 | Atención sin cita | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Walk-in y vínculo opcional a appointment implementados en backend |
 | BRD-REQ-025 | SOAP mínimo | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Campos SOAP minimos en visita + PATCH mientras OPEN |
 | BRD-REQ-026 | Plantillas SOAP | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | CRUD v1 de templates por servicio (`BRANCH_MANAGE`) |
@@ -41,13 +41,13 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-035 | Estados factura | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Estados `PENDING`/`PAID`/`VOID` con reglas de transicion |
 | BRD-REQ-036 | Anulación con reason+BA | SPR-B006, SPR-F008 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `void` exige reason (>=10) y auditoria before/after |
 | BRD-REQ-037 | Export factura | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Export CSV y PDF de factura |
-| BRD-REQ-038 | Productos | SPR-B007, SPR-F006 | TBD | manual | PLANNED |  |
-| BRD-REQ-039 | Unidades catálogo | SPR-B007 | TBD | manual | PLANNED |  |
-| BRD-REQ-040 | Stock por sucursal | SPR-B007 | TBD | tests | PLANNED |  |
-| BRD-REQ-041 | Movimientos | SPR-B007, SPR-F006 | TBD | manual | PLANNED |  |
-| BRD-REQ-042 | Mínimos/alertas | SPR-B007, SPR-F006 | TBD | manual | PLANNED |  |
-| BRD-REQ-043 | Costeo promedio | SPR-B007 | TBD | tests | PLANNED |  |
-| BRD-REQ-044 | Override sin stock | SPR-B007, SPR-F008 | TBD | manual | PLANNED |  |
+| BRD-REQ-038 | Productos | SPR-B007, SPR-F006 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Catalogo productos branch-scoped + CRUD basico |
+| BRD-REQ-039 | Unidades catálogo | SPR-B007 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoint `GET /api/v1/units` + seeds base |
+| BRD-REQ-040 | Stock por sucursal | SPR-B007 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `product_stock` por branch con lock pesimista |
+| BRD-REQ-041 | Movimientos | SPR-B007, SPR-F006 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | IN/OUT/ADJUST/CONSUME con ledger `stock_movement` |
+| BRD-REQ-042 | Mínimos/alertas | SPR-B007, SPR-F006 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `GET /api/v1/stock/low` (`on_hand_qty <= min_qty`) |
+| BRD-REQ-043 | Costeo promedio | SPR-B007 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Promedio ponderado en IN + snapshot de costo en salidas |
+| BRD-REQ-044 | Override sin stock | SPR-B007, SPR-F008 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Bloqueo `insufficient_stock` + override auditado en facturacion |
 | BRD-REQ-045 | Reporte citas | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
 | BRD-REQ-046 | Reporte ventas | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
 | BRD-REQ-047 | Top servicios | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |

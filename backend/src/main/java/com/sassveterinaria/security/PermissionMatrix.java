@@ -38,7 +38,14 @@ public final class PermissionMatrix {
         "INVOICE_UPDATE",
         "INVOICE_PAY",
         "INVOICE_VOID",
-        "INVOICE_EXPORT"
+        "INVOICE_EXPORT",
+        "PRODUCT_READ",
+        "PRODUCT_CREATE",
+        "PRODUCT_UPDATE",
+        "STOCK_READ",
+        "STOCK_MOVE_CREATE",
+        "STOCK_ADJUST",
+        "STOCK_OVERRIDE_INVOICE"
     );
 
     private static final List<String> SUPERADMIN_PERMISSIONS = List.of(
@@ -75,7 +82,14 @@ public final class PermissionMatrix {
         "INVOICE_UPDATE",
         "INVOICE_PAY",
         "INVOICE_VOID",
-        "INVOICE_EXPORT"
+        "INVOICE_EXPORT",
+        "PRODUCT_READ",
+        "PRODUCT_CREATE",
+        "PRODUCT_UPDATE",
+        "STOCK_READ",
+        "STOCK_MOVE_CREATE",
+        "STOCK_ADJUST",
+        "STOCK_OVERRIDE_INVOICE"
     );
 
     private static final Map<String, List<String>> ROLE_PERMISSIONS = Map.of(
@@ -116,7 +130,9 @@ public final class PermissionMatrix {
             "VISIT_CLOSE",
             "VISIT_REOPEN",
             "VISIT_ATTACHMENT_UPLOAD",
-            "INVOICE_READ"
+            "INVOICE_READ",
+            "PRODUCT_READ",
+            "STOCK_READ"
         )
     );
 
