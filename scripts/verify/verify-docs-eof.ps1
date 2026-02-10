@@ -2,13 +2,13 @@
 # Linux-friendly: evita truncado accidental y fuerza consistencia.
 # Exit 0 = OK, Exit 1 = FAIL
 
-Set-StrictMode -Version Latest
-$ErrorActionPreference = "Stop"
-
 param(
   [Parameter(Mandatory = $false)]
   [string] $DocsRoot = "docs"
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
 
 if (-not (Test-Path -Path $DocsRoot)) {
   Write-Host "FAIL: No existe la carpeta '$DocsRoot'."
