@@ -36,6 +36,9 @@ public class AppointmentEntity {
     private UUID roomId;
 
     @Column(nullable = true)
+    private UUID serviceId;
+
+    @Column(nullable = true)
     private UUID clientId;
 
     @Column(nullable = true)
@@ -46,6 +49,15 @@ public class AppointmentEntity {
 
     @Column(nullable = false)
     private OffsetDateTime createdAt;
+
+    @Column(nullable = true)
+    private OffsetDateTime checkedInAt;
+
+    @Column(nullable = false)
+    private boolean isOverbook;
+
+    @Column(nullable = true, length = 255)
+    private String overbookReason;
 
     public UUID getId() {
         return id;
@@ -111,6 +123,14 @@ public class AppointmentEntity {
         this.roomId = roomId;
     }
 
+    public UUID getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(UUID serviceId) {
+        this.serviceId = serviceId;
+    }
+
     public UUID getClientId() {
         return clientId;
     }
@@ -141,5 +161,29 @@ public class AppointmentEntity {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public OffsetDateTime getCheckedInAt() {
+        return checkedInAt;
+    }
+
+    public void setCheckedInAt(OffsetDateTime checkedInAt) {
+        this.checkedInAt = checkedInAt;
+    }
+
+    public boolean isOverbook() {
+        return isOverbook;
+    }
+
+    public void setOverbook(boolean overbook) {
+        isOverbook = overbook;
+    }
+
+    public String getOverbookReason() {
+        return overbookReason;
+    }
+
+    public void setOverbookReason(String overbookReason) {
+        this.overbookReason = overbookReason;
     }
 }

@@ -4,15 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-public record AppointmentCreateRequest(
+public record AppointmentUpdateRequest(
     @NotNull UUID roomId,
-    @NotNull UUID serviceId,
     @NotNull OffsetDateTime startsAt,
-    String reason,
-    String notes,
-    UUID clientId,
-    UUID petId,
-    UUID veterinarianId,
     String overbookReason
 ) {
 }

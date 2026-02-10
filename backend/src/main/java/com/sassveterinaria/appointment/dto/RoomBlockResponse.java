@@ -3,22 +3,14 @@ package com.sassveterinaria.appointment.dto;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-public record AppointmentResponse(
+public record RoomBlockResponse(
     UUID id,
     UUID branchId,
     UUID roomId,
-    UUID serviceId,
     OffsetDateTime startsAt,
     OffsetDateTime endsAt,
-    String status,
-    OffsetDateTime checkedInAt,
-    boolean isOverbook,
-    String overbookReason,
     String reason,
-    String notes,
-    UUID clientId,
-    UUID petId,
-    UUID veterinarianId,
+    UUID createdBy,
     OffsetDateTime createdAt
 ) {
 }

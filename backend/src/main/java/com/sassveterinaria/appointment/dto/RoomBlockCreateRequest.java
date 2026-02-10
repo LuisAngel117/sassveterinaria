@@ -1,18 +1,14 @@
 package com.sassveterinaria.appointment.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-public record AppointmentCreateRequest(
+public record RoomBlockCreateRequest(
     @NotNull UUID roomId,
-    @NotNull UUID serviceId,
     @NotNull OffsetDateTime startsAt,
-    String reason,
-    String notes,
-    UUID clientId,
-    UUID petId,
-    UUID veterinarianId,
-    String overbookReason
+    @NotNull OffsetDateTime endsAt,
+    @NotBlank String reason
 ) {
 }

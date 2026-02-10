@@ -79,6 +79,30 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T16:24:36-05:00
+Item: SPR-B002
+Qué se hizo:
+- Se implemento Agenda Core backend: rooms, services minimos, room blocks y extension de appointments.
+- Se implementaron estados/transiciones (`RESERVED`, `CONFIRMED`, `IN_ATTENTION`, `CLOSED`, `CANCELLED`) y endpoint de `checkin` separado.
+- Se implemento no-solape por sala (citas no canceladas + bloqueos), con sobre-cupo solo con permiso `APPT_OVERBOOK` + reason + auditoria.
+- Se agregaron endpoints de agenda: rooms, services read-only, appointments (create/list/patch/acciones), room-blocks.
+- Se agrego smoke script `scripts/smoke/spr-b002.ps1`.
+- Se actualizaron runbook, status, RTM y state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- ./mvnw test (en backend)
+- pwsh -ExecutionPolicy Bypass -File .\scripts\verify\verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

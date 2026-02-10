@@ -25,7 +25,9 @@ Credenciales por defecto en `application.properties`:
 
 ## 4) Migraciones
 - Flyway corre al iniciar backend.
-- Migracion inicial del sprint: `backend/src/main/resources/db/migration/V1__init.sql`.
+- Migraciones activas:
+  - `backend/src/main/resources/db/migration/V1__init.sql`
+  - `backend/src/main/resources/db/migration/V2__agenda_core.sql`
 
 ## 5) Levantar backend (SPR-B001)
 ```powershell
@@ -51,7 +53,24 @@ Flujo que valida:
 3. `POST /api/v1/appointments`
 4. `GET /api/v1/appointments`
 
-## 7) Usuarios demo seed (SPR-B001)
+## 7) Smoke script SPR-B002
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b002.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (usuario `admin`)
+3. `POST /api/v1/rooms`
+4. `GET /api/v1/services`
+5. `POST /api/v1/appointments` (creacion base)
+6. `POST /api/v1/appointments` (solape sin sobre-cupo -> 422)
+7. `POST /api/v1/appointments` (sobre-cupo con `overbookReason`)
+8. `POST /api/v1/appointments/{id}/checkin`
+9. `GET /api/v1/appointments?from=...&to=...&roomId=...`
+
+## 8) Usuarios demo seed
 - `superadmin` / `SuperAdmin123!`
 - `admin` / `Admin123!`
 - `recepcion` / `Recepcion123!`
@@ -60,7 +79,7 @@ Flujo que valida:
 Branch demo:
 - `CENTRO` / `Sucursal Centro`
 
-## 8) Troubleshooting
+## 9) Troubleshooting
 - Si falla conexión DB: revisar `DB_URL`, `DB_USER`, `DB_PASSWORD`.
 - Si falla JWT: revisar `APP_JWT_SECRET` (min 32 bytes).
 - Si falla scope: verificar header `X-Branch-Id` y claim `branch_id` del token.
