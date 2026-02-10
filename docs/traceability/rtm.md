@@ -19,11 +19,11 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-013 | Sobre-cupo con permiso | SPR-B002, SPR-F002 | PENDING_SPR-B002_COMMIT_HASH | smoke | READY_FOR_VALIDATION | Requiere `APPT_OVERBOOK` + `reason` y audita evento sensible |
 | BRD-REQ-014 | Check-in separado | SPR-B002, SPR-F002 | PENDING_SPR-B002_COMMIT_HASH | smoke | READY_FOR_VALIDATION | `POST /appointments/{id}/checkin` no altera status |
 | BRD-REQ-015 | Bloqueos manuales | SPR-B002, SPR-F002 | PENDING_SPR-B002_COMMIT_HASH | manual + smoke | READY_FOR_VALIDATION | CRUD minimo de `room_block` branch-scoped |
-| BRD-REQ-016 | CRUD clientes | SPR-B003, SPR-F003 | TBD | smoke | PLANNED |  |
-| BRD-REQ-017 | Búsqueda clientes | SPR-B003, SPR-F003 | TBD | manual | PLANNED |  |
-| BRD-REQ-018 | CRUD mascotas | SPR-B003, SPR-F003 | TBD | smoke | PLANNED |  |
-| BRD-REQ-019 | Código interno mascota | SPR-B003 | TBD | tests | PLANNED |  |
-| BRD-REQ-020 | 1 mascota = 1 propietario | SPR-B003 | TBD | validation | PLANNED |  |
+| BRD-REQ-016 | CRUD clientes | SPR-B003, SPR-F003 | PENDING_SPR-B003_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoints create/list/detail/patch para clientes branch-scoped |
+| BRD-REQ-017 | Búsqueda clientes | SPR-B003, SPR-F003 | PENDING_SPR-B003_COMMIT_HASH | manual + smoke | READY_FOR_VALIDATION | `GET /clients?q=` por fullName/phone/identification |
+| BRD-REQ-018 | CRUD mascotas | SPR-B003, SPR-F003 | PENDING_SPR-B003_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoints create/list/detail/patch para mascotas |
+| BRD-REQ-019 | Código interno mascota | SPR-B003 | PENDING_SPR-B003_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | Unicidad `(branch_id, internal_code)` + conflicto 409 |
+| BRD-REQ-020 | 1 mascota = 1 propietario | SPR-B003 | PENDING_SPR-B003_COMMIT_HASH | manual | READY_FOR_VALIDATION | `pet.client_id` obligatorio y sin endpoint de multi-owner |
 | BRD-REQ-021 | Catálogo servicios | SPR-B004 | TBD | manual | PLANNED |  |
 | BRD-REQ-022 | Duración por servicio | SPR-B004, SPR-B002 | PENDING_SPR-B002_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | `POST /appointments` calcula `endsAt` desde `service.durationMinutes`; override pendiente para B004 |
 | BRD-REQ-023 | BOM consumo por servicio | SPR-B007 | TBD | tests+manual | PLANNED |  |

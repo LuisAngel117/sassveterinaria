@@ -103,6 +103,31 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T16:38:33-05:00
+Item: SPR-B003
+Qué se hizo:
+- Se implemento modulo CRM backend de clientes y mascotas (CRUD parcial sin delete) branch-scoped.
+- Se agrego busqueda de clientes por `fullName`, `phone` o `identification`.
+- Se implemento invariante `pet.internalCode` unico por sucursal con conflicto 409 `PET_INTERNAL_CODE_CONFLICT`.
+- Se implemento invariante v1 `1 mascota -> 1 propietario` via `pet.client_id` obligatorio y sin endpoint de multi-owner.
+- Se agregaron migraciones Flyway para `client`/`pet` (`V3__crm_clients_pets.sql`) y seed demo minimo idempotente.
+- Se agrego smoke script `scripts/smoke/spr-b003.ps1`.
+- Se actualizo documentacion de dominio, runbook, status, RTM y state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- ./mvnw test (en backend)
+- pwsh -File scripts/verify/verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

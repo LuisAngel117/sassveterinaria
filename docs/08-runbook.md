@@ -28,6 +28,7 @@ Credenciales por defecto en `application.properties`:
 - Migraciones activas:
   - `backend/src/main/resources/db/migration/V1__init.sql`
   - `backend/src/main/resources/db/migration/V2__agenda_core.sql`
+  - `backend/src/main/resources/db/migration/V3__crm_clients_pets.sql`
 
 ## 5) Levantar backend (SPR-B001)
 ```powershell
@@ -76,10 +77,30 @@ Flujo que valida:
 - `recepcion` / `Recepcion123!`
 - `veterinario` / `Veterinario123!`
 
+Datos CRM demo (si DB vacía):
+- 1 cliente demo en sucursal `CENTRO`
+- 1 mascota demo asociada (codigo interno unico por sucursal)
+
 Branch demo:
 - `CENTRO` / `Sucursal Centro`
 
-## 9) Troubleshooting
+## 9) Smoke script SPR-B003
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b003.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (usuario `recepcion`)
+3. `POST /api/v1/clients`
+4. `GET /api/v1/clients?q=...` (busqueda por nombre/telefono)
+5. `POST /api/v1/clients/{clientId}/pets`
+6. `POST /api/v1/clients/{clientId}/pets` (duplicado internalCode -> 409)
+7. `GET /api/v1/clients/{clientId}/pets`
+8. `GET/PATCH /api/v1/pets/{id}`
+
+## 10) Troubleshooting
 - Si falla conexión DB: revisar `DB_URL`, `DB_USER`, `DB_PASSWORD`.
 - Si falla JWT: revisar `APP_JWT_SECRET` (min 32 bytes).
 - Si falla scope: verificar header `X-Branch-Id` y claim `branch_id` del token.

@@ -36,9 +36,11 @@
 | id | uuid | PK |
 | branch_id | uuid | FK -> branch.id |
 | full_name | varchar(160) | requerido |
+| identification | varchar(30) | opcional (si existe: 10 o 13 digitos) |
 | phone | varchar(30) | nullable |
 | email | varchar(160) | nullable |
 | address | varchar(255) | nullable |
+| notes | text | nullable |
 | created_at | timestamptz | requerido |
 
 ### pet
@@ -47,13 +49,16 @@
 | id | uuid | PK |
 | branch_id | uuid | FK -> branch.id |
 | client_id | uuid | FK -> client.id |
+| internal_code | varchar(30) | requerido, unico por branch |
 | name | varchar(120) | requerido |
 | species | varchar(80) | requerido |
 | breed | varchar(120) | nullable |
 | sex | varchar(20) | nullable |
 | birth_date | date | nullable |
 | weight_kg | numeric(6,2) | nullable |
+| neutered | boolean | nullable |
 | alerts | text | nullable |
+| history | text | nullable |
 | created_at | timestamptz | requerido |
 
 ### room
@@ -204,6 +209,7 @@
 - `user_branch.branch_id -> branch.id`
 - `client.branch_id -> branch.id`
 - `pet.client_id -> client.id`
+- `pet(branch_id, internal_code)` unico
 - `appointment.pet_id -> pet.id`
 - `appointment.room_id -> room.id`
 - `soap_note.appointment_id -> appointment.id`
@@ -216,10 +222,12 @@
 ## Reglas de integridad
 1. `appointment.ends_at > appointment.starts_at`.
 2. No-solape por `room_id` en el rango `[starts_at, ends_at]`.
-3. `soap_attachment.size_bytes <= 10485760`.
-4. `invoice.total = subtotal + tax_amount`.
-5. `inventory_balance.qty_on_hand` no puede ser negativo salvo permiso explicito de ajuste.
-6. `invoice.status = VOID` requiere `cancellation_reason`.
-7. Eventos sensibles generan fila en `audit_event`.
+3. `pet.internal_code` es unico por sucursal (`branch_id`).
+4. `pet.client_id` garantiza 1 mascota -> 1 propietario en v1.
+5. `soap_attachment.size_bytes <= 10485760`.
+6. `invoice.total = subtotal + tax_amount`.
+7. `inventory_balance.qty_on_hand` no puede ser negativo salvo permiso explicito de ajuste.
+8. `invoice.status = VOID` requiere `cancellation_reason`.
+9. Eventos sensibles generan fila en `audit_event`.
 
 <!-- EOF -->
