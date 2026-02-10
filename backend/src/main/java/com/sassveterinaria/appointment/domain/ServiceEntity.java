@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -22,6 +23,9 @@ public class ServiceEntity {
 
     @Column(nullable = false)
     private int durationMinutes;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal priceBase;
 
     @Column(nullable = false)
     private boolean isActive;
@@ -59,6 +63,14 @@ public class ServiceEntity {
 
     public void setDurationMinutes(int durationMinutes) {
         this.durationMinutes = durationMinutes;
+    }
+
+    public BigDecimal getPriceBase() {
+        return priceBase;
+    }
+
+    public void setPriceBase(BigDecimal priceBase) {
+        this.priceBase = priceBase;
     }
 
     public boolean isActive() {

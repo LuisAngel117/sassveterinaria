@@ -128,6 +128,30 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T16:53:24-05:00
+Item: SPR-B004
+Qué se hizo:
+- Se implemento catalogo de servicios v1 con create/list/detail/update branch-scoped.
+- Se agrego `priceBase` a `service` por migracion incremental y validaciones de servicio.
+- Se aplicaron permisos `SERVICE_READ`, `SERVICE_CREATE`, `SERVICE_UPDATE` por rol.
+- Se implemento accion sensible: cambio de `priceBase` requiere `reason` (min 10) y genera auditoria before/after.
+- Se agrego seed demo de 3 servicios (idempotente) y smoke script `scripts/smoke/spr-b004.ps1`.
+- Se actualizo runbook, status, RTM y state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- ./mvnw test (en backend)
+- pwsh -File scripts/verify/verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

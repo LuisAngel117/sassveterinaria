@@ -7,10 +7,13 @@ import com.sassveterinaria.auth.domain.UserBranchId;
 import com.sassveterinaria.auth.repo.AppUserRepository;
 import com.sassveterinaria.auth.repo.BranchRepository;
 import com.sassveterinaria.auth.repo.UserBranchRepository;
+import com.sassveterinaria.appointment.domain.ServiceEntity;
+import com.sassveterinaria.appointment.repo.ServiceRepository;
 import com.sassveterinaria.crm.domain.ClientEntity;
 import com.sassveterinaria.crm.domain.PetEntity;
 import com.sassveterinaria.crm.repo.ClientRepository;
 import com.sassveterinaria.crm.repo.PetRepository;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -26,6 +29,7 @@ public class DemoDataSeeder implements ApplicationRunner {
     private final BranchRepository branchRepository;
     private final AppUserRepository appUserRepository;
     private final UserBranchRepository userBranchRepository;
+    private final ServiceRepository serviceRepository;
     private final ClientRepository clientRepository;
     private final PetRepository petRepository;
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +38,7 @@ public class DemoDataSeeder implements ApplicationRunner {
         BranchRepository branchRepository,
         AppUserRepository appUserRepository,
         UserBranchRepository userBranchRepository,
+        ServiceRepository serviceRepository,
         ClientRepository clientRepository,
         PetRepository petRepository,
         PasswordEncoder passwordEncoder
@@ -41,6 +46,7 @@ public class DemoDataSeeder implements ApplicationRunner {
         this.branchRepository = branchRepository;
         this.appUserRepository = appUserRepository;
         this.userBranchRepository = userBranchRepository;
+        this.serviceRepository = serviceRepository;
         this.clientRepository = clientRepository;
         this.petRepository = petRepository;
         this.passwordEncoder = passwordEncoder;
@@ -58,6 +64,7 @@ public class DemoDataSeeder implements ApplicationRunner {
             createUser("veterinario", "Veterinario", "VETERINARIO", "Veterinario123!", branch.getId());
         }
 
+        ensureDemoServices(branch.getId());
         ensureDemoClientAndPet(branch.getId());
     }
 
@@ -129,6 +136,28 @@ public class DemoDataSeeder implements ApplicationRunner {
         pet.setHistory("Paciente demo para smoke.");
         pet.setCreatedAt(OffsetDateTime.now());
         petRepository.save(pet);
+    }
+
+    private void ensureDemoServices(UUID branchId) {
+        ensureService(branchId, "service-demo-consulta-general", "Consulta general", 30, new BigDecimal("20.00"));
+        ensureService(branchId, "service-demo-vacunacion", "Vacunacion", 20, new BigDecimal("15.00"));
+        ensureService(branchId, "service-demo-control-post", "Control post-operatorio", 30, new BigDecimal("18.00"));
+    }
+
+    private void ensureService(UUID branchId, String seed, String name, int durationMinutes, BigDecimal priceBase) {
+        if (serviceRepository.existsByBranchIdAndNameIgnoreCase(branchId, name)) {
+            return;
+        }
+
+        ServiceEntity service = new ServiceEntity();
+        service.setId(stableUuid(seed));
+        service.setBranchId(branchId);
+        service.setName(name);
+        service.setDurationMinutes(durationMinutes);
+        service.setPriceBase(priceBase);
+        service.setActive(true);
+        service.setCreatedAt(OffsetDateTime.now());
+        serviceRepository.save(service);
     }
 
     private UUID stableUuid(String seed) {

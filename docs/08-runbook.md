@@ -29,6 +29,7 @@ Credenciales por defecto en `application.properties`:
   - `backend/src/main/resources/db/migration/V1__init.sql`
   - `backend/src/main/resources/db/migration/V2__agenda_core.sql`
   - `backend/src/main/resources/db/migration/V3__crm_clients_pets.sql`
+  - `backend/src/main/resources/db/migration/V4__services_catalog.sql`
 
 ## 5) Levantar backend (SPR-B001)
 ```powershell
@@ -81,6 +82,11 @@ Datos CRM demo (si DB vacía):
 - 1 cliente demo en sucursal `CENTRO`
 - 1 mascota demo asociada (codigo interno unico por sucursal)
 
+Datos servicios demo:
+- Consulta general (30 min, $20.00)
+- Vacunacion (20 min, $15.00)
+- Control post-operatorio (30 min, $18.00)
+
 Branch demo:
 - `CENTRO` / `Sucursal Centro`
 
@@ -104,5 +110,22 @@ Flujo que valida:
 - Si falla conexión DB: revisar `DB_URL`, `DB_USER`, `DB_PASSWORD`.
 - Si falla JWT: revisar `APP_JWT_SECRET` (min 32 bytes).
 - Si falla scope: verificar header `X-Branch-Id` y claim `branch_id` del token.
+
+## 11) Smoke script SPR-B004
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b004.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (admin)
+3. `POST /api/v1/services` (crear servicio)
+4. `POST /api/v1/auth/login` (recepcion)
+5. `GET /api/v1/services` (read permitido)
+6. `POST /api/v1/services` con recepcion (403 esperado)
+7. `PATCH /api/v1/services/{id}` actualizando `durationMinutes`
+8. `PATCH /api/v1/services/{id}` cambiando `priceBase` sin reason (422 esperado)
+9. `PATCH /api/v1/services/{id}` cambiando `priceBase` con reason + verificacion por list
 
 <!-- EOF -->

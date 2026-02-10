@@ -24,8 +24,8 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-018 | CRUD mascotas | SPR-B003, SPR-F003 | PENDING_SPR-B003_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoints create/list/detail/patch para mascotas |
 | BRD-REQ-019 | Código interno mascota | SPR-B003 | PENDING_SPR-B003_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | Unicidad `(branch_id, internal_code)` + conflicto 409 |
 | BRD-REQ-020 | 1 mascota = 1 propietario | SPR-B003 | PENDING_SPR-B003_COMMIT_HASH | manual | READY_FOR_VALIDATION | `pet.client_id` obligatorio y sin endpoint de multi-owner |
-| BRD-REQ-021 | Catálogo servicios | SPR-B004 | TBD | manual | PLANNED |  |
-| BRD-REQ-022 | Duración por servicio | SPR-B004, SPR-B002 | PENDING_SPR-B002_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | `POST /appointments` calcula `endsAt` desde `service.durationMinutes`; override pendiente para B004 |
+| BRD-REQ-021 | Catálogo servicios | SPR-B004 | PENDING_SPR-B004_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | CRUD v1 servicios con `name`, `durationMinutes`, `priceBase` y permisos `SERVICE_*` |
+| BRD-REQ-022 | Duración por servicio | SPR-B004, SPR-B002 | PENDING_SPR-B004_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | B002 mantiene calculo `endsAt` desde `service.durationMinutes`; en B004 se consolida catalogo. Override queda pendiente por no existir permiso explicito en matriz |
 | BRD-REQ-023 | BOM consumo por servicio | SPR-B007 | TBD | tests+manual | PLANNED |  |
 | BRD-REQ-024 | Atención sin cita | SPR-B005, SPR-F004 | TBD | manual | PLANNED |  |
 | BRD-REQ-025 | SOAP mínimo | SPR-B005, SPR-F004 | TBD | manual | PLANNED |  |
