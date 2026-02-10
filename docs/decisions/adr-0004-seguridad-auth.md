@@ -1,26 +1,20 @@
-# ADR-0004 - Seguridad (AuthN/AuthZ/2FA)
+# ADR-0004 — Seguridad: JWT + refresh rotativo + 2FA TOTP
 
 ## Contexto
-La aplicacion maneja datos clinicos, cobros e inventario; requiere control estricto de identidad y autorizacion.
+Se requiere seguridad demostrable en demo vendible.
 
-## Decision
-- JWT access token (1h) + refresh token (7d) con rotacion.
-- Lockout por 4 intentos fallidos durante 15 minutos.
-- 2FA TOTP obligatorio para `ADMIN` y `SUPERADMIN`.
-- Autorizacion por permisos de accion, no solo por rol.
-- Errores API en formato RFC 7807.
-
-Referencias:
-- RFC 7807: https://datatracker.ietf.org/doc/html/rfc7807
-- RFC 6238: https://datatracker.ietf.org/doc/html/rfc6238
+## Decisión
+- JWT access (1h) + refresh (7d) con rotación.
+- Lockout 4 intentos.
+- 2FA TOTP para ADMIN/SUPERADMIN (RFC 6238).
 
 ## Consecuencias
-- Mayor seguridad operativa en acciones criticas.
-- Mayor complejidad UX en login de roles altos.
+- Se requiere almacenamiento de refresh tokens (hash) y revocación.
+- Flujo 2FA debe estar en UI para admins.
 
 ## Alternativas descartadas
-- Sesiones stateful server-side: validas, pero menos alineadas al contrato API stateless planteado.
-- Omitir 2FA en V1: reduce friccion pero aumenta riesgo.
+- Session cookies only (menos portable para demo).
+- Sin 2FA (menos vendible).
 
 ## Fecha
 2026-02-10

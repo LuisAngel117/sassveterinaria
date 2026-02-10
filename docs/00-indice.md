@@ -1,86 +1,79 @@
-# 00 - Indice canonico (fuente de verdad)
+# 00 — Índice canónico (fuente de verdad)
 
-## 1) Regla central
-- Todo el contexto del proyecto vive en `docs/**`.
-- La conversacion no es fuente de verdad.
-- Cambios de plan solo por `RFC/ADR/changelog`.
-- Naming Linux strict: minusculas, sin espacios, case consistente.
+Este repositorio trabaja **local-first** y con **gobernanza por docs**:
+- La conversación NO es fuente de verdad.
+- La fuente de verdad vive en `docs/**` y se aplica por tandas/sprints.
+- Sprints son **inmutables**: cambios SOLO por RFC/ADR/CHANGELOG.
 
-## 2) Orden de lectura obligatorio (agentes)
-1) `docs/project-lock.md`
-2) `docs/00-indice.md`
-3) `docs/state/state.md`
-4) `docs/status/status.md`
-5) `docs/log/log.md`
-6) `docs/quality/definition-of-ready.md`
-7) `docs/quality/definition-of-done.md`
-8) `docs/traceability/rtm.md`
-9) `docs/decisions/*.md`
-10) `docs/rfcs/*.md` (si aplica)
-11) `docs/sprints/spr-master-back.md` o `docs/sprints/spr-master-front.md`
-12) Sprint actual `docs/sprints/<SPR-XXX>.md`
+## 1) Orden de lectura obligatorio (para agentes y humanos)
 
-## 3) Mapa canonico
-| Archivo | Proposito | Lectura previa |
+**Antes de tocar código, SIEMPRE leer (mínimo):**
+1. `docs/project-lock.md`
+2. `AGENTS.md` (si existe)
+3. `docs/00-indice.md` (este archivo)
+4. `docs/state/state.md`
+5. `docs/quality/definition-of-ready.md`
+6. `docs/quality/definition-of-done.md`
+7. Sprint actual `docs/sprints/<SPR-XXX>.md` (cuando existan)
+8. `docs/status/status.md` + `docs/log/log.md`
+
+## 2) Mapa de documentos (tabla canónica)
+
+| Archivo | Propósito | ¿Siempre leer antes de codificar? |
 |---|---|---|
-| docs/project-lock.md | Candado de identidad del proyecto | Obligatoria |
-| docs/01-brief.md | Contexto de negocio y vision | Obligatoria |
-| docs/02-brd.md | Requisitos funcionales y no funcionales | Obligatoria |
-| docs/03-arquitectura.md | Arquitectura, contratos y pruebas | Obligatoria |
-| docs/04-convenciones.md | Normas duras de ejecucion | Obligatoria |
-| docs/05-seguridad.md | Auth, permisos, auditoria y hardening | Obligatoria |
-| docs/06-dominio-parte-a.md | Modelo de datos base | Obligatoria |
-| docs/06-dominio-parte-b.md | Estados, auditoria y seeds | Obligatoria |
-| docs/07-ux-ui-parte-a.md | Mapa UX y navegacion por rol | Front |
-| docs/07-ux-ui-parte-b.md | Flujos criticos y reglas visuales | Front |
-| docs/08-runbook.md | Operacion local y troubleshooting | Obligatoria |
-| docs/09-stage-release.md | Reglas para stage/online (futuro) | Referencia |
-| docs/10-permisos.md | Matriz estable rol -> permisos | Obligatoria |
-| docs/11-entrega.md | Checklist de entrega vendible local | Obligatoria |
-| docs/changelog.md | Historial de cambios | Obligatoria |
-| docs/status/status.md | Estado de tandas/sprints | Obligatoria |
-| docs/log/log.md | Bitacora append-only con evidencia | Obligatoria |
-| docs/traceability/rtm.md | Trazabilidad req -> sprint -> evidencia | Obligatoria |
+| `docs/project-lock.md` | Candado de identidad del proyecto | Sí |
+| `docs/state/state.md` | Snapshot de estado + próximo sprint recomendado | Sí |
+| `docs/quality/definition-of-ready.md` | Gate DoR (bloquea sprints) | Sí |
+| `docs/quality/definition-of-done.md` | Gate DoD (bloquea READY_FOR_VALIDATION) | Sí |
+| `docs/01-brief.md` | Contexto de negocio + glosario | Sí |
+| `docs/02-brd.md` | Requisitos (BRD-REQ-###) | Sí |
+| `docs/03-arquitectura.md` | Arquitectura, datos, seguridad, convenciones API | Sí |
+| `docs/04-convenciones.md` | Normas duras (naming, git, scripts, casing) | Sí |
+| `docs/05-seguridad.md` | Modelo auth/2FA/rate-limit/auditoría | Sí |
+| `docs/06-dominio-parte-a.md` | Dominio: entidades y reglas (A) | Sí |
+| `docs/06-dominio-parte-b.md` | Dominio: entidades y reglas (B) | Sí |
+| `docs/07-ux-ui-parte-a.md` | UX/UI vendible (A) | Sí |
+| `docs/07-ux-ui-parte-b.md` | UX/UI vendible (B) | Sí |
+| `docs/08-runbook.md` | Operación local (setup/run/troubleshoot) | Sí |
+| `docs/09-stage-release.md` | Qué cambia al ir online/stage (futuro) | No (solo si aplica) |
+| `docs/10-permisos.md` | Matriz rol→permisos + acciones sensibles | Sí |
+| `docs/11-entrega.md` | Checklist vendible local + RC | Sí |
+| `docs/traceability/rtm.md` | Trazabilidad Req→Sprint→Evidencia | Sí |
+| `docs/handoff/handoff-back-to-front.md` | Contrato real backend→frontend (cuando exista) | Front: Sí |
+| `docs/status/status.md` | Tabla de estados de tandas/sprints | Sí |
+| `docs/log/log.md` | Bitácora append-only (evidencia) | Sí |
+| `docs/changelog.md` | Cambios (append-only) | Sí |
+| `docs/rfcs/*.md` | Propuestas de cambio | Cuando aplique |
+| `docs/decisions/*.md` | Decisiones (ADRs) | Cuando aplique |
+| `docs/sprints/*.md` | Planes maestros y sprints (inmutables) | Cuando existan |
 
-## 4) Reglas de modificacion
-- `docs/sprints/*.md` son inmutables luego de aprobacion.
-- `docs/log/log.md` es append-only.
-- `docs/changelog.md` es append-only.
-- `docs/status/status.md` no borra historico; solo agrega/actualiza filas.
-- `DONE` solo lo marca el usuario tras validacion local con evidencia.
+## 3) Casing Linux-friendly (evitar duplicados)
 
-## 5) Regla EOF
-- Todo `.md` bajo `docs/**` termina exacto con `<!-- EOF -->`.
-- Verificar con: `pwsh -File scripts/verify/verify-docs-eof.ps1`
-- Preflight completo: `pwsh -File scripts/verify/preflight.ps1`
+- Todo en `docs/**` va en minúsculas y rutas canónicas como arriba.
+- Si aparece histórico como `LOG.md`, se interpreta como `docs/log/log.md`. **No crear duplicados**.
 
-## 6) Estado actual
-- T1: bootstrap de gobernanza y scripts completado.
-- T2: docs base detallados listos en estado `READY_FOR_VALIDATION`.
-- Implementacion funcional queda para sprints BACK/FRONT.
+## 4) Estados y evidencia
 
-## 7) Formato obligatorio de respuesta de Codex
+- `READY_FOR_VALIDATION`: Codex terminó implementación/doc y dejó evidencia/placeholder en LOG/STATUS.
+- `DONE`: SOLO usuario tras validar local y pegar outputs en `docs/log/log.md`.
 
-[CODEX-REPORT]
-Project Lock:
-* project_name: ...
-* repo_url: ...
-* branch: ...
-* commit: ...
+## 5) Cómo se hacen cambios
 
-Work Done:
-* ...
+- No se editan sprints ya emitidos.
+- Cambios solo por:
+  - `docs/rfcs/RFC-00xx-*.md`
+  - `docs/decisions/ADR-00xx-*.md`
+  - `docs/changelog.md`
 
-Files:
-* Added:
-* Modified:
-* Deleted:
+## 6) Multi-conversación (BACK/FRONT)
 
-Commands Executed:
-* ...
+- BACK y FRONT se trabajan en conversaciones separadas.
+- Ambas deben basarse solo en `docs/**`.
+- FRONT no debe “inventar” contratos: requiere `docs/handoff/handoff-back-to-front.md` cuando backend esté listo.
 
-Status:
-* git status: clean/dirty
-* Next step: ...
+## 7) EOF obligatorio
+
+- Todo `.md` bajo `docs/**` termina EXACTO con `<!-- EOF -->`.
+- Script verificador: `scripts/verify/verify-docs-eof.ps1`.
 
 <!-- EOF -->

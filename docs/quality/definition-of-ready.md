@@ -1,23 +1,21 @@
 # Definition of Ready (DoR)
 
-Regla:
-- Un sprint no inicia en `IN_PROGRESS` si falla DoR.
-- Si falla, marcar `BLOCKED` en status y registrar causa en log.
+Un sprint NO puede iniciar si falta alguno de estos ítems (=> BLOCKED):
 
-## Checklist DoR verificable
-1. Sprint existe y esta referenciado en el master correspondiente.
-2. Objetivo del sprint es claro y medible.
-3. Incluye/excluye y AC verificables declarados.
-4. Requisitos BRD (`BRD-REQ-###`) mapeados en RTM.
-5. Dependencias tecnicas identificadas (DB, auth, UI, datos).
-6. Riesgos y bloqueos conocidos registrados.
-7. Smoke test manual definido con comandos reales.
-8. Impacto en seguridad/permisos explicitado.
-9. Plan de trazabilidad definido (`status/log/changelog/rtm/state`).
-10. Si falta informacion critica, el sprint indica "crear RFC y detener".
+## Checklist DoR (verificable)
+- [ ] Sprint existe y está inmutable.
+- [ ] Scope cerrado: incluye/excluye claros.
+- [ ] Requisitos objetivo declarados (BRD-REQ-###) o N/A justificado.
+- [ ] Dependencias identificadas (otro sprint/ADR/RFC).
+- [ ] Datos/scoping definidos (branch_id, headers, claims).
+- [ ] Permisos definidos para acciones nuevas (docs/10-permisos.md).
+- [ ] Errores/validaciones mínimas definidas (Problem Details).
+- [ ] Smoke test del sprint definido (comandos exactos o N/A justificado).
+- [ ] Runbook impactado identificado (docs/08-runbook.md).
+- [ ] Trazabilidad: RTM puede mapear req→sprint (si aplica).
 
-## Resultado esperado
-- DoR OK -> sprint puede iniciar.
-- DoR FAIL -> no iniciar implementacion.
+## Excepciones
+Solo por RFC:
+- Crear `docs/rfcs/RFC-00xx-*.md` explicando por qué se permite iniciar.
 
 <!-- EOF -->

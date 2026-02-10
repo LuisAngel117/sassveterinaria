@@ -1,19 +1,61 @@
-# Plan Maestro - BACK (spr-master-back)
+# Plan Maestro BACK (spr-master-back)
 
-Regla:
-- Este master lista sprints backend para cerrar BRD-REQ-###.
-- Tras aprobacion, cambios solo por RFC/ADR/changelog.
+Regla: este master se acepta “tal cual”. Cambios solo por RFC/ADR/CHANGELOG.
 
-| Sprint ID | Titulo | Que hace (3-7 bullets) | Que no hace | Dependencias | BRD-REQ-### objetivo |
-|---|---|---|---|---|---|
-| SPR-B001 | Auth y branch scoping | Login; lockout; JWT; 2FA TOTP; seleccion de branch; middleware scoping; errores RFC 7807 | No agenda completa ni SOAP | ADR-0003, ADR-0004 | 001,002,003,004,005,006,024 |
-| SPR-B002 | Usuarios y permisos | CRUD usuarios; asignacion rol/permisos; bloqueo usuario; auditoria de cambios de rol | No UI admin completa | SPR-B001 | 007 |
-| SPR-B003 | Clientes y pacientes | CRUD clientes/pacientes; validaciones de integridad; filtros por branch | No facturacion ni inventario | SPR-B001 | 008,009 |
-| SPR-B004 | Agenda core | Agenda semanal; create/reschedule/cancel; no-solape por sala; check-in | No SOAP detallado | SPR-B001, SPR-B003 | 010,011,012,013 |
-| SPR-B005 | SOAP y adjuntos | Nota SOAP; cierre/reapertura con permiso; adjuntos hasta 10MB; auditoria sensible | No reporteria avanzada | SPR-B004 | 014,015,016,025 |
-| SPR-B006 | Facturacion base | Catalogo servicios/productos; emision factura con IVA; anulacion con motivo | No integraciones fiscales externas | SPR-B004 | 017,018,019 |
-| SPR-B007 | Inventario y BOM | Inventario por branch; movimientos; BOM por servicio; costo promedio; override con permiso | No compras avanzadas | SPR-B006 | 020,021,022,023 |
-| SPR-B008 | Auditoria y reportes | Consulta auditoria; reportes operativos minimos; filtros por fecha/branch | No BI avanzado | SPR-B005, SPR-B007 | 025,027 |
-| SPR-B009 | Seeds y hardening demo | Seeds demo; smoke E2E backend; ajustes de performance y errores | No despliegue online | SPR-B001..SPR-B008 | 026 |
+## Lista de sprints (BACK)
+
+### SPR-B001 — Walking skeleton backend (health + db + migraciones + ProblemDetails base)
+- Hace: estructura backend, conexión Postgres, migraciones base, healthcheck, error RFC7807 base
+- No hace: features de dominio completas
+- Riesgo: inventar paths/commands; mitigación: leer índice/runbook
+- Dep: ninguna
+- BRD objetivo: BRD-REQ-015, BRD-REQ-102
+
+### SPR-B002 — Auth + scoping branch + permisos base + 2FA base
+- Hace: login/refresh/logout, selección branch, claims+header, roles/permisos, lockout, 2FA TOTP
+- No hace: agenda/crm
+- Dep: B001
+- BRD: 001-003, 010-015, 020-022
+
+### SPR-B003 — Catálogos + seeds demo base (branches/rooms/services/products/units)
+- Hace: CRUD catálogos + seeds (usuarios demo incluidos)
+- Dep: B002
+- BRD: 030, 060, 080-082, 100
+
+### SPR-B004 — Agenda (citas + no-solape + buffer + check-in)
+- Dep: B003
+- BRD: 031-035
+
+### SPR-B005 — CRM (clientes + mascotas + alertas)
+- Dep: B003
+- BRD: 040-043
+
+### SPR-B006 — Clínica (atenciones SOAP + plantillas + cierre/reapertura + adjuntos metadata)
+- Dep: B005
+- BRD: 050-055, 053
+
+### SPR-B007 — Facturación (factura demo + IVA config + pagos mixtos/parciales + anulación + export)
+- Dep: B006
+- BRD: 070-076, 071-075
+
+### SPR-B008 — Inventario (stock+movimientos+consumo BOM+mínimos+override)
+- Dep: B007
+- BRD: 080-087, 063
+
+### SPR-B009 — Reportes (citas/ventas/top/consumo/frecuentes + export)
+- Dep: B008
+- BRD: 090-096
+
+### SPR-B010 — Hardening auditoría + políticas sensibles + retención
+- Dep: B009
+- BRD: 020-023, 021
+
+### SPR-B011 — OpenAPI polish + smoke scripts backend + handoff base
+- Dep: B010
+- BRD: 101-103
+
+### SPR-RC001 — Release Candidate local (scripts verify/smoke/release-candidate + checklist entrega)
+- Dep: B011 (y FRONT listo)
+- BRD: 102-103
 
 <!-- EOF -->

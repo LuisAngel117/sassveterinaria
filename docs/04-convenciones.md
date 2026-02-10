@@ -1,40 +1,42 @@
-# 04 - Convenciones (normas duras)
+# 04 — Convenciones (normas duras)
 
-## Naming
-- Carpetas y archivos: minusculas, kebab-case, sin espacios.
-- Entidades DB: snake_case.
-- Campos JSON/API: camelCase.
-- IDs de requisitos: `BRD-REQ-###` y `BRD-NFR-###`.
-- IDs de sprint: `SPR-B###` (back) y `SPR-F###` (front).
+## 1) Naming y casing
+- Rutas y archivos docs: minúsculas, sin espacios.
+- Kebab-case para scripts/docs numerados: `00-indice.md`, `verify-docs-eof.ps1`.
+- Paquetes Java: `com.sassveterinaria.<modulo>` (ajustar si repo define otro; no inventar sin RFC).
 
-## Formateo
-- Markdown con encabezados claros y tablas para matrices.
-- Todas las rutas en docs se escriben con path real del repo.
-- Todo `.md` de `docs/**` termina exacto con `<!-- EOF -->`.
-- Evitar texto ambiguo: usar reglas verificables.
+## 2) Idioma
+- UI: Español.
+- Código (clases/variables): Inglés.
+- Comentarios: preferible inglés técnico (opcional).
 
-## Git y commits
-- Commits pequenos y trazables por tanda/sprint.
-- Mensajes recomendados:
-  - `T#: <resumen>` para tandas de docs.
-  - `SPR-B###: <resumen>` para sprints backend.
-  - `SPR-F###: <resumen>` para sprints frontend.
-- No reescribir historial compartido sin instruccion explicita.
+## 3) Git
+- Commits con prefijo:
+  - `T#:` para tandas docs
+  - `SPR-B###:` / `SPR-F###:` / `SPR-RC###:` para sprints
+- No mezclar cambios fuera del scope.
 
-## Branching
-- Rama principal: `main`.
-- Tandas de gobernanza pueden ejecutarse en `main` si el usuario lo define.
-- Sprints funcionales recomendados en ramas de trabajo y merge controlado.
+## 4) API
+- `/api/v1`
+- JSON `camelCase`.
+- Fechas: ISO-8601 con offset.
 
-## Logs y trazabilidad
-- `docs/log/log.md` es append-only.
-- `docs/status/status.md` conserva historico de items.
-- `docs/changelog.md` registra cambios de alto nivel.
-- `docs/traceability/rtm.md` conecta requisito -> sprint -> evidencia.
+## 5) DB
+- Tablas: `snake_case`
+- Columnas: `snake_case`
+- PK: `id` UUID
+- FK: `<entidad>_id`
 
-## Linux strict
-- Evitar archivos duplicados por casing (`Log.md` vs `log.md`).
-- Evitar espacios y caracteres problematicos en nombres.
-- Mantener referencias de path exactas para compatibilidad cross-platform.
+## 6) Logs
+- Backend: logs estructurados mínimos (nivel, traceId, userId, branchId).
+- Auditoría: registro formal en tabla.
+
+## 7) Linux strict
+- Casing consistente.
+- Evitar archivos duplicados por mayúsculas.
+
+## 8) EOF en docs
+- Todo `docs/**/*.md` termina EXACTO con `<!-- EOF -->`.
+- `scripts/verify/verify-docs-eof.ps1` debe fallar si no cumple.
 
 <!-- EOF -->

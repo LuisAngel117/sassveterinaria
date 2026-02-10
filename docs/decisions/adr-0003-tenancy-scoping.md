@@ -1,26 +1,25 @@
-# ADR-0003 - Tenancy/Scoping (single-tenant + multi-branch)
+# ADR-0003 — Scoping por sucursal (branch)
 
 ## Contexto
-V1 opera en un solo tenant, pero con multiples sucursales que requieren aislamiento operativo para evitar mezcla de datos.
+Sistema es single-tenant (una clínica) pero multi-sucursal.
 
-## Decision
-- Incluir `branch_id` en JWT.
-- Exigir header `X-Branch-Id` en endpoints branch-scoped.
-- Validar coincidencia estricta `header == claim`.
-- Rechazar request con:
-  - 400 si falta header en endpoint branch-scoped,
-  - 403 si header y claim no coinciden.
-
-Referencia:
-- https://cheatsheetseries.owasp.org/cheatsheets/Multi_Tenant_Security_Cheat_Sheet.html
+## Decisión
+- Branch seleccionado al login.
+- Access token incluye claim `branch_id`.
+- Requests a endpoints scopiados requieren `X-Branch-Id`.
+- Backend valida header+claim.
+- Errores:
+  - falta header: 400
+  - mismatch o sin autorización: 403
+  - sin token: 401
 
 ## Consecuencias
-- Reduce riesgo de fuga cruzada entre sucursales.
-- Aumenta complejidad de middleware y pruebas negativas.
+- Menos riesgo de spoofing por header.
+- Front debe siempre enviar header en requests scopiados.
 
 ## Alternativas descartadas
-- Scoping solo por path sin claim: insuficiente contra manipulos de contexto.
-- Scoping solo por claim sin header explicito: menos trazable para auditoria de request.
+- Solo header (spoofable).
+- Solo claim (difícil debug y multi-branch operations).
 
 ## Fecha
 2026-02-10

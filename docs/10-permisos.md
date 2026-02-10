@@ -1,105 +1,98 @@
-# 10 - Permisos (matriz estable)
+# 10 — Permisos (matriz estable)
 
-## Roles
-- SUPERADMIN: control global del sistema y configuraciones criticas.
-- ADMIN: gestion completa de sucursal asignada.
-- RECEPCION: agenda, clientes, check-in, facturacion operativa.
-- VETERINARIO: atencion clinica y cierre SOAP.
+## 1) Roles v1
+- SUPERADMIN
+- ADMIN
+- RECEPCION
+- VETERINARIO
 
-## Permisos por modulo
+## 2) Permisos (códigos)
 
-### Auth y sucursal
-- AUTH_LOGIN
-- AUTH_2FA_VERIFY
-- BRANCH_SELECT
+Agenda:
+- AGENDA_VER
+- AGENDA_CREAR
+- AGENDA_EDITAR
+- AGENDA_CANCELAR
+- AGENDA_CHECKIN
+- AGENDA_INICIAR_ATENCION
+- AGENDA_OVERRIDE_NO_SOLAPE (SENSIBLE, reason required)
 
-### Usuarios y configuracion
-- USER_VIEW
-- USER_CREATE
-- USER_UPDATE
-- USER_BLOCK
-- ROLE_ASSIGN
-- TAX_RATE_UPDATE
+CRM:
+- CRM_CLIENTE_VER
+- CRM_CLIENTE_EDITAR
+- CRM_PACIENTE_VER
+- CRM_PACIENTE_EDITAR
 
-### Agenda y pacientes
-- APPOINTMENT_VIEW
-- APPOINTMENT_CREATE
-- APPOINTMENT_RESCHEDULE
-- APPOINTMENT_CANCEL
-- APPOINTMENT_CHECKIN
-- CLIENT_VIEW
-- CLIENT_CREATE
-- CLIENT_UPDATE
-- PET_VIEW
-- PET_CREATE
-- PET_UPDATE
+Clínica:
+- CLINICA_ATENCION_VER
+- CLINICA_ATENCION_CREAR
+- CLINICA_ATENCION_EDITAR
+- CLINICA_ATENCION_CERRAR
+- CLINICA_REABRIR_ATENCION (SENSIBLE, reason required)
+- CLINICA_ADJUNTOS_GESTIONAR
 
-### Historia clinica
-- SOAP_VIEW
-- SOAP_EDIT
-- SOAP_CLOSE
-- SOAP_REOPEN
-- SOAP_ATTACH_FILE
+Servicios/Catálogos:
+- CATALOGO_VER
+- CATALOGO_EDITAR
+- PRECIO_CAMBIAR (SENSIBLE, reason required)
 
-### Facturacion
-- INVOICE_VIEW
-- INVOICE_ISSUE
-- INVOICE_VOID
+Facturación:
+- FACTURACION_VER
+- FACTURACION_CREAR
+- FACTURACION_PAGOS_REGISTRAR
+- FACTURACION_ANULAR (SENSIBLE, reason required)
+- FACTURACION_EXPORTAR
 
-### Inventario
-- INVENTORY_VIEW
-- INVENTORY_ADJUST
-- INVENTORY_COST_OVERRIDE
-- BOM_MANAGE
+Inventario:
+- INVENTARIO_VER
+- INVENTARIO_EDITAR_PRODUCTO
+- INVENTARIO_MOVIMIENTOS_VER
+- INVENTARIO_INGRESO
+- INVENTARIO_EGRESO
+- INVENTARIO_AJUSTE_MANUAL (SENSIBLE, reason required)
+- INVENTARIO_OVERRIDE_STOCK_NEGATIVO (SENSIBLE, reason required)
 
-### Auditoria y reportes
-- AUDIT_VIEW
-- REPORT_VIEW
+Reportes:
+- REPORTES_VER
+- REPORTES_EXPORTAR
 
-## Matriz rol -> permisos
+Admin/Config:
+- USUARIOS_GESTIONAR
+- CONFIG_IVA_EDITAR (SENSIBLE, solo SUPERADMIN, reason required)
+- AUDITORIA_VER
+
+## 3) Matriz rol → permisos (mínimo)
+
 | Permiso | SUPERADMIN | ADMIN | RECEPCION | VETERINARIO |
-|---|---|---|---|---|
-| AUTH_LOGIN | X | X | X | X |
-| AUTH_2FA_VERIFY | X | X |  |  |
-| BRANCH_SELECT | X | X | X | X |
-| USER_VIEW | X | X |  |  |
-| USER_CREATE | X | X |  |  |
-| USER_UPDATE | X | X |  |  |
-| USER_BLOCK | X | X |  |  |
-| ROLE_ASSIGN | X | X |  |  |
-| TAX_RATE_UPDATE | X |  |  |  |
-| APPOINTMENT_VIEW | X | X | X | X |
-| APPOINTMENT_CREATE | X | X | X |  |
-| APPOINTMENT_RESCHEDULE | X | X | X | X |
-| APPOINTMENT_CANCEL | X | X | X | X |
-| APPOINTMENT_CHECKIN | X | X | X |  |
-| CLIENT_VIEW | X | X | X | X |
-| CLIENT_CREATE | X | X | X |  |
-| CLIENT_UPDATE | X | X | X |  |
-| PET_VIEW | X | X | X | X |
-| PET_CREATE | X | X | X |  |
-| PET_UPDATE | X | X | X | X |
-| SOAP_VIEW | X | X |  | X |
-| SOAP_EDIT | X | X |  | X |
-| SOAP_CLOSE | X | X |  | X |
-| SOAP_REOPEN | X | X |  | X |
-| SOAP_ATTACH_FILE | X | X |  | X |
-| INVOICE_VIEW | X | X | X | X |
-| INVOICE_ISSUE | X | X | X |  |
-| INVOICE_VOID | X | X |  |  |
-| INVENTORY_VIEW | X | X | X | X |
-| INVENTORY_ADJUST | X | X |  |  |
-| INVENTORY_COST_OVERRIDE | X | X |  |  |
-| BOM_MANAGE | X | X |  |  |
-| AUDIT_VIEW | X | X |  |  |
-| REPORT_VIEW | X | X | X | X |
+|---|:--:|:--:|:--:|:--:|
+| AGENDA_VER | ✅ | ✅ | ✅ | ✅ |
+| AGENDA_CREAR/EDITAR/CANCELAR | ✅ | ✅ | ✅ | ❌ |
+| AGENDA_CHECKIN/INICIAR_ATENCION | ✅ | ✅ | ✅ | ✅ (iniciar desde cola) |
+| AGENDA_OVERRIDE_NO_SOLAPE | ✅ | ✅ | ❌ | ❌ |
+| CRM_*_VER | ✅ | ✅ | ✅ | ✅ |
+| CRM_*_EDITAR | ✅ | ✅ | ✅ | ✅ (si se decide; v1: ✅) |
+| CLINICA_* | ✅ | ✅ | ❌ | ✅ |
+| CLINICA_REABRIR_ATENCION | ✅ | ✅ | ❌ | ✅ (si permiso otorgado) |
+| CATALOGO_EDITAR | ✅ | ✅ | ❌ | ❌ |
+| PRECIO_CAMBIAR | ✅ | ✅ | ❌ | ❌ |
+| FACTURACION_* | ✅ | ✅ | ✅ | ❌ |
+| FACTURACION_ANULAR | ✅ | ✅ | ❌ | ❌ |
+| INVENTARIO_*_VER | ✅ | ✅ | ✅ (solo ver) | ❌ |
+| INVENTARIO_EDITAR/INGRESO/EGRESO | ✅ | ✅ | ❌ | ❌ |
+| INVENTARIO_AJUSTE_MANUAL | ✅ | ✅ | ❌ | ❌ |
+| INVENTARIO_OVERRIDE_STOCK_NEGATIVO | ✅ | ✅ | ❌ | ❌ |
+| REPORTES_VER/EXPORTAR | ✅ | ✅ | ✅ | ✅ (solo lectura) |
+| CONFIG_IVA_EDITAR | ✅ | ❌ | ❌ | ❌ |
+| AUDITORIA_VER | ✅ | ✅ | ❌ | ❌ |
+| USUARIOS_GESTIONAR | ✅ | ✅ | ❌ | ❌ |
 
-## Acciones sensibles (reason required)
-- `SOAP_REOPEN`
-- `INVOICE_VOID`
-- `INVENTORY_ADJUST`
-- `INVENTORY_COST_OVERRIDE`
-- `ROLE_ASSIGN` hacia roles de alto privilegio
-- `TAX_RATE_UPDATE`
+## 4) Acciones sensibles (reason required)
+- AGENDA_OVERRIDE_NO_SOLAPE
+- CLINICA_REABRIR_ATENCION
+- PRECIO_CAMBIAR
+- FACTURACION_ANULAR
+- INVENTARIO_AJUSTE_MANUAL
+- INVENTARIO_OVERRIDE_STOCK_NEGATIVO
+- CONFIG_IVA_EDITAR
 
 <!-- EOF -->

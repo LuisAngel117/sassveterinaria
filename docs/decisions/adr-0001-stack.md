@@ -1,23 +1,24 @@
-# ADR-0001 - Stack
+# ADR-0001 — Stack técnico
 
 ## Contexto
-Se requiere una base tecnica mantenible para una demo local-first/offline-first con backend fuerte en reglas de negocio y frontend web moderno.
+Se necesita demo local-first vendible para portafolio, con backend robusto y frontend moderno.
 
-## Decision
-- Backend: Java 21 + Spring Boot 3.x.
-- Base de datos: PostgreSQL 17.
-- Migraciones: Flyway (version compatible con Postgres 17).
-- Frontend: Next.js + TypeScript + Tailwind + shadcn/ui.
-- Contrato API: OpenAPI + errores RFC 7807.
+## Decisión
+- Backend: Java 21 + Spring Boot + Spring Security + JPA
+- DB: Postgres 17
+- Migraciones: Flyway (recomendado 10.20.1+)
+- API: OpenAPI/Swagger
+- Frontend: Next.js (TypeScript) + Tailwind + shadcn/ui
+- Zona horaria: America/Guayaquil
+- UI: Español
+- Código: Inglés
 
 ## Consecuencias
-- Estandar robusto y conocido para evolucion futura.
-- Curva inicial mayor que stacks minimalistas.
-- Requiere disciplina de versionado y migraciones.
+- Local-first real: Postgres instalable local, sin Docker obligatorio al inicio.
+- Compatibilidad Flyway/Postgres debe verificarse por versión.
 
 ## Alternativas descartadas
-- Node.js full-stack monolitico: mas rapido al inicio, menor separacion de capas para reglas complejas.
-- PHP/Laravel: valida, pero menos alineada al objetivo tecnico del repositorio.
+- Docker-first desde inicio (a futuro, no ahora).
 
 ## Fecha
 2026-02-10

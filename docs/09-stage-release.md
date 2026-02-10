@@ -1,29 +1,23 @@
-# 09 - Stage/Release (futuro online)
+# 09 — Stage/Release (futuro online)
 
-## Que cambia al ir a online
-- Separacion de ambientes (dev, stage, prod).
-- Gestion de secretos y rotacion fuera de codigo.
-- Endurecimiento de CORS, TLS y politicas de red.
-- Monitoreo y alertas centralizadas.
+## 1) Qué cambia al ir online
+- CORS por dominios reales
+- HTTPS obligatorio
+- Secrets en vault/CI
+- Storage de adjuntos en servicio (S3 u otro) — no local
 
-## Feature flags (online-only)
-- Integraciones externas (mensajeria, pagos, laboratorios).
-- Sincronizacion remota.
-- Analitica extendida.
+## 2) Online-only
+- Recordatorios: integración email/WhatsApp/SMS (feature flag)
+- SRI e-factura real (fuera v1)
 
-## Checklist stage
-1. Migraciones aplicadas sin drift.
-2. Variables de entorno validadas.
-3. Smoke test completo en stage.
-4. Auditoria y permisos validados con casos negativos.
-5. Plan de rollback documentado.
+## 3) Feature flags (concepto)
+- `REMINDERS_ENABLED` (default false)
+- `SRI_EINVOICE_ENABLED` (default false)
 
-## Evidencia minima de release
-- Commit/tag de release.
-- Output de smoke y pruebas clave.
-- Actualizacion de `status/log/changelog/rtm`.
-
-## Criterio de bloqueo
-Si falla seguridad, scoping o auditoria, se bloquea release hasta resolver.
+## 4) Checklist stage (TBD)
+- Deploy pipeline
+- DB migraciones en stage
+- Smoke tests stage
+- Hardening de rate limit
 
 <!-- EOF -->

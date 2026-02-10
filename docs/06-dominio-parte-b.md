@@ -1,75 +1,131 @@
-# 06B - Dominio (modelo de datos) - Parte B
+# 06 — Dominio (B): CRM, clínica, facturación, inventario, auditoría
 
-## Estados y transiciones
+## 1) CRM
 
-### appointment.status
-| Estado | Puede pasar a | Regla |
-|---|---|---|
-| SCHEDULED | CHECKED_IN, CANCELLED, NO_SHOW | estado inicial |
-| CHECKED_IN | IN_PROGRESS, CANCELLED | check-in separado de atencion |
-| IN_PROGRESS | COMPLETED, CANCELLED | solo personal autorizado |
-| COMPLETED | CLOSED | requiere nota SOAP cerrada o justificacion |
-| CANCELLED | (final) | requiere motivo |
-| NO_SHOW | (final) | marcado por recepcion o admin |
-| CLOSED | (final) | no editable salvo reapertura con permiso |
+### Cliente
+Campos obligatorios:
+- nombre
+- cédula/RUC (sí)
+- teléfono
+- email (opcional pero recomendado)
+- dirección (opcional)
+- notas
+- tags (lista simple)
 
-### soap_note.status
-| Estado | Puede pasar a | Regla |
-|---|---|---|
-| DRAFT | CLOSED | editable por veterinario/autorizado |
-| CLOSED | REOPENED | requiere permiso + reason required |
-| REOPENED | CLOSED | se mantiene traza de reapertura |
+### Paciente/Mascota
+Campos obligatorios:
+- código_interno
+- nombre
+- especie
+- raza
+- sexo
+- fecha_nacimiento (o edad aproximada)
+- peso (kg)
+- esterilizado (bool)
+- alergias/alertas (texto)
+- antecedentes (texto)
 
-### invoice.status
-| Estado | Puede pasar a | Regla |
-|---|---|---|
-| DRAFT | ISSUED, VOID | borrador editable |
-| ISSUED | VOID, PAID | anulacion requiere motivo |
-| PAID | (final) | no editable |
-| VOID | (final) | conserva evidencia before/after |
+Regla: 1 mascota → 1 propietario (V1).
 
-## Auditoria: eventos auditables minimos
-- `auth.login_failed`
-- `auth.user_locked`
-- `appointment.created`
-- `appointment.rescheduled`
-- `appointment.cancelled`
-- `soap.closed`
-- `soap.reopened`
-- `invoice.issued`
-- `invoice.voided`
-- `inventory.adjusted`
-- `inventory.cost_override`
-- `role.changed`
+### Consentimientos/privacidad
+- Consentimiento tratamiento (sí/no) + timestamp
+- Consentimiento comunicaciones (sí/no) + timestamp
+- Nota legal: demo; no sustituye asesoría legal.
 
-## Seeds demo minimos
+## 2) Clínica (atenciones SOAP)
 
-### Sucursales
-- `branch_centro` - Clinica Centro
-- `branch_norte` - Clinica Norte
+### Atención (Encounter)
+- Puede existir sin cita (BRD-REQ-050).
+- Si existe cita asociada: referencia `appointment_id`.
 
-### Usuarios demo
-- `superadmin@demo.local` / `Demo1234!` / rol `SUPERADMIN`
-- `admin@demo.local` / `Demo1234!` / rol `ADMIN`
-- `recepcion@demo.local` / `Demo1234!` / rol `RECEPCION`
-- `vet@demo.local` / `Demo1234!` / rol `VETERINARIO`
+SOAP mínimo:
+- S: motivo, anamnesis
+- O: peso, temperatura, hallazgos
+- A: diagnóstico (texto)
+- P: tratamiento/indicaciones, recontrol
 
-Nota: credenciales demo son exclusivas de entorno local.
+### Plantillas SOAP
+- Por tipo de servicio (`service_id`).
+- Se pueden clonar/editar (admin).
 
-### Datos de negocio demo
-- 5 clientes con 1-2 mascotas cada uno.
-- 2 salas por sucursal.
-- 10 citas distribuidas en semana actual.
-- 4 servicios base con BOM asociado.
-- 12 productos con stock inicial por sucursal.
-- 3 facturas emitidas y 1 anulada (con motivo).
+### Adjuntos
+- Tipos: PDF, JPG, PNG
+- Tamaño máx: 10 MB por archivo
+- Almacenamiento local: directorio configurado (ruta en env); en DB se guarda metadata.
 
-### Flujo demo esperado (2-3 minutos)
-1. Login y seleccion de sucursal.
-2. Crear cita sin solape.
-3. Realizar check-in y cerrar SOAP.
-4. Emitir factura con IVA.
-5. Ver reflejo de consumo en inventario.
-6. Consultar evento de auditoria asociado.
+### Cierre/Reapertura
+- Cerrar bloquea edición.
+- Reapertura:
+  - Veterinario con permiso `CLINICA_REABRIR_ATENCION` + reason required
+  - Auditar before/after.
+
+## 3) Facturación
+
+### Factura (demo)
+- Asociada a atención (ideal), o manual.
+- Items:
+  - servicios (desde atención)
+  - ítems manuales (si se permite, controlado)
+- IVA:
+  - tasa configurable (default 15%)
+  - cambio solo SUPERADMIN, con auditoría before/after
+- Estados: pendiente / pagado / anulado
+
+Pagos:
+- múltiples pagos por factura (parcial)
+- método: efectivo / tarjeta / transferencia
+- mixto permitido
+
+Anulación:
+- reason required + auditoría before/after.
+
+Export:
+- CSV/PDF.
+
+## 4) Inventario
+
+Productos:
+- medicamento / insumo
+- unidad base (catálogo unidades)
+
+Stock por sucursal:
+- tabla de stock por producto + branch.
+
+Movimientos:
+- ingreso
+- egreso
+- ajuste manual (sensible)
+- consumo por atención (desde BOM)
+
+Costeo:
+- costo promedio.
+
+Stock negativo:
+- por defecto bloquea facturar/consumir si no hay stock
+- override:
+  - permiso `INVENTARIO_OVERRIDE_STOCK_NEGATIVO` + reason required + auditoría.
+
+Mínimos:
+- stock_minimo por producto/branch
+- alertas en dashboard.
+
+## 5) Auditoría
+
+Tabla AuditEvent (mínimo):
+- id (UUID)
+- actor_user_id
+- branch_id
+- action (string)
+- entity_type
+- entity_id
+- reason (nullable)
+- before_json (nullable)
+- after_json (nullable)
+- ip (nullable)
+- user_agent (nullable)
+- created_at (timestamptz)
+
+Retención demo:
+- 90 días (futuro: configurable).
 
 <!-- EOF -->

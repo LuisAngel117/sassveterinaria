@@ -1,37 +1,29 @@
-# RTM - Requirements Traceability Matrix
+# RTM — Requirements Traceability Matrix
 
 Regla:
-- Todo `BRD-REQ-###` debe mapearse a sprint(s) o quedar bloqueado con RFC.
-- Evidencia minima: commit del item que define, implementa o valida.
+- Todo `BRD-REQ-###` debe mapear a sprint(s) o RFC/BLOCKED.
+- Evidencia mínima: commit hash del sprint (y opcional link a LOG).
 
-| Requisito (ID) | Descripcion | Sprint(s) objetivo | Evidencia (commit) | Verificacion | Estado | Notas |
+| Requisito | Descripción | Sprint(s) | Evidencia (commit) | Verificación | Estado | Notas |
 |---|---|---|---|---|---|---|
-| BRD-REQ-001 | Login con usuario y password | SPR-B001, SPR-F001 | T2-docs | TBD | DOCUMENTED | Auth base |
-| BRD-REQ-002 | Lockout por intentos fallidos | SPR-B001 | T2-docs | TBD | DOCUMENTED | 4 intentos/15m |
-| BRD-REQ-003 | 2FA TOTP roles altos | SPR-B001, SPR-F001 | T2-docs | TBD | DOCUMENTED | RFC 6238 |
-| BRD-REQ-004 | JWT access/refresh | SPR-B001 | T2-docs | TBD | DOCUMENTED | Rotacion refresh |
-| BRD-REQ-005 | Seleccion de sucursal | SPR-B001, SPR-F001 | T2-docs | TBD | DOCUMENTED | Contexto activo |
-| BRD-REQ-006 | Scoping header + claim | SPR-B001 | T2-docs | TBD | DOCUMENTED | 400/403 segun caso |
-| BRD-REQ-007 | CRUD usuarios y roles | SPR-B002, SPR-F005 | T2-docs | TBD | DOCUMENTED | Admin/Superadmin |
-| BRD-REQ-008 | CRUD clientes | SPR-B003, SPR-F003 | T2-docs | TBD | DOCUMENTED | Branch-scoped |
-| BRD-REQ-009 | CRUD pacientes | SPR-B003, SPR-F003 | T2-docs | TBD | DOCUMENTED | Ligado a cliente |
-| BRD-REQ-010 | Agenda semanal por sala | SPR-B004, SPR-F002 | T2-docs | TBD | DOCUMENTED | Vista semanal |
-| BRD-REQ-011 | Slot 30m + buffer 10m | SPR-B004, SPR-F002 | T2-docs | TBD | DOCUMENTED | Configurable |
-| BRD-REQ-012 | No-solape por sala | SPR-B004 | T2-docs | TBD | DOCUMENTED | Regla dura |
-| BRD-REQ-013 | Check-in separado | SPR-B004, SPR-F002 | T2-docs | TBD | DOCUMENTED | Estado intermedio |
-| BRD-REQ-014 | Registro SOAP | SPR-B005, SPR-F004 | T2-docs | TBD | DOCUMENTED | Consulta clinica |
-| BRD-REQ-015 | Adjuntos 10MB | SPR-B005, SPR-F004 | T2-docs | TBD | DOCUMENTED | PDF/imagen |
-| BRD-REQ-016 | Reabrir SOAP con permiso | SPR-B005, SPR-F004 | T2-docs | TBD | DOCUMENTED | Reason required |
-| BRD-REQ-017 | Catalogo servicios/productos | SPR-B006, SPR-F005 | T2-docs | TBD | DOCUMENTED | Precios base |
-| BRD-REQ-018 | Factura con IVA global | SPR-B006, SPR-F005 | T2-docs | TBD | DOCUMENTED | IVA configurable |
-| BRD-REQ-019 | Anulacion factura auditada | SPR-B006, SPR-F005 | T2-docs | TBD | DOCUMENTED | Reason required |
-| BRD-REQ-020 | Inventario por sucursal | SPR-B007, SPR-F005 | T2-docs | TBD | DOCUMENTED | Kardex |
-| BRD-REQ-021 | Consumo por BOM | SPR-B007, SPR-F005 | T2-docs | TBD | DOCUMENTED | Al cerrar servicio |
-| BRD-REQ-022 | Costo promedio | SPR-B007 | T2-docs | TBD | DOCUMENTED | Recalculo en entradas |
-| BRD-REQ-023 | Override costo con permiso | SPR-B007 | T2-docs | TBD | DOCUMENTED | Auditado |
-| BRD-REQ-024 | Problem Details RFC 7807 | SPR-B001, SPR-F001 | T2-docs | TBD | DOCUMENTED | Errores consistentes |
-| BRD-REQ-025 | Auditoria acciones sensibles | SPR-B008, SPR-F005 | T2-docs | TBD | DOCUMENTED | Before/after |
-| BRD-REQ-026 | Seeds demo operables | SPR-B009, SPR-F006 | T2-docs | TBD | DOCUMENTED | Flujo 2-3 min |
-| BRD-REQ-027 | Reportes operativos minimos | SPR-B008, SPR-F006 | T2-docs | TBD | DOCUMENTED | Agenda/ventas/stock |
+| BRD-REQ-001 | Multi-sucursal + separación datos | SPR-B002, SPR-B003 | TBD | smoke/manual | NOT_PLANNED | |
+| BRD-REQ-002 | Selección sucursal + claim | SPR-B002, SPR-F001 | TBD | smoke/manual | NOT_PLANNED | |
+| BRD-REQ-003 | X-Branch-Id + validación | SPR-B002, SPR-F001 | TBD | smoke/manual | NOT_PLANNED | |
+| BRD-REQ-010 | Login JWT | SPR-B002, SPR-F001 | TBD | smoke/manual | NOT_PLANNED | |
+| BRD-REQ-011 | Refresh rotación | SPR-B002, SPR-F001 | TBD | smoke/manual | NOT_PLANNED | |
+| BRD-REQ-012 | Lockout | SPR-B002 | TBD | test/manual | NOT_PLANNED | |
+| BRD-REQ-014 | 2FA TOTP | SPR-B002, SPR-F008 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-020 | Auditoría base | SPR-B002, SPR-B010 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-030 | Salas | SPR-B003, SPR-F002 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-031 | Citas estados | SPR-B004, SPR-F002 | TBD | smoke/manual | NOT_PLANNED | |
+| BRD-REQ-033 | No-solape + buffer | SPR-B004, SPR-F002 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-040 | Clientes | SPR-B005, SPR-F003 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-050 | Atención sin cita | SPR-B006, SPR-F004 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-051 | SOAP mínimo | SPR-B006, SPR-F004 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-070 | Factura demo | SPR-B007, SPR-F005 | TBD | smoke/manual | NOT_PLANNED | |
+| BRD-REQ-071 | IVA configurable (15% default) | SPR-B007, SPR-F008 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-080 | Productos + stock | SPR-B008, SPR-F006 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-090 | Reportes mínimos | SPR-B009, SPR-F007 | TBD | manual | NOT_PLANNED | |
+| BRD-REQ-100 | Seeds demo | SPR-B003, SPR-B011, SPR-F001 | TBD | manual | NOT_PLANNED | |
 
 <!-- EOF -->

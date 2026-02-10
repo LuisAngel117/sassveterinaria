@@ -1,24 +1,19 @@
 # Definition of Done (DoD)
 
-Regla:
-- Un item no puede quedar `READY_FOR_VALIDATION` si falla DoD.
-- Si falla, registrar `DoD FAIL` en log y mantener `IN_PROGRESS` o `BLOCKED`.
+Un sprint NO puede quedar READY_FOR_VALIDATION si falla alguno:
 
-## Checklist DoD verificable
-1. AC del item cumplidos y documentados.
-2. Build/test aplicables en verde (o `N/A` justificado).
-3. Smoke test ejecutado con evidencia en `docs/log/log.md`.
-4. Documentacion actualizada:
-   - `docs/status/status.md`
-   - `docs/log/log.md`
-   - `docs/changelog.md`
-   - `docs/traceability/rtm.md`
-   - `docs/state/state.md`
-5. Seguridad validada en lo tocado (auth, permisos, scoping, auditoria).
-6. `pwsh -File scripts/verify/verify-docs-eof.ps1` en verde.
-7. `git status --porcelain` limpio al final.
-
-## Cierre formal
-`DONE` solo lo marca el usuario tras validacion local con evidencia.
+## Checklist DoD (verificable)
+- [ ] Todos los AC del sprint completos.
+- [ ] Incremento funcional e integrado (no “pieza suelta”).
+- [ ] Manejo de errores mínimo implementado (Problem Details) donde aplique.
+- [ ] Permisos aplicados y probados (bloqueos reales).
+- [ ] Auditoría aplicada en acciones sensibles (before/after + reason).
+- [ ] Scripts/Comandos “verdad” ejecutados o N/A justificado.
+- [ ] Smoke test definido y ejecutable.
+- [ ] Runbook actualizado si cambió operación local.
+- [ ] LOG actualizado (append-only) con comandos y outputs o placeholders.
+- [ ] STATUS actualizado con estado READY_FOR_VALIDATION y evidencia (commit).
+- [ ] RTM actualizado si tocó/cerró BRD-REQ-###.
+- [ ] state snapshot actualizado (próximo sprint recomendado).
 
 <!-- EOF -->

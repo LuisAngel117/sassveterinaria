@@ -1,20 +1,18 @@
-# ADR-0005 - Auditoria
+# ADR-0005 — Auditoría con before/after en acciones sensibles
 
 ## Contexto
-El valor vendible depende de trazabilidad de acciones sensibles (clinicas, financieras y de inventario).
+Trazabilidad y control son parte de “vendible”.
 
-## Decision
-- Auditar acciones sensibles con evento estructurado.
-- Guardar actor, entidad, accion, timestamp, reason y before/after.
-- Retencion inicial de 90 dias en entorno demo local.
+## Decisión
+- Registrar eventos clave y acciones sensibles con:
+  - actor, branch, acción, entidad, reason, before_json, after_json, timestamp
 
 ## Consecuencias
-- Mejora investigacion y soporte frente a incidentes.
-- Incrementa volumen de datos y necesidad de filtros/reportes.
+- Coste de almacenamiento (retención demo 90 días).
+- UI debe mostrar auditoría (al menos para admin).
 
 ## Alternativas descartadas
-- Logging plano sin estructura: insuficiente para trazabilidad forense.
-- Auditoria parcial sin before/after: pierde contexto de cambio.
+- Logs de texto sin estructura (difícil evidencia).
 
 ## Fecha
 2026-02-10

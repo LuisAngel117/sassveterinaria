@@ -11,5 +11,8 @@
 - Se actualizan quality gates (DoR/DoD), RTM y state snapshot para iniciar sprints.
 - Se mantienen reglas append-only en status/log/changelog.
 - Estado de entrega: READY_FOR_VALIDATION.
+
+## 2026-02-10
+- T2: docs base detallados (brief+brd+arquitectura+ux+runbook+masters).  
 <!-- EOF -->
 

@@ -1,34 +1,34 @@
-# STATE - Snapshot de estado (entrada unica)
+# State Snapshot (entrada única)
 
 ## Resumen actual
-- Proyecto: SaaSVeterinaria.
-- Fuente de verdad: `docs/**`.
-- T1 aplicado: gobernanza base y scripts de verificacion.
-- T2 aplicado: docs base detallados (brief, BRD, arquitectura, dominio, UX, runbook, permisos, masters).
+- Proyecto: SaaSVeterinaria (demo local-first).
+- Estado docs: T2 emitida (brief+brd+arquitectura+ux+runbook+masters).
+- Sprints: aún no ejecutados; solo planes maestros listos para aceptación “tal cual”.
 
-## Decisiones cerradas vigentes
-- V1 single-tenant + multi-sucursal (branch).
-- `X-Branch-Id` obligatorio y validado contra claim en JWT.
-- Agenda: slot 30m, buffer 10m, no-solape por sala.
-- SOAP con cierre/reapertura controlada y adjuntos 10MB.
-- Facturacion interna con IVA global configurable.
-- Inventario por sucursal + BOM por servicio + costo promedio.
-- Errores RFC 7807 y 2FA TOTP RFC 6238.
+## Decisiones cerradas (ADRs)
+- Stack: `docs/decisions/adr-0001-stack.md`
+- Arquitectura modular: `docs/decisions/adr-0002-arquitectura.md`
+- Scoping branch (header+claim): `docs/decisions/adr-0003-tenancy-scoping.md`
+- Seguridad JWT+2FA: `docs/decisions/adr-0004-seguridad-auth.md`
+- Auditoría: `docs/decisions/adr-0005-auditoria.md`
+- UX principios: `docs/decisions/adr-0006-ux-principios.md`
+- Walking skeleton: `docs/decisions/adr-0007-walking-skeleton.md`
 
-## Estado de ejecucion
-Ver `docs/status/status.md`.
+## Requerimientos cerrados vs pendientes
+- Cerrados: ninguno (aún no hay implementación).
+- Pendientes: todos los BRD-REQ-### en `docs/02-brd.md`.
 
-## Proximo paso recomendado
-- Iniciar SPR-B001 (walking skeleton backend auth + scoping + agenda minima).
-- En paralelo, preparar SPR-F001 para login, 2FA y seleccion de sucursal.
+## Estado tandas/sprints
+- Ver `docs/status/status.md`.
 
-## Riesgos y bloqueos
-- Sin implementacion de codigo aun (riesgo tecnico esperado en fase documental).
-- Pendiente validar decisiones con primer vertical slice funcional.
+## Próximo paso recomendado
+1) Aceptar plan maestro BACK “tal cual” en conversación BACK.
+2) Generar sprints backend detallados (SPR-B001 en adelante).
+3) Ejecutar backend hasta tener handoff real.
+4) Iniciar conversación FRONT con handoff, aceptar master FRONT y generar sprints FRONT.
 
-## Ultima actualizacion
-- Fecha: 2026-02-10
-- Item: T2
-- Estado: READY_FOR_VALIDATION
+## Riesgos/bloqueos
+- Riesgo: inventar estructura repo/paths/comandos. Mitigación: DoR y Runbook marcan TBD donde no hay certeza.
+- Riesgo: piezas sueltas. Mitigación: DoD exige vertical slice.
 
 <!-- EOF -->

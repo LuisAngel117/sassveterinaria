@@ -1,21 +1,17 @@
-# ADR-0002 - Arquitectura
+# ADR-0002 — Arquitectura monolito modular
 
 ## Contexto
-El dominio mezcla agenda, clinica, facturacion e inventario; si no se separan modulos y capas, la complejidad crece rapidamente.
+Evitar piezas sueltas y facilitar trazabilidad.
 
-## Decision
-- Adoptar monolito modular en backend.
-- Separar capas: dominio, aplicacion, infraestructura, API.
-- Limitar acoplamiento entre modulos por contratos explicitos.
+## Decisión
+Usar monolito modular en backend con módulos por dominio (auth/agenda/crm/clinical/billing/inventory/reports/audit).
 
 ## Consecuencias
-- Mejor mantenibilidad y pruebas por modulo.
-- Mayor disciplina en diseno y fronteras.
-- Facilita evolucion a servicios separados en etapas futuras si fuera necesario.
+- Menos complejidad de despliegue.
+- Mejor consistencia transaccional.
 
 ## Alternativas descartadas
-- Microservicios tempranos: sobrecosto operativo sin necesidad en V1.
-- Monolito anemico sin fronteras: rapido al inicio pero fragil a mediano plazo.
+- Microservicios (sobrecoste para demo).
 
 ## Fecha
 2026-02-10
