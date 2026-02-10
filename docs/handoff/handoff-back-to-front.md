@@ -1,16 +1,34 @@
-# Handoff Back to Front
+# Handoff Backend -> Frontend (se llena con backend REAL implementado)
 
-## Contratos minimos esperados
-- Contexto de tenant por request.
-- Entidades base: usuarios, pacientes, citas, catalogos.
-- Errores con codigo, mensaje y accion sugerida.
+Regla:
+- Este documento NO se inventa.
+- Se actualiza solo basado en el backend implementado (endpoints reales, auth real, errores reales, seeds reales).
 
-## Acuerdos
-- Versionar cambios de contrato mediante RFC.
-- Registrar breaking changes en changelog.
-- Mantener trazabilidad en RTM.
+## Resumen ejecutivo
+TBD
 
-## Estado
-Documento inicial para alinear trabajo entre capas mientras se define API formal.
+## Endpoints implementados (método, ruta, auth/scope, request/response)
+TBD
+
+## Errores estándar (Problem Details)
+TBD
+
+## Reglas de negocio realmente implementadas
+TBD
+
+## Seeds/demo reales (usuarios, credenciales demo, branches)
+TBD
+
+## Variables de entorno reales
+TBD
+
+## Runbook backend (pasos reales)
+TBD
+
+## Smoke scripts disponibles
+TBD
+
+## Estado por sprint (DONE/APROBADO vs READY_FOR_VALIDATION)
+TBD
 
 <!-- EOF -->

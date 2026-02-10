@@ -1,22 +1,25 @@
-# sassveterinaria
+# SaaSVeterinaria (demo local-first)
 
-Repositorio base para una plataforma SaaS de gestion veterinaria.
+Demo vendible en local para portafolio:
+- Agenda/turnos + flujo “crear cita → atender → cerrar → facturar”
+- Clientes y pacientes/mascotas
+- Historia clínica SOAP con plantillas
+- Facturación interna + pagos
+- Inventario básico con consumo por servicio (BOM)
+- Reportes mínimos
+- Seguridad (JWT access/refresh + 2FA TOTP para admin/superadmin)
+- Auditoría before/after en acciones sensibles
 
-## Estado
-- Fase actual: T1 (bootstrap de gobernanza docs/scripts).
-- Estado de validacion: `READY_FOR_VALIDATION`.
+## Fuente de verdad
+Toda la especificación y metodología vive en `docs/**`.
+La conversación NO es fuente de verdad.
 
-## Estructura inicial
-- `docs/`: gobernanza, arquitectura, seguridad, dominio, UX, runbooks y trazabilidad.
-- `scripts/verify/`: validadores de integridad documental.
+## Preflight (docs)
+Ejecutar desde PowerShell:
+- pwsh -File scripts/verify/preflight.ps1
 
-## Comandos de validacion
-```powershell
-pwsh -File scripts/verify/preflight.ps1
-```
-
-## Referencias rapidas
-- Indice maestro: `docs/00-indice.md`
-- Estado de tareas: `docs/status/status.md`
-- Log append-only: `docs/log/log.md`
-- Trazabilidad: `docs/traceability/rtm.md`
+## Estado del proyecto
+Ver:
+- docs/state/state.md
+- docs/status/status.md
+- docs/log/log.md

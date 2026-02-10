@@ -1,36 +1,51 @@
-$ErrorActionPreference = 'Stop'
+# Verifica que TODOS los .md bajo docs/** terminan EXACTO con "<!-- EOF -->"
+# Linux-friendly: evita truncado accidental y fuerza consistencia.
+# Exit 0 = OK, Exit 1 = FAIL
 
-$repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
-$docsPath = Join-Path $repoRoot 'docs'
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
 
-if (-not (Test-Path -LiteralPath $docsPath)) {
-  Write-Error "No existe la carpeta docs en: $docsPath"
+param(
+  [Parameter(Mandatory = $false)]
+  [string] $DocsRoot = "docs"
+)
+
+if (-not (Test-Path -Path $DocsRoot)) {
+  Write-Host "FAIL: No existe la carpeta '$DocsRoot'."
   exit 1
 }
 
-$docsFiles = Get-ChildItem -Path $docsPath -Recurse -File -Filter '*.md' | Sort-Object FullName
-
-if ($docsFiles.Count -eq 0) {
-  Write-Error 'No se encontraron archivos .md bajo docs/**'
+$mdFiles = Get-ChildItem -Path $DocsRoot -Recurse -File -Filter "*.md" | Sort-Object FullName
+if ($mdFiles.Count -eq 0) {
+  Write-Host "FAIL: No se encontraron archivos .md bajo '$DocsRoot'."
   exit 1
 }
 
-$invalid = @()
+$bad = @()
 
-foreach ($file in $docsFiles) {
-  $raw = [System.IO.File]::ReadAllText($file.FullName)
-  if ($raw -notmatch '<!-- EOF -->\r?\n?$') {
-    $invalid += $file.FullName
+foreach ($f in $mdFiles) {
+  $lines = Get-Content -Path $f.FullName -ErrorAction Stop
+  $lastNonEmpty = $null
+
+  foreach ($line in ($lines | ForEach-Object { $_.TrimEnd() })) {
+    if ($line -ne "") { $lastNonEmpty = $line }
+  }
+
+  if ($null -eq $lastNonEmpty) {
+    $bad += $f.FullName
+    continue
+  }
+
+  if ($lastNonEmpty -ne "<!-- EOF -->") {
+    $bad += $f.FullName
   }
 }
 
-if ($invalid.Count -gt 0) {
-  Write-Host '[FAIL] Archivos sin terminador EOF exacto:' -ForegroundColor Red
-  foreach ($path in $invalid) {
-    Write-Host " - $path"
-  }
+if ($bad.Count -gt 0) {
+  Write-Host "FAIL: Los siguientes archivos NO terminan con '<!-- EOF -->':"
+  $bad | ForEach-Object { Write-Host " - $_" }
   exit 1
 }
 
-Write-Host "[OK] $($docsFiles.Count) archivos markdown en docs/** terminan con <!-- EOF -->" -ForegroundColor Green
+Write-Host "OK: Todos los docs .md bajo '$DocsRoot' terminan con '<!-- EOF -->'."
 exit 0

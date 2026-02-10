@@ -1,16 +1,23 @@
-# ADR-0004 - Seguridad y Auth
-
-- Fecha: 2026-02-10
-- Estado: vigente
+# ADR-0004 — Seguridad (AuthN/AuthZ/2FA)
 
 ## Contexto
-El acceso de usuarios internos debe ser seguro y trazable.
+- Roles: SUPERADMIN, ADMIN, RECEPCION, VETERINARIO
+- Permisos por acción.
+- 2FA TOTP para ADMIN/SUPERADMIN.
 
-## Decision
-Implementar autenticacion fuerte y autorizacion por roles con alcance de tenant.
+## Decisión
+- JWT access (1h) + refresh (7d) con rotación.
+- Lockout por intentos fallidos: 4 intentos → lock temporal (15m v1).
+- Errores API: Problem Details (RFC 7807): https://datatracker.ietf.org/doc/html/rfc7807
+- 2FA: TOTP (RFC 6238): https://datatracker.ietf.org/doc/html/rfc6238
 
 ## Consecuencias
-- Mejora control de acceso.
-- Exige gestion formal de secretos y politicas de permisos.
+TBD
+
+## Alternativas descartadas
+TBD
+
+## Fecha
+2026-02-10
 
 <!-- EOF -->

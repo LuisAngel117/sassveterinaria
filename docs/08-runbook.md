@@ -1,21 +1,22 @@
-# 08 - Runbook
+# 08 — Runbook local (operación)
 
-## Objetivo
-Establecer operaciones minimas repetibles para ambientes de desarrollo y staging.
+## Prerrequisitos
+TBD
 
-## Verificaciones rutinarias
-- Ejecutar preflight documental.
-- Revisar estado de tareas y log.
-- Confirmar que no hay cambios sin trazabilidad.
+## DB local (Postgres 17)
+TBD
 
-## Incidencias
-- Clasificar severidad: alta, media, baja.
-- Registrar incidente y accion inmediata.
-- Dejar evidencia en log y changelog.
+## Levantar backend
+TBD
 
-## Recuperacion basica
-- Restaurar configuracion conocida.
-- Reintentar validaciones.
-- Escalar con contexto tecnico suficiente.
+## Levantar frontend
+TBD
+
+## Troubleshooting
+TBD
+
+## Scripts “verdad”
+- scripts/verify/preflight.ps1
+TBD
 
 <!-- EOF -->

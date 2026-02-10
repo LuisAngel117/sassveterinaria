@@ -1,16 +1,25 @@
-# ADR-0003 - Tenancy Scoping
-
-- Fecha: 2026-02-10
-- Estado: vigente
+# ADR-0003 — Tenancy/Scoping (single-tenant + multi-branch)
 
 ## Contexto
-El producto maneja informacion sensible de multiples clinicas.
+- V1 es single-tenant.
+- Existe multi-sucursal (branch) con aislamiento de datos.
 
-## Decision
-Aplicar scoping de tenant obligatorio en persistencia, consultas y autorizacion.
+## Decisión
+- `branch_id` va en JWT (fuente de verdad).
+- Requests branch-scoped exigen header `X-Branch-Id`.
+- Regla: header y claim deben coincidir; si no → 403.
+- Si falta header en endpoint branch-scoped → 400.
+
+Referencia de buenas prácticas multi-tenant/aislamiento:
+- https://cheatsheetseries.owasp.org/cheatsheets/Multi_Tenant_Security_Cheat_Sheet.html
 
 ## Consecuencias
-- Reduce riesgo de fuga de datos entre clinicas.
-- Incrementa validaciones necesarias en todos los modulos.
+TBD
+
+## Alternativas descartadas
+TBD
+
+## Fecha
+2026-02-10
 
 <!-- EOF -->

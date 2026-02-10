@@ -1,18 +1,12 @@
-# 07 - UX/UI Parte A
+# 07A — UX/UI vendible — Parte A
 
-## Principios
-- Claridad operacional sobre decoracion.
-- Flujos de alta frecuencia con menos pasos.
-- Mensajes de error accionables.
+## Principios UX
+TBD
 
-## Perfiles de usuario
-- Recepcion
-- Medico veterinario
-- Administracion de clinica
+## Mapa de pantallas
+TBD
 
-## Jornadas criticas
-- Crear cita en menos de 60 segundos.
-- Consultar agenda diaria sin friccion.
-- Registrar paciente nuevo de forma guiada.
+## Roles y navegación
+TBD
 
 <!-- EOF -->

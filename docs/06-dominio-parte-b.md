@@ -1,29 +1,12 @@
-# 06 - Dominio Parte B
+# 06B — Dominio (modelo de datos) — Parte B
 
-## Entidades principales
-- Tenant
-- User
-- Role
-- Appointment
-- Patient
-- Service
-- Product
+## Estados y transiciones
+TBD
 
-## Value Objects sugeridos
-- TenantId
-- UserId
-- AppointmentId
-- Money
-- TimeRange
+## Auditoría: eventos auditables
+TBD
 
-## Invariantes
-- Un usuario solo opera dentro de su tenant activo.
-- Una cita no puede quedar sin paciente asociado.
-- Un movimiento de inventario requiere actor y motivo.
-
-## Casos de uso semilla
-- Alta de tenant.
-- Alta de usuario interno.
-- Registro y consulta de cita.
+## Seeds demo mínimos
+TBD
 
 <!-- EOF -->

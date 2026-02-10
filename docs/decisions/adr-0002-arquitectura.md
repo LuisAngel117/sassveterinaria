@@ -1,16 +1,19 @@
-# ADR-0002 - Arquitectura Modular
-
-- Fecha: 2026-02-10
-- Estado: vigente
+# ADR-0002 — Arquitectura
 
 ## Contexto
-El dominio crecera por modulos y requiere aislamiento de responsabilidades.
+TBD
 
-## Decision
-Adoptar arquitectura modular por dominio con capas explicitas.
+## Decisión
+- Monolito modular (backend) con capas claras.
+- Separación fuerte de dominio vs aplicación vs infraestructura.
 
 ## Consecuencias
-- Mejor mantenibilidad.
-- Requiere disciplina de limites y contratos.
+TBD
+
+## Alternativas descartadas
+TBD
+
+## Fecha
+2026-02-10
 
 <!-- EOF -->

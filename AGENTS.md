@@ -1,13 +1,36 @@
-# AGENTS
+# AGENTS — Conducta obligatoria para agentes (Codex u otros)
 
-## Objetivo
-Mantener consistencia tecnica en documentacion, trazabilidad y scripts de verificacion.
+Este repo opera con “docs como fuente de verdad”.
+La conversación NO es fuente de verdad.
 
-## Reglas operativas
-- Trabajar en rama `main` hasta definir flujo de ramas en `docs/04-convenciones.md`.
-- Antes de validar cambios, ejecutar `pwsh -File scripts/verify/preflight.ps1`.
-- No cerrar tareas como `DONE` en `docs/status/status.md`; usar `READY_FOR_VALIDATION` hasta validacion manual.
-- Mantener trazabilidad en `docs/log/log.md`, `docs/changelog.md` y `docs/traceability/rtm.md`.
+## Orden mínimo de lectura (antes de tocar cualquier cosa)
+1) docs/project-lock.md
+2) docs/00-indice.md
+3) docs/state/state.md
+4) docs/status/status.md
+5) docs/log/log.md
+6) docs/quality/definition-of-ready.md y docs/quality/definition-of-done.md
+7) (si aplica) docs/sprints/spr-master-back.md o spr-master-front.md
+8) Sprint actual (docs/sprints/<SPR-XXX>.md)
+9) RFC/ADR relacionados (si el sprint los referencia)
 
-## Cobertura actual
-- Esta base T1 crea el marco de gobernanza, control de calidad documental y decision records.
+## Reglas duras (no negociables)
+- NO inventar requisitos, rutas, scripts, usuarios git, comandos ni “supuestos”.
+- NO tocar archivos fuera del scope (lista explícita del sprint o tanda).
+- Sprints son INMUTABLES: no editarlos. Cambios solo por RFC/ADR/CHANGELOG.
+- LOG es append-only: nunca reescribir entradas.
+- DONE/APROBADO solo lo marca el usuario tras validación local con evidencia (en LOG).
+- Mantener consistencia Linux: nombres sin espacios, case consistente.
+
+## Quality gates (DoR/DoD)
+- Antes de iniciar un sprint: validar DoR (docs/quality/definition-of-ready.md). Si falla → BLOCKED y detener.
+- Antes de dejar READY_FOR_VALIDATION: validar DoD (docs/quality/definition-of-done.md). Si falla → DoD FAIL y detener o dejar IN_PROGRESS según el sprint.
+
+## Scripts “verdad” (cuando existan)
+- scripts/verify/preflight.ps1 (siempre antes y después de tandas/sprints de docs)
+- scripts/verify/verify-docs-eof.ps1 (parte del preflight)
+
+## Formato de reporte (Codex)
+Codex debe responder con [CODEX-REPORT] (ver plantilla en docs/00-indice.md).
+
+<!-- Nota: EOF obligatorio solo para docs/** (AGENTS.md no es obligatorio). -->

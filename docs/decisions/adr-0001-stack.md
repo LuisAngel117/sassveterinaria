@@ -1,16 +1,27 @@
-# ADR-0001 - Stack Base
-
-- Fecha: 2026-02-10
-- Estado: vigente
+# ADR-0001 — Stack
 
 ## Contexto
-Se requiere una base tecnica mantenible para un SaaS multi-tenant en fase temprana.
+- Proyecto demo local-first/offline-first.
+- Backend Java + DB Postgres + frontend Next.js.
+- Migraciones con Flyway.
 
-## Decision
-Usar stack web moderno con separacion backend/frontend y documentacion de gobierno desde T1.
+## Decisión
+- Backend: Java 21 + Spring Boot (3.x)
+- DB: PostgreSQL 17
+- Migraciones: Flyway (usar versión reciente con soporte Postgres 17)
+  - Referencias:
+    - https://documentation.red-gate.com/fd/postgresql-database-277579325.html
+    - https://www.postgresql.org/about/news/flyway-community-drift-check-released-2970/
+- Frontend: Next.js (TypeScript) + Tailwind + shadcn/ui
+- API docs: OpenAPI/Swagger
 
 ## Consecuencias
-- Facilita evolucion incremental.
-- Obliga a mantener contratos y convenciones desde el inicio.
+TBD
+
+## Alternativas descartadas
+TBD
+
+## Fecha
+2026-02-10
 
 <!-- EOF -->

@@ -1,21 +1,12 @@
-# 09 - Stage Release
+# 09 — Stage/Release (futuro online)
 
-## Objetivo
-Definir una ruta de salida controlada hacia entorno de staging.
+## Qué cambia al ir a online
+TBD
 
-## Gates minimos
-- Preflight documental exitoso.
-- RTM actualizado para cambios incluidos.
-- Estado en `READY_FOR_VALIDATION` antes de cierre.
+## Feature flags (online-only)
+TBD
 
-## Checklist de salida
-- Version y alcance identificados.
-- Riesgos conocidos documentados.
-- Plan de rollback preparado.
-
-## Evidencia
-- Referencia de commit.
-- Resultado de scripts de verificacion.
-- Registro en changelog.
+## Checklist stage
+TBD
 
 <!-- EOF -->

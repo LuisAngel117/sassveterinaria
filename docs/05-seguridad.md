@@ -1,19 +1,32 @@
-# 05 - Seguridad
+# 05 — Seguridad (AuthN/AuthZ/2FA/Auditoría)
 
-## Objetivos
-- Proteger datos clinicos y personales por tenant.
-- Reducir superficie de ataque en autenticacion y autorizacion.
-- Mantener rastro auditable de operaciones sensibles.
+## Flujos de auth
+TBD
 
-## Controles minimos
-- Autenticacion fuerte para usuarios internos.
-- Autorizacion basada en roles y alcance de tenant.
-- Cifrado en transito y cifrado de secretos en reposo.
-- Rotacion de credenciales y minima exposicion de llaves.
+## Política password y lockout
+TBD
 
-## Operacion
-- Registro de eventos de acceso y cambios criticos.
-- Procedimiento de respuesta a incidentes en runbook.
-- Revision periodica de permisos.
+## 2FA TOTP (ADMIN/SUPERADMIN)
+Referencia: https://datatracker.ietf.org/doc/html/rfc6238
+TBD
+
+## Roles vs permisos
+TBD
+
+## Acciones sensibles + reason required
+TBD
+
+## Auditoría (before/after)
+TBD
+
+## Rate limit / defensa básica
+TBD
+
+## CORS local
+TBD
+
+## Error format (Problem Details)
+Referencia: https://datatracker.ietf.org/doc/html/rfc7807
+TBD
 
 <!-- EOF -->

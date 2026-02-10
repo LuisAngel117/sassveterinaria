@@ -1,16 +1,13 @@
-# Sprint Master Front
+# Plan Maestro — FRONT (spr-master-front)
 
-## Backlog semilla
-- FR-001: Shell de aplicacion con layout base.
-- FR-002: Vista de agenda diaria.
-- FR-003: Formulario de alta de paciente.
-- FR-004: Estados vacio/carga/error/exito reutilizables.
+Regla:
+- Este master lista los sprints FRONT necesarios (sin límite) para cerrar requerimientos BRD-REQ-###.
+- Tras aceptación, cambios solo por RFC/ADR.
+- Front debe basarse en handoff real: docs/handoff/handoff-back-to-front.md
 
-## Dependencias
-- Contratos API minimos definidos.
-- Matriz de permisos para visibilidad por rol.
-
-## Estado
-Planeacion inicial posterior a T1.
+Tabla:
+| Sprint ID | Título | Qué hace (3–7 bullets) | Qué NO hace | Dependencias | BRD-REQ-### objetivo |
+|---|---|---|---|---|---|
+| TBD | TBD | TBD | TBD | TBD | TBD |
 
 <!-- EOF -->

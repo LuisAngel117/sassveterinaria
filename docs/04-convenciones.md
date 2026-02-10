@@ -1,22 +1,21 @@
-# 04 - Convenciones
+# 04 — Convenciones (normas duras)
 
-## Nomenclatura
-- Archivos markdown numerados por orden de lectura.
-- ADRs con formato `adr-000N-*`.
-- RFCs con formato `rfc-000N-*`.
+## Naming
+TBD
 
-## Flujo de trabajo
-- Estado de ejecucion en `docs/status/status.md`.
-- Registro append-only en `docs/log/log.md`.
-- Cambios relevantes en `docs/changelog.md`.
+## Formateo
+TBD
 
-## Calidad documental
-- Todos los `.md` dentro de `docs/**` deben terminar con `<!-- EOF -->`.
-- No usar estados finales en status sin validacion manual.
+## Git / commits
+TBD
 
-## Convencion de estado
-- `READY_FOR_VALIDATION`: entregable listo para revision.
-- `BLOCKED`: dependencia externa impide avance.
-- `IN_PROGRESS`: trabajo en ejecucion.
+## Branching
+TBD
+
+## Logs
+TBD
+
+## Linux strict
+TBD
 
 <!-- EOF -->

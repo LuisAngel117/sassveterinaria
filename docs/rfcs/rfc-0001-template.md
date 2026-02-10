@@ -1,31 +1,28 @@
-# RFC-0001 Template
-
-## Metadata
-- RFC ID:
-- Titulo:
-- Autor:
-- Fecha:
-- Estado: draft
+# RFC-0001 — Template
 
 ## Contexto
-Describe el problema y por que importa ahora.
+TBD
 
-## Propuesta
-Explica la solucion propuesta, alcance y limites.
+## Problema
+TBD
+
+## Opciones
+- Opción A: TBD
+- Opción B: TBD
+
+## Decisión propuesta
+TBD
 
 ## Impacto
-- Tecnico:
-- Operativo:
-- Seguridad:
-- UX:
+TBD
 
-## Riesgos y mitigacion
-Lista riesgos, severidad y plan de mitigacion.
+## Plan de implementación
+TBD
 
-## Plan de rollout
-Define etapas, guardrails y rollback.
+## Riesgos
+TBD
 
-## Validacion
-Criterios concretos para mover a `READY_FOR_VALIDATION`.
+## Archivos a cambiar
+TBD
 
 <!-- EOF -->

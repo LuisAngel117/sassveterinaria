@@ -1,16 +1,12 @@
-# Sprint Master Back
+# Plan Maestro — BACK (spr-master-back)
 
-## Backlog semilla
-- BK-001: Estructura base backend por modulos.
-- BK-002: Contexto de tenant en capa de aplicacion.
-- BK-003: Auditoria basica de eventos criticos.
-- BK-004: Contratos iniciales para agenda y pacientes.
+Regla:
+- Este master lista los sprints BACK necesarios (sin límite) para cerrar requerimientos BRD-REQ-###.
+- Tras aceptación, cambios solo por RFC/ADR.
 
-## Dependencias
-- Definicion de API en handoff back-front.
-- Confirmacion de politicas de seguridad y permisos.
-
-## Estado
-Planeacion inicial posterior a T1.
+Tabla:
+| Sprint ID | Título | Qué hace (3–7 bullets) | Qué NO hace | Dependencias | BRD-REQ-### objetivo |
+|---|---|---|---|---|---|
+| TBD | TBD | TBD | TBD | TBD | TBD |
 
 <!-- EOF -->

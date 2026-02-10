@@ -1,16 +1,21 @@
-# ADR-0007 - Walking Skeleton
-
-- Fecha: 2026-02-10
-- Estado: vigente
+# ADR-0007 — Walking Skeleton (anti “piezas sueltas”)
 
 ## Contexto
-Se necesita validar integracion minima end-to-end rapidamente.
+- Riesgo: construir por capas sin integración.
+- Objetivo: incremento usable temprano.
 
-## Decision
-Construir un walking skeleton incremental tras cerrar T1 documental.
+## Decisión
+- Incluir temprano un sprint “walking skeleton” end-to-end:
+  - Auth + selección de sucursal + crear cita + persistencia + runbook + smoke.
+- Solo después ampliar módulos.
 
 ## Consecuencias
-- Permite detectar riesgos de integracion temprano.
-- Requiere disciplina de alcance pequeno por iteracion.
+TBD
+
+## Alternativas descartadas
+TBD
+
+## Fecha
+2026-02-10
 
 <!-- EOF -->

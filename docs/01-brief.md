@@ -1,19 +1,24 @@
-# 01 - Brief
+# 01 — Brief (Contexto de negocio)
 
-## Problema
-Clinicas veterinarias pequenas y medianas operan con procesos manuales que generan errores de agenda, inventario y seguimiento clinico.
+## Visión
+TBD
 
-## Vision
-Construir un SaaS multi-tenant que unifique operacion clinica, administrativa y comunicacion con tutores.
+## Público objetivo
+TBD
 
-## Objetivos iniciales
-- Estandarizar captura de pacientes, tutores y citas.
-- Dar trazabilidad operativa desde recepcion hasta seguimiento.
-- Habilitar una base segura para evolucion de producto.
+## Alcance V1 vendible (local-first/offline-first)
+TBD
 
-## No objetivo en T1
-- Implementacion funcional de modulos de negocio.
-- Integraciones externas.
-- Automatizacion de despliegue productivo.
+## No-objetivos (V1)
+TBD
+
+## Principios
+- Local-first + offline-first real (core sin dependencias externas)
+- Flujo demo 2–3 minutos
+- Trazabilidad fuerte (RTM + LOG/STATUS)
+TBD
+
+## Glosario
+TBD
 
 <!-- EOF -->

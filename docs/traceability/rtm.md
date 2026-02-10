@@ -1,9 +1,12 @@
-# RTM - Requirements Traceability Matrix
+# RTM — Requirements Traceability Matrix
 
-| ID | Requerimiento | Fuente | Artefacto | Estado |
-|---|---|---|---|---|
-| RF-001 | Gobernanza documental base | T1 Prompt | docs/* + scripts/verify/* | READY_FOR_VALIDATION |
-| RNF-004 | Integridad documental con EOF | Convenciones | scripts/verify/verify-docs-eof.ps1 | READY_FOR_VALIDATION |
-| RNF-005 | Preflight de estructura | Runbook/Entrega | scripts/verify/preflight.ps1 | READY_FOR_VALIDATION |
+Regla:
+- Todo requisito BRD-REQ-### del BRD debe mapear a sprint(s) o quedar RFC/BLOCKED.
+- Evidencia mínima: commit hash del sprint.
+- Verificación: smoke/test/manual (con referencia al LOG).
+
+| Requisito (ID) | Descripción | Sprint(s) | Evidencia (commit) | Verificación | Estado | Notas |
+|---|---|---|---|---|---|---|
+| TBD | TBD | TBD | TBD | TBD | TBD | TBD |
 
 <!-- EOF -->

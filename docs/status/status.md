@@ -1,7 +1,17 @@
-# Status
+# STATUS — Control de tandas y sprints
 
-| ID | Fecha | Entregable | Estado | Owner | Notas |
-|---|---|---|---|---|---|
-| T1 | 2026-02-10 | Bootstrap gobernanza docs/scripts | READY_FOR_VALIDATION | codex | Validar con preflight |
+Estados permitidos:
+- NOT_STARTED
+- IN_PROGRESS
+- READY_FOR_VALIDATION
+- DONE
+- BLOCKED
+
+Regla:
+- DONE/APROBADO solo tras validación local del usuario con evidencia en docs/log/log.md
+
+| Item | Título | Estado | Evidencia (commit) | Notas |
+|---|---|---|---|---|
+| T1 | Bootstrap gobernanza docs/scripts | READY_FOR_VALIDATION | TBD | Ejecutar scripts/verify/preflight.ps1 y pegar output en LOG |
 
 <!-- EOF -->

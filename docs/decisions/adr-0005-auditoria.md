@@ -1,16 +1,21 @@
-# ADR-0005 - Auditoria
-
-- Fecha: 2026-02-10
-- Estado: vigente
+# ADR-0005 — Auditoría
 
 ## Contexto
-Se necesita trazabilidad de eventos criticos para operacion y soporte.
+- Requisito vendible: trazabilidad de cambios y acciones sensibles.
+- Before/after en anulaciones/cambios de precio/ajustes inventario/reaperturas HC.
 
-## Decision
-Registrar auditoria para operaciones sensibles con actor, accion, fecha y contexto.
+## Decisión
+- Auditoría obligatoria en acciones definidas en docs/state/state.md (resumen) y luego en docs/05-seguridad.md.
+- Retención demo: 90 días.
+- Before/after para acciones sensibles + reason required.
 
 ## Consecuencias
-- Facilita investigacion de incidentes.
-- Agrega costo de almacenamiento y observabilidad.
+TBD
+
+## Alternativas descartadas
+TBD
+
+## Fecha
+2026-02-10
 
 <!-- EOF -->

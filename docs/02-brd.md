@@ -1,26 +1,24 @@
-# 02 - BRD
+# 02 — BRD (Business Requirements) — Contrato funcional
 
-## Alcance funcional inicial
-- Gestion de clinicas (tenant).
-- Gestion de usuarios y roles.
-- Catalogo base de servicios y productos.
-- Agenda clinica y registro de interacciones.
+Regla:
+- Todo requisito relevante debe tener ID estable: BRD-REQ-001, BRD-REQ-002, ...
 
-## Requerimientos funcionales (RF)
-- RF-001: Registrar y administrar clinicas.
-- RF-002: Registrar usuarios internos por clinica.
-- RF-003: Crear y gestionar citas.
-- RF-004: Consultar historial operativo basico.
+## Módulos (tabla)
+TBD
 
-## Requerimientos no funcionales (RNF)
-- RNF-001: Seguridad por aislamiento de tenant.
-- RNF-002: Auditoria de acciones criticas.
-- RNF-003: Disponibilidad base para operacion diaria.
-- RNF-004: Documentacion y trazabilidad obligatoria.
+## Requisitos funcionales (con IDs)
+TBD
 
-## Criterios de exito de fase documental
-- Estructura de gobierno creada.
-- Verificadores de consistencia disponibles.
-- Estado y log listos para seguimiento.
+## Reglas de negocio críticas (las que rompen el sistema)
+TBD
+
+## NFR (No funcionales)
+TBD
+
+## Definition of usable local
+TBD
+
+## Definition of vendible (local)
+TBD
 
 <!-- EOF -->
