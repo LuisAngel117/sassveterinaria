@@ -176,6 +176,32 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T17:41:14-05:00
+Item: SPR-B006
+Qué se hizo:
+- Se implemento modulo de facturacion backend (`billing/**`) con facturas asociadas a `visit_id`.
+- Se agrego migracion `V6__billing_invoices.sql` (`tax_config`, `invoice`, `invoice_item`, `invoice_payment`, `invoice_counter`).
+- Se implementaron endpoints de IVA (`GET/PUT /config/tax`), facturas, items, pagos, anulacion y export CSV/PDF.
+- Se implemento export de indicaciones desde visita (`GET /api/v1/visits/{id}/instructions.pdf`).
+- Se aplicaron reglas de negocio: descuentos por item/total, estado `PENDING/PAID/VOID`, pagos parciales/mixtos, bloqueo en VOID y auditoria en acciones sensibles.
+- Se actualizaron permisos en matriz y seed de `tax_config` demo.
+- Se agrego smoke script `scripts/smoke/spr-b006.ps1`.
+- Se actualizo evidencia documental en dominio/runbook/status/RTM/state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- ./mvnw test (en backend)
+- pwsh -ExecutionPolicy Bypass -File .\scripts\verify\verify-docs-eof.ps1
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

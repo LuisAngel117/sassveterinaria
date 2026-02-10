@@ -34,6 +34,7 @@ Credenciales por defecto en `application.properties`:
   - `backend/src/main/resources/db/migration/V3__crm_clients_pets.sql`
   - `backend/src/main/resources/db/migration/V4__services_catalog.sql`
   - `backend/src/main/resources/db/migration/V5__clinical_visits.sql`
+  - `backend/src/main/resources/db/migration/V6__billing_invoices.sql`
 
 ## 5) Levantar backend (SPR-B001)
 ```powershell
@@ -148,5 +149,25 @@ Flujo que valida:
 7. `POST /api/v1/visits/{id}/attachments` (multipart PNG)
 8. `POST /api/v1/visits/{id}/close`
 9. `POST /api/v1/visits/{id}/reopen` (reason >= 10)
+
+## 13) Smoke script SPR-B006
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b006.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (superadmin)
+3. crear visita walk-in demo
+4. `GET/PUT /api/v1/config/tax`
+5. `POST /api/v1/visits/{id}/invoices`
+6. `PATCH /api/v1/invoices/{id}` (descuento total + reason)
+7. `POST /api/v1/invoices/{id}/items` y `PATCH /api/v1/invoice-items/{itemId}`
+8. `POST /api/v1/invoices/{id}/payments` (parcial CASH + parcial TRANSFER)
+9. `GET /api/v1/invoices/{id}/export.csv`
+10. `GET /api/v1/invoices/{id}/export.pdf`
+11. `GET /api/v1/visits/{id}/instructions.pdf`
+12. `POST /api/v1/invoices/{id}/void` y verificacion de bloqueo de pagos en VOID
 
 <!-- EOF -->

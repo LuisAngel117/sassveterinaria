@@ -9,6 +9,7 @@ public final class PermissionMatrix {
         "BRANCH_SELECT",
         "BRANCH_READ",
         "BRANCH_MANAGE",
+        "CONFIG_TAX_READ",
         "APPT_READ",
         "APPT_CREATE",
         "APPT_UPDATE",
@@ -31,11 +32,54 @@ public final class PermissionMatrix {
         "VISIT_UPDATE",
         "VISIT_CLOSE",
         "VISIT_REOPEN",
-        "VISIT_ATTACHMENT_UPLOAD"
+        "VISIT_ATTACHMENT_UPLOAD",
+        "INVOICE_READ",
+        "INVOICE_CREATE",
+        "INVOICE_UPDATE",
+        "INVOICE_PAY",
+        "INVOICE_VOID",
+        "INVOICE_EXPORT"
+    );
+
+    private static final List<String> SUPERADMIN_PERMISSIONS = List.of(
+        "BRANCH_SELECT",
+        "BRANCH_READ",
+        "BRANCH_MANAGE",
+        "CONFIG_TAX_READ",
+        "CONFIG_TAX_UPDATE",
+        "APPT_READ",
+        "APPT_CREATE",
+        "APPT_UPDATE",
+        "APPT_CANCEL",
+        "APPT_OVERBOOK",
+        "APPT_CHECKIN",
+        "APPT_START_VISIT",
+        "APPT_CLOSE",
+        "CLIENT_READ",
+        "CLIENT_CREATE",
+        "CLIENT_UPDATE",
+        "PET_READ",
+        "PET_CREATE",
+        "PET_UPDATE",
+        "SERVICE_READ",
+        "SERVICE_CREATE",
+        "SERVICE_UPDATE",
+        "VISIT_READ",
+        "VISIT_CREATE",
+        "VISIT_UPDATE",
+        "VISIT_CLOSE",
+        "VISIT_REOPEN",
+        "VISIT_ATTACHMENT_UPLOAD",
+        "INVOICE_READ",
+        "INVOICE_CREATE",
+        "INVOICE_UPDATE",
+        "INVOICE_PAY",
+        "INVOICE_VOID",
+        "INVOICE_EXPORT"
     );
 
     private static final Map<String, List<String>> ROLE_PERMISSIONS = Map.of(
-        "SUPERADMIN", ADMIN_PERMISSIONS,
+        "SUPERADMIN", SUPERADMIN_PERMISSIONS,
         "ADMIN", ADMIN_PERMISSIONS,
         "RECEPCION", List.of(
             "BRANCH_SELECT",
@@ -51,7 +95,10 @@ public final class PermissionMatrix {
             "PET_READ",
             "PET_CREATE",
             "PET_UPDATE",
-            "SERVICE_READ"
+            "SERVICE_READ",
+            "INVOICE_READ",
+            "INVOICE_CREATE",
+            "INVOICE_PAY"
         ),
         "VETERINARIO", List.of(
             "BRANCH_SELECT",
@@ -68,7 +115,8 @@ public final class PermissionMatrix {
             "VISIT_UPDATE",
             "VISIT_CLOSE",
             "VISIT_REOPEN",
-            "VISIT_ATTACHMENT_UPLOAD"
+            "VISIT_ATTACHMENT_UPLOAD",
+            "INVOICE_READ"
         )
     );
 

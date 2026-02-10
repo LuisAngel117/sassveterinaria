@@ -167,28 +167,61 @@
 |---|---|---|
 | id | uuid | PK |
 | branch_id | uuid | FK -> branch.id |
-| appointment_id | uuid | FK -> appointment.id nullable |
+| visit_id | uuid | FK -> visit.id |
 | invoice_number | varchar(40) | unico por branch |
 | status | varchar(20) | requerido |
-| subtotal | numeric(12,2) | requerido |
+| items_subtotal | numeric(12,2) | requerido |
+| discount_amount | numeric(12,2) | requerido (default 0.00) |
 | tax_rate | numeric(6,4) | requerido |
 | tax_amount | numeric(12,2) | requerido |
 | total | numeric(12,2) | requerido |
-| cancellation_reason | varchar(255) | nullable |
+| void_reason | varchar(255) | nullable |
+| voided_at | timestamptz | nullable |
 | created_by | uuid | FK -> app_user.id |
 | created_at | timestamptz | requerido |
+| updated_at | timestamptz | requerido |
 
 ### invoice_item
 | Campo | Tipo | Regla |
 |---|---|---|
 | id | uuid | PK |
+| branch_id | uuid | FK -> branch.id |
 | invoice_id | uuid | FK -> invoice.id |
 | item_type | varchar(20) | SERVICE, PRODUCT |
 | item_id | uuid | requerido |
 | description | varchar(200) | requerido |
 | qty | numeric(12,3) | requerido |
 | unit_price | numeric(12,2) | requerido |
+| discount_amount | numeric(12,2) | requerido (default 0.00) |
 | line_total | numeric(12,2) | requerido |
+| created_at | timestamptz | requerido |
+
+### invoice_payment
+| Campo | Tipo | Regla |
+|---|---|---|
+| id | uuid | PK |
+| branch_id | uuid | FK -> branch.id |
+| invoice_id | uuid | FK -> invoice.id |
+| method | varchar(20) | CASH, CARD, TRANSFER |
+| amount | numeric(12,2) | requerido |
+| reference | varchar(80) | nullable |
+| created_by | uuid | FK -> app_user.id |
+| created_at | timestamptz | requerido |
+
+### tax_config
+| Campo | Tipo | Regla |
+|---|---|---|
+| id | uuid | PK |
+| branch_id | uuid | FK -> branch.id (unico) |
+| tax_rate | numeric(6,4) | requerido |
+| updated_by | uuid | FK -> app_user.id |
+| updated_at | timestamptz | requerido |
+
+### invoice_counter
+| Campo | Tipo | Regla |
+|---|---|---|
+| branch_id | uuid | PK/FK -> branch.id |
+| next_number | int | requerido |
 
 ### audit_event
 | Campo | Tipo | Regla |
@@ -216,7 +249,11 @@
 - `soap_attachment.soap_note_id -> soap_note.id`
 - `inventory_balance(branch_id, product_id)` unico
 - `inventory_movement.reference_id` apunta a factura/cita/ajuste segun `reference_type`
+- `invoice.visit_id -> visit.id`
 - `invoice_item.invoice_id -> invoice.id`
+- `invoice_payment.invoice_id -> invoice.id`
+- `tax_config.branch_id` unico por sucursal
+- `invoice_counter.branch_id` correlativo por sucursal
 - `audit_event.actor_id -> app_user.id`
 
 ## Reglas de integridad
@@ -225,7 +262,7 @@
 3. `pet.internal_code` es unico por sucursal (`branch_id`).
 4. `pet.client_id` garantiza 1 mascota -> 1 propietario en v1.
 5. `soap_attachment.size_bytes <= 10485760`.
-6. `invoice.total = subtotal + tax_amount`.
+6. `invoice.total = (items_subtotal - discount_amount) + tax_amount`.
 7. `inventory_balance.qty_on_hand` no puede ser negativo salvo permiso explicito de ajuste.
 8. `invoice.status = VOID` requiere `cancellation_reason`.
 9. Eventos sensibles generan fila en `audit_event`.

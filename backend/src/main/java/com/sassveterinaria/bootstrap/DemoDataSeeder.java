@@ -9,6 +9,8 @@ import com.sassveterinaria.auth.repo.BranchRepository;
 import com.sassveterinaria.auth.repo.UserBranchRepository;
 import com.sassveterinaria.appointment.domain.ServiceEntity;
 import com.sassveterinaria.appointment.repo.ServiceRepository;
+import com.sassveterinaria.billing.domain.TaxConfigEntity;
+import com.sassveterinaria.billing.repo.TaxConfigRepository;
 import com.sassveterinaria.crm.domain.ClientEntity;
 import com.sassveterinaria.crm.domain.PetEntity;
 import com.sassveterinaria.crm.repo.ClientRepository;
@@ -30,6 +32,7 @@ public class DemoDataSeeder implements ApplicationRunner {
     private final AppUserRepository appUserRepository;
     private final UserBranchRepository userBranchRepository;
     private final ServiceRepository serviceRepository;
+    private final TaxConfigRepository taxConfigRepository;
     private final ClientRepository clientRepository;
     private final PetRepository petRepository;
     private final PasswordEncoder passwordEncoder;
@@ -39,6 +42,7 @@ public class DemoDataSeeder implements ApplicationRunner {
         AppUserRepository appUserRepository,
         UserBranchRepository userBranchRepository,
         ServiceRepository serviceRepository,
+        TaxConfigRepository taxConfigRepository,
         ClientRepository clientRepository,
         PetRepository petRepository,
         PasswordEncoder passwordEncoder
@@ -47,6 +51,7 @@ public class DemoDataSeeder implements ApplicationRunner {
         this.appUserRepository = appUserRepository;
         this.userBranchRepository = userBranchRepository;
         this.serviceRepository = serviceRepository;
+        this.taxConfigRepository = taxConfigRepository;
         this.clientRepository = clientRepository;
         this.petRepository = petRepository;
         this.passwordEncoder = passwordEncoder;
@@ -65,6 +70,7 @@ public class DemoDataSeeder implements ApplicationRunner {
         }
 
         ensureDemoServices(branch.getId());
+        ensureTaxConfig(branch.getId());
         ensureDemoClientAndPet(branch.getId());
     }
 
@@ -142,6 +148,23 @@ public class DemoDataSeeder implements ApplicationRunner {
         ensureService(branchId, "service-demo-consulta-general", "Consulta general", 30, new BigDecimal("20.00"));
         ensureService(branchId, "service-demo-vacunacion", "Vacunacion", 20, new BigDecimal("15.00"));
         ensureService(branchId, "service-demo-control-post", "Control post-operatorio", 30, new BigDecimal("18.00"));
+    }
+
+    private void ensureTaxConfig(UUID branchId) {
+        if (taxConfigRepository.findByBranchId(branchId).isPresent()) {
+            return;
+        }
+        AppUserEntity actor = appUserRepository.findByEmail("superadmin").orElse(null);
+        if (actor == null) {
+            return;
+        }
+        TaxConfigEntity config = new TaxConfigEntity();
+        config.setId(stableUuid("tax-config-" + branchId));
+        config.setBranchId(branchId);
+        config.setTaxRate(new BigDecimal("0.1500"));
+        config.setUpdatedBy(actor.getId());
+        config.setUpdatedAt(OffsetDateTime.now());
+        taxConfigRepository.save(config);
     }
 
     private void ensureService(UUID branchId, String seed, String name, int durationMinutes, BigDecimal priceBase) {

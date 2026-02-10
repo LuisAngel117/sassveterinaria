@@ -33,14 +33,14 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-027 | Adjuntos | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Upload/list/download/delete con limite por archivo y por visita, branch-scoped |
 | BRD-REQ-028 | Cerrar/reabrir | SPR-B005, SPR-F004, SPR-F008 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Cierre bloquea edicion; reapertura requiere `VISIT_REOPEN` + reason + auditoria |
 | BRD-REQ-029 | Prescripción estructurada | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Prescripciones estructuradas create/list/patch solo con visita OPEN |
-| BRD-REQ-030 | Export indicaciones | SPR-B006, SPR-F005 | TBD | manual | PLANNED | Permanece pendiente; export diferido a SPR-B006 |
-| BRD-REQ-031 | Factura interna | SPR-B006, SPR-F005 | TBD | smoke | PLANNED |  |
-| BRD-REQ-032 | IVA configurable auditado | SPR-B006, SPR-B009 | TBD | manual | PLANNED |  |
-| BRD-REQ-033 | Descuentos | SPR-B006, SPR-F005 | TBD | manual | PLANNED |  |
-| BRD-REQ-034 | Pagos mixtos/parciales | SPR-B006, SPR-F005 | TBD | manual | PLANNED |  |
-| BRD-REQ-035 | Estados factura | SPR-B006, SPR-F005 | TBD | manual | PLANNED |  |
-| BRD-REQ-036 | Anulación con reason+BA | SPR-B006, SPR-F008 | TBD | manual | PLANNED |  |
-| BRD-REQ-037 | Export factura | SPR-B006, SPR-F005 | TBD | manual | PLANNED |  |
+| BRD-REQ-030 | Export indicaciones | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Export PDF desde visita (`/visits/{id}/instructions.pdf`) |
+| BRD-REQ-031 | Factura interna | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Factura branch-scoped asociada a `visit_id` |
+| BRD-REQ-032 | IVA configurable auditado | SPR-B006, SPR-B009 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `GET/PUT /config/tax`; update solo SUPERADMIN con reason + auditoria |
+| BRD-REQ-033 | Descuentos | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Descuento por item y descuento total con validaciones |
+| BRD-REQ-034 | Pagos mixtos/parciales | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Pagos CASH/CARD/TRANSFER; suma de pagos determina estado |
+| BRD-REQ-035 | Estados factura | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Estados `PENDING`/`PAID`/`VOID` con reglas de transicion |
+| BRD-REQ-036 | Anulación con reason+BA | SPR-B006, SPR-F008 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `void` exige reason (>=10) y auditoria before/after |
+| BRD-REQ-037 | Export factura | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Export CSV y PDF de factura |
 | BRD-REQ-038 | Productos | SPR-B007, SPR-F006 | TBD | manual | PLANNED |  |
 | BRD-REQ-039 | Unidades catálogo | SPR-B007 | TBD | manual | PLANNED |  |
 | BRD-REQ-040 | Stock por sucursal | SPR-B007 | TBD | tests | PLANNED |  |
