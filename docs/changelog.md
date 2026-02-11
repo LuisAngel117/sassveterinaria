@@ -32,4 +32,9 @@
 - Se asegura credenciales demo fijas (`superadmin`, `admin`, `recepcion`, `veterinario`) con asignacion de branch por defecto.
 - Se agrega smoke end-to-end `scripts/smoke/spr-b011.ps1` para flujo core: crear cita -> atender/cerrar -> facturar/pagar.
 - Se actualiza runbook y trazabilidad (RTM/state/status/log) para dejar el sprint en `READY_FOR_VALIDATION`.
+
+## 2026-02-10 - SPR-F001 (DoR FAIL)
+- Se detecta bloqueo por ausencia de `FRONT_DIR` (no existe `package.json` de frontend en el repo).
+- Se crea RFC de bloqueo `docs/rfcs/rfc-front-missing.md`.
+- `SPR-F001` queda en `BLOCKED` en `docs/status/status.md`, sin implementacion de codigo.
 <!-- EOF -->

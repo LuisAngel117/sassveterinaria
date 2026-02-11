@@ -330,6 +330,43 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T20:39:39-05:00
+Item: SPR-F001
+Qué se hizo:
+- Se ejecuto pre-check obligatorio: arbol limpio, `user.name`/`user.email` presentes, remote validado y branch reportada.
+- Se completo la lectura obligatoria documental para el sprint FRONT.
+- Se valido DoR y fallo por falta de `FRONT_DIR` (no existe `package.json` de frontend en el repo).
+- Se creo RFC de bloqueo: `docs/rfcs/rfc-front-missing.md`.
+- Se actualizo `docs/status/status.md` a `BLOCKED` con nota `DoR FAIL`.
+
+Comandos ejecutados:
+- `git status --porcelain`
+- `git config user.name; git config user.email`
+- `git remote -v`
+- `git rev-parse --abbrev-ref HEAD`
+- `Test-Path docs/sprints/spr-f001.md`
+- `rg --files | rg \"package.json$\"`
+- `Get-ChildItem -Path . -Recurse -Filter package.json -File`
+- `pwsh -File scripts/verify/verify-docs-eof.ps1`
+- `npm run build` (N/A por DoR FAIL)
+- `npm run dev` (N/A por DoR FAIL)
+
+Output:
+- `git status --porcelain` => (vacio)
+- `git config user.name` => `LuisSigsig`
+- `git config user.email` => `luis.angel1995117@gmail.com`
+- `git remote -v` => `origin https://github.com/LuisAngel117/sassveterinaria.git` (fetch/push)
+- `git rev-parse --abbrev-ref HEAD` => `main`
+- `Test-Path docs/sprints/spr-f001.md` => `True`
+- `rg --files | rg \"package.json$\"` => sin resultados
+- `Get-ChildItem ... package.json` => sin resultados
+- `pwsh -File scripts/verify/verify-docs-eof.ps1` => `OK: Todos los docs .md bajo 'docs' terminan con '<!-- EOF -->'.`
+- `npm run build` => N/A (no existe `FRONT_DIR`/`package.json`)
+- `npm run dev` => N/A (no existe `FRONT_DIR`/`package.json`)
+
+Resultado:
+- BLOCKED (DoR FAIL: falta FRONT_DIR; ver RFC `docs/rfcs/rfc-front-missing.md`)
 <!-- EOF -->
 
 
