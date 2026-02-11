@@ -2,7 +2,7 @@
 
 ## Resumen actual (hoy)
 
-- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006 y SPR-B007 implementados en backend.
+- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006, SPR-B007 y SPR-B008 implementados en backend.
 - Agenda Core (B002) activo con no-solape/estados/check-in/bloqueos.
 - CRM base (B003) activo para clientes y mascotas.
 - Servicios (B004) activo:
@@ -29,6 +29,12 @@
   - BOM por servicio (`GET/PUT /api/v1/services/{id}/bom`) y consumo por visita (`POST /api/v1/visits/{id}/inventory/consume`)
   - validacion de stock en facturacion para `PRODUCT`, con `STOCK_OVERRIDE_INVOICE` + reason + auditoria
 - Se creó smoke script `scripts/smoke/spr-b007.ps1`.
+- Reportes y dashboard (B008) activo:
+  - endpoints branch-scoped de reportes (`/api/v1/reports/appointments|sales|top-services|inventory-consumption|frequent`)
+  - export CSV/PDF por reporte reutilizando mecanismo PDF existente (OpenPDF)
+  - endpoint `GET /api/v1/dashboard` con KPIs minimos para home
+  - validaciones de rango y parametros (`from/to`, `from<=to`, `limit<=100`)
+- Se creó smoke script `scripts/smoke/spr-b008.ps1`.
 
 ## Estado de sprints (alto nivel)
 
@@ -39,7 +45,8 @@
 - SPR-B005: READY_FOR_VALIDATION.
 - SPR-B006: READY_FOR_VALIDATION.
 - SPR-B007: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-B008 (Reportes).
+- SPR-B008: READY_FOR_VALIDATION.
+- Proximo sprint recomendado: SPR-B009 (Auditoria avanzada).
 
 ## Riesgos/bloqueos actuales
 

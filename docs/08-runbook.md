@@ -188,4 +188,22 @@ Flujo que valida:
 8. `POST /api/v1/visits/{visitId}/invoices` con item `PRODUCT` sin override y qty > stock (bloqueo esperado `insufficient_stock`)
 9. `POST /api/v1/visits/{visitId}/invoices` con override + reason (permitido y auditado)
 
+## 15) Smoke script SPR-B008
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b008.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (superadmin)
+3. `GET /api/v1/reports/appointments`
+4. `GET /api/v1/reports/sales`
+5. `GET /api/v1/reports/top-services`
+6. `GET /api/v1/reports/inventory-consumption`
+7. `GET /api/v1/reports/frequent`
+8. `GET /api/v1/dashboard`
+9. `GET /api/v1/reports/appointments/export.csv`
+10. `GET /api/v1/reports/sales/export.pdf`
+
 <!-- EOF -->

@@ -48,13 +48,13 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-042 | Mínimos/alertas | SPR-B007, SPR-F006 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `GET /api/v1/stock/low` (`on_hand_qty <= min_qty`) |
 | BRD-REQ-043 | Costeo promedio | SPR-B007 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Promedio ponderado en IN + snapshot de costo en salidas |
 | BRD-REQ-044 | Override sin stock | SPR-B007, SPR-F008 | PENDING_SPR-B007_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Bloqueo `insufficient_stock` + override auditado en facturacion |
-| BRD-REQ-045 | Reporte citas | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
-| BRD-REQ-046 | Reporte ventas | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
-| BRD-REQ-047 | Top servicios | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
-| BRD-REQ-048 | Consumo inventario | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
-| BRD-REQ-049 | Frecuentes | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
-| BRD-REQ-050 | Export reportes | SPR-B008, SPR-F007 | TBD | manual | PLANNED |  |
-| BRD-REQ-051 | Dashboard por rol | SPR-F007 | TBD | manual | PLANNED |  |
+| BRD-REQ-045 | Reporte citas | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoints `appointments` + filtros/agrupacion + export CSV/PDF implementados en backend |
+| BRD-REQ-046 | Reporte ventas | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoint `sales` + agregados de facturacion/pagos + export CSV/PDF |
+| BRD-REQ-047 | Top servicios | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoint `top-services` por `metric=count|revenue` con `limit` validado |
+| BRD-REQ-048 | Consumo inventario | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoint `inventory-consumption` sobre movimientos `CONSUME/OUT` con agrupacion |
+| BRD-REQ-049 | Frecuentes | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoint `frequent` por `dimension=client|pet` y top por conteo |
+| BRD-REQ-050 | Export reportes | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Export CSV/PDF habilitado para reportes de citas/ventas/top-services/consumo/frecuentes |
+| BRD-REQ-051 | Dashboard por rol | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `GET /api/v1/dashboard` branch-scoped con KPIs minimos |
 | BRD-REQ-052 | Auditoría obligatoria | SPR-B009 | TBD | manual | PLANNED |  |
 | BRD-REQ-053 | Before/after sensibles | SPR-B009 | TBD | manual | PLANNED |  |
 | BRD-REQ-054 | Retención 90 días | SPR-B009 | TBD | manual | PLANNED |  |

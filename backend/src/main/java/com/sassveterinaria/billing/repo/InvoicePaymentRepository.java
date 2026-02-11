@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 public interface InvoicePaymentRepository extends JpaRepository<InvoicePaymentEntity, UUID> {
     List<InvoicePaymentEntity> findByBranchIdAndInvoiceIdOrderByCreatedAtAsc(UUID branchId, UUID invoiceId);
 
+    List<InvoicePaymentEntity> findByBranchIdAndInvoiceIdIn(UUID branchId, List<UUID> invoiceIds);
+
     @Query("""
         SELECT COALESCE(SUM(p.amount), 0)
         FROM InvoicePaymentEntity p

@@ -10,4 +10,6 @@ public interface RoomRepository extends JpaRepository<RoomEntity, UUID> {
     List<RoomEntity> findByBranchIdAndIsActiveTrueOrderByNameAsc(UUID branchId);
 
     Optional<RoomEntity> findByIdAndBranchIdAndIsActiveTrue(UUID id, UUID branchId);
+
+    List<RoomEntity> findByBranchIdAndIdIn(UUID branchId, List<UUID> ids);
 }

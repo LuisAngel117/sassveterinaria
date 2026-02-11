@@ -1,6 +1,7 @@
 package com.sassveterinaria.crm.repo;
 
 import com.sassveterinaria.crm.domain.ClientEntity;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface ClientRepository extends JpaRepository<ClientEntity, UUID> {
     Optional<ClientEntity> findByIdAndBranchId(UUID id, UUID branchId);
+
+    List<ClientEntity> findByBranchIdAndIdIn(UUID branchId, List<UUID> ids);
 
     long countByBranchId(UUID branchId);
 

@@ -14,6 +14,8 @@ public interface InvoiceItemRepository extends JpaRepository<InvoiceItemEntity, 
 
     List<InvoiceItemEntity> findByBranchIdAndInvoiceIdOrderByCreatedAtAsc(UUID branchId, UUID invoiceId);
 
+    List<InvoiceItemEntity> findByBranchIdAndInvoiceIdInAndItemType(UUID branchId, List<UUID> invoiceIds, String itemType);
+
     @Query("""
         SELECT COALESCE(SUM(i.qty), 0)
         FROM InvoiceItemEntity i

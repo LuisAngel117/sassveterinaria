@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 public interface PetRepository extends JpaRepository<PetEntity, UUID> {
     Optional<PetEntity> findByIdAndBranchId(UUID id, UUID branchId);
 
+    List<PetEntity> findByBranchIdAndIdIn(UUID branchId, List<UUID> ids);
+
     List<PetEntity> findByBranchIdAndClientIdOrderByNameAsc(UUID branchId, UUID clientId);
 
     long countByBranchId(UUID branchId);

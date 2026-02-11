@@ -12,6 +12,21 @@ import org.springframework.data.repository.query.Param;
 public interface VisitRepository extends JpaRepository<VisitEntity, UUID> {
     Optional<VisitEntity> findByIdAndBranchId(UUID id, UUID branchId);
 
+    List<VisitEntity> findByBranchIdAndIdIn(UUID branchId, List<UUID> visitIds);
+
+    List<VisitEntity> findByBranchIdAndCreatedAtGreaterThanEqualAndCreatedAtLessThan(
+        UUID branchId,
+        OffsetDateTime from,
+        OffsetDateTime to
+    );
+
+    long countByBranchIdAndStatusAndCreatedAtGreaterThanEqualAndCreatedAtLessThan(
+        UUID branchId,
+        String status,
+        OffsetDateTime from,
+        OffsetDateTime to
+    );
+
     @Query("""
         SELECT v
         FROM VisitEntity v

@@ -39,6 +39,8 @@ public final class PermissionMatrix {
         "INVOICE_PAY",
         "INVOICE_VOID",
         "INVOICE_EXPORT",
+        "REPORT_READ",
+        "REPORT_EXPORT",
         "PRODUCT_READ",
         "PRODUCT_CREATE",
         "PRODUCT_UPDATE",
@@ -83,6 +85,8 @@ public final class PermissionMatrix {
         "INVOICE_PAY",
         "INVOICE_VOID",
         "INVOICE_EXPORT",
+        "REPORT_READ",
+        "REPORT_EXPORT",
         "PRODUCT_READ",
         "PRODUCT_CREATE",
         "PRODUCT_UPDATE",
@@ -112,7 +116,8 @@ public final class PermissionMatrix {
             "SERVICE_READ",
             "INVOICE_READ",
             "INVOICE_CREATE",
-            "INVOICE_PAY"
+            "INVOICE_PAY",
+            "REPORT_READ"
         ),
         "VETERINARIO", List.of(
             "BRANCH_SELECT",
@@ -132,7 +137,8 @@ public final class PermissionMatrix {
             "VISIT_ATTACHMENT_UPLOAD",
             "INVOICE_READ",
             "PRODUCT_READ",
-            "STOCK_READ"
+            "STOCK_READ",
+            "REPORT_READ"
         )
     );
 

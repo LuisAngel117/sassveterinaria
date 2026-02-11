@@ -228,6 +228,31 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T19:00:05-05:00
+Item: SPR-B008
+Qué se hizo:
+- Se implementaron endpoints branch-scoped de reportes y dashboard (`/api/v1/reports/*`, `/api/v1/dashboard`).
+- Se implementaron exportaciones CSV/PDF para reportes reutilizando OpenPDF existente en el repositorio.
+- Se agregaron DTOs y servicio de reportes, validaciones (`from/to`, `from<=to`, `limit<=100`) y respuestas Problem Details (422) para errores de validacion.
+- Se actualizaron permisos en matriz (`REPORT_READ`, `REPORT_EXPORT`) y repositorios para consultas agregadas por sucursal.
+- Se agrego smoke script `scripts/smoke/spr-b008.ps1`.
+- Se actualizo evidencia documental en runbook, status, RTM y state.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- cd backend; ./mvnw test
+- pwsh -ExecutionPolicy Bypass -File .\scripts\verify\verify-docs-eof.ps1
+- pwsh -File scripts/smoke/spr-b008.ps1 (N/A: requiere backend levantado + PostgreSQL local)
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 
