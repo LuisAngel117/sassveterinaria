@@ -124,6 +124,8 @@ export async function apiRequest<T>(
   const headers: Record<string, string> = {
     ...(options.headers ?? {}),
   };
+  const isFormDataBody =
+    typeof FormData !== "undefined" && options.body instanceof FormData;
 
   if (options.accessToken) {
     headers.Authorization = `Bearer ${options.accessToken}`;
@@ -131,14 +133,19 @@ export async function apiRequest<T>(
   if (options.branchId) {
     headers["X-Branch-Id"] = options.branchId;
   }
-  if (options.body !== undefined) {
+  if (options.body !== undefined && !isFormDataBody) {
     headers["Content-Type"] = "application/json";
   }
 
   const response = await fetch(buildUrl(path), {
     method: options.method ?? "GET",
     headers,
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
+    body:
+      options.body === undefined
+        ? undefined
+        : isFormDataBody
+          ? (options.body as FormData)
+          : JSON.stringify(options.body),
   });
 
   if (!response.ok) {
