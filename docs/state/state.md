@@ -66,6 +66,12 @@
   - transiciones de cita en UI (check-in, confirmar, iniciar atencion, cerrar, cancelar) segun permisos `APPT_*`
   - modal de motivo para sobre-cupo/cancelacion sensible cuando backend exige `reason`
   - bloqueos manuales en UI (crear/listar) via `/api/v1/room-blocks` con permiso `BRANCH_MANAGE`
+- Frontend F003 implementado:
+  - rutas `/clientes` y `/clientes/[clientId]` con flujo CRM real (clientes + mascotas)
+  - lista/busqueda de clientes y formularios crear/editar con validaciones UI minimas
+  - ficha de cliente con mascotas asociadas y formularios crear/editar mascota
+  - navegacion y acciones condicionadas por permisos (`CLIENT_*`, `PET_*`)
+  - manejo de Problem Details con mapeo de errores por campo y conflicto de codigo interno duplicado
 
 ## Estado de sprints (alto nivel)
 
@@ -82,12 +88,13 @@
 - SPR-B011: READY_FOR_VALIDATION.
 - SPR-F001: READY_FOR_VALIDATION.
 - SPR-F002: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-F003.
+- SPR-F003: READY_FOR_VALIDATION.
+- Proximo sprint recomendado: SPR-F004.
 
 ## Riesgos/bloqueos actuales
 
 - Smokes B002/B003/B004/B005/B006/B007 requieren backend corriendo con PostgreSQL local y datos seed demo.
 - La validacion funcional final (READY_FOR_VALIDATION -> DONE) depende de ejecucion local del usuario y evidencia en LOG.
-- Validar manualmente F002 con backend+DB arriba para evidenciar flujo: crear cita, conflicto, sobre-cupo, check-in y bloqueos.
+- Validar manualmente F003 con backend+DB arriba para evidenciar flujo CRM: busqueda cliente, alta cliente, alta mascota y edicion mascota.
 
 <!-- EOF -->

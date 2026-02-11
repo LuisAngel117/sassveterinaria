@@ -485,6 +485,48 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-11T12:20:00-05:00
+Item: SPR-F003
+Qué se hizo:
+- Se ejecuto pre-check obligatorio y lectura documental completa en orden para sprint FRONT.
+- Se valido DoR: PASS (dependencia `SPR-B003` en `READY_FOR_VALIDATION`, RTM base existente para BRD-REQ-016..020 y contratos CRM reales en backend/smoke).
+- Se implemento modulo CRM frontend:
+  - ruta `/clientes` con lista/busqueda y crear/editar cliente,
+  - ruta `/clientes/[clientId]` con ficha cliente y mascotas asociadas,
+  - formularios crear/editar mascota sin cambio de propietario (v1),
+  - permisos UI `CLIENT_*` y `PET_*` para navegacion y acciones,
+  - manejo de errores Problem Details con mapeo de errores de campo y conflicto `PET_INTERNAL_CODE_CONFLICT`.
+- Se extendio capa API CRM y parseo de errores API para soportar validaciones por campo.
+- Se actualizo evidencia en `docs/changelog.md`, `docs/status/status.md`, `docs/traceability/rtm.md`, `docs/state/state.md`.
+
+Comandos ejecutados:
+- `git status --porcelain`
+- `git config user.name; git config user.email`
+- `git remote -v`
+- `git rev-parse --abbrev-ref HEAD`
+- `Test-Path docs/sprints/spr-f003.md`
+- lectura obligatoria de docs (`project-lock`, `AGENTS`, indice, state, DoR/DoD, BRD, arquitectura, seguridad, dominio, UX, runbook, permisos, entrega, changelog, RTM, master FRONT, sprint, status, log, handoff)
+- `Get-Content scripts/smoke/spr-b003.ps1`
+- `npm run lint` (en `frontend/`)
+- `npm run build` (en `frontend/`)
+- `npm run dev` (en `frontend/`, ver nota)
+- `pwsh -File scripts/verify/verify-docs-eof.ps1`
+
+Output:
+- `git status --porcelain` => (vacio)
+- `git config user.name` => `LuisSigsig`
+- `git config user.email` => `luis.angel1995117@gmail.com`
+- `git remote -v` => `origin https://github.com/LuisAngel117/sassveterinaria.git` (fetch/push)
+- `git rev-parse --abbrev-ref HEAD` => `main`
+- `Test-Path docs/sprints/spr-f003.md` => `True`
+- `npm run lint` => sin errores
+- `npm run build` => build exitoso; rutas detectadas `/clientes` y `/clientes/[clientId]`
+- `npm run dev` => ERROR por lock activo de otra instancia (`.next/dev/lock`); Next intenta usar puerto 3001
+- `pwsh -File scripts/verify/verify-docs-eof.ps1` => `OK: Todos los docs .md bajo 'docs' terminan con '<!-- EOF -->'.`
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

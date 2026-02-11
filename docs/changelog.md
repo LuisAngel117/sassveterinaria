@@ -59,4 +59,12 @@
 - Se implementa manejo de conflicto de solape (`APPT_OVERLAP`) con reintento de sobre-cupo (`overbookReason`) mediante modal de motivo.
 - Se integra UI minima de bloqueos manuales (`/api/v1/room-blocks`) para crear/listar cuando existe permiso `BRANCH_MANAGE`.
 - Validacion tecnica frontend: `npm run lint` y `npm run build` OK; `npm run dev` ejecutado con timeout controlado.
+
+## 2026-02-11 - SPR-F003
+- Se implementa modulo CRM frontend con rutas `/clientes` (lista + busqueda + crear/editar cliente) y `/clientes/[clientId]` (ficha + mascotas).
+- Se integra CRUD real de clientes y mascotas contra contratos de B003 (`/api/v1/clients`, `/api/v1/clients/{id}/pets`, `/api/v1/pets/{id}`) sin inventar endpoints.
+- Se respeta matriz de permisos en UI (`CLIENT_READ/CREATE/UPDATE`, `PET_READ/CREATE/UPDATE`) para navegacion y acciones.
+- Se agrega manejo de errores Problem Details con mapeo de validaciones de campo (`errors` / `fieldErrors`) en formularios.
+- Se incorpora mensaje humano para conflicto de codigo interno duplicado (`PET_INTERNAL_CODE_CONFLICT`) y validaciones UI minimas de identificacion, email y peso.
+- Validacion tecnica frontend: `npm run lint` y `npm run build` OK; `npm run dev` falla por lock activo de otra instancia (`.next/dev/lock`).
 <!-- EOF -->

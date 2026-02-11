@@ -15,22 +15,31 @@ type ProblemDetails = {
   detail?: string;
   status?: number;
   errorCode?: string;
+  errors?: Record<string, string>;
+  fieldErrors?: Array<{ field?: string; message?: string }>;
 };
 
 export class ApiError extends Error {
   readonly status: number;
   readonly detail: string | null;
   readonly errorCode: string | null;
+  readonly validationErrors: Record<string, string> | null;
 
   constructor(
     message: string,
-    options: { status: number; detail: string | null; errorCode: string | null },
+    options: {
+      status: number;
+      detail: string | null;
+      errorCode: string | null;
+      validationErrors: Record<string, string> | null;
+    },
   ) {
     super(message);
     this.name = "ApiError";
     this.status = options.status;
     this.detail = options.detail;
     this.errorCode = options.errorCode;
+    this.validationErrors = options.validationErrors;
   }
 }
 
@@ -75,11 +84,33 @@ async function parseProblemDetails(response: Response): Promise<ProblemDetails> 
       return {};
     }
     const data = payload as ProblemDetails;
+    const validationErrors: Record<string, string> = {};
+    if (data.errors && typeof data.errors === "object") {
+      Object.entries(data.errors).forEach(([field, message]) => {
+        if (typeof message === "string") {
+          validationErrors[field] = message;
+        }
+      });
+    }
+    if (Array.isArray(data.fieldErrors)) {
+      data.fieldErrors.forEach((item) => {
+        if (!item || typeof item !== "object") {
+          return;
+        }
+        const field = typeof item.field === "string" ? item.field : "";
+        const message = typeof item.message === "string" ? item.message : "";
+        if (field && message) {
+          validationErrors[field] = message;
+        }
+      });
+    }
+
     return {
       title: data.title ?? undefined,
       detail: data.detail ?? undefined,
       status: data.status ?? undefined,
       errorCode: data.errorCode ?? undefined,
+      errors: Object.keys(validationErrors).length > 0 ? validationErrors : undefined,
     };
   } catch {
     return {};
@@ -116,6 +147,7 @@ export async function apiRequest<T>(
       status: response.status,
       detail: details.detail ?? null,
       errorCode: details.errorCode ?? null,
+      validationErrors: details.errors ?? null,
     });
   }
 

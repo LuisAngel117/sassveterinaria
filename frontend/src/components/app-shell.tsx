@@ -4,23 +4,30 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { logout } from "@/lib/api/auth";
+import { hasPermission } from "@/lib/session/permissions";
 import { clearSession } from "@/lib/session/store";
 import { SessionData } from "@/lib/session/types";
 
 type AppShellProps = {
   session: SessionData;
-  activeNav: "home" | "agenda";
+  activeNav: "home" | "agenda" | "clientes";
   children: ReactNode;
 };
 
-const NAV_ITEMS = [
+type NavItem = {
+  key: AppShellProps["activeNav"];
+  href: string;
+  label: string;
+  permission?: string;
+};
+
+const NAV_ITEMS: NavItem[] = [
   { key: "home", href: "/", label: "Inicio" },
-  { key: "agenda", href: "/agenda", label: "Agenda" },
-] as const;
+  { key: "agenda", href: "/agenda", label: "Agenda", permission: "APPT_READ" },
+  { key: "clientes", href: "/clientes", label: "Clientes", permission: "CLIENT_READ" },
+];
 
 const PLACEHOLDER_ITEMS = [
-  "Clientes",
-  "Mascotas",
   "Historia clinica",
   "Facturacion",
   "Inventario",
@@ -70,7 +77,7 @@ export function AppShell({ session, activeNav, children }: AppShellProps) {
             Navegacion
           </p>
           <ul className="space-y-2 text-sm">
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.filter((item) => !item.permission || hasPermission(session, item.permission)).map((item) => (
               <li key={item.key}>
                 <Link
                   href={item.href}
