@@ -26,4 +26,10 @@
 - Se agrega migracion `V9__security_hardening.sql` para `totp_*`, `auth_login_attempt` y `auth_2fa_challenge`.
 - Se agrega rate limit para login/refresh/reportes + header `Retry-After` en respuestas 429.
 - Se agregan pruebas `SecurityHardeningIntegrationTests` y smoke script `scripts/smoke/spr-b010.ps1`.
+
+## 2026-02-11 - SPR-B011
+- Se extiende `DemoDataSeeder` con seed demo idempotente para room, citas y visita de ejemplo (ademas de usuarios/servicios/cliente/mascota).
+- Se asegura credenciales demo fijas (`superadmin`, `admin`, `recepcion`, `veterinario`) con asignacion de branch por defecto.
+- Se agrega smoke end-to-end `scripts/smoke/spr-b011.ps1` para flujo core: crear cita -> atender/cerrar -> facturar/pagar.
+- Se actualiza runbook y trazabilidad (RTM/state/status/log) para dejar el sprint en `READY_FOR_VALIDATION`.
 <!-- EOF -->

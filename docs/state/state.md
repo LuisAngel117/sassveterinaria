@@ -2,7 +2,7 @@
 
 ## Resumen actual (hoy)
 
-- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006, SPR-B007, SPR-B008, SPR-B009 y SPR-B010 implementados en backend.
+- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006, SPR-B007, SPR-B008, SPR-B009, SPR-B010 y SPR-B011 implementados en backend.
 - Agenda Core (B002) activo con no-solape/estados/check-in/bloqueos.
 - CRM base (B003) activo para clientes y mascotas.
 - Servicios (B004) activo:
@@ -47,6 +47,10 @@
   - rate limit in-memory para login/refresh/reportes con 429 + `Retry-After`
   - pruebas `SecurityHardeningIntegrationTests` para 2FA, lockout, rate limit y permisos (403)
   - smoke script `scripts/smoke/spr-b010.ps1`
+- Seeds demo + smoke core (B011) activo:
+  - `DemoDataSeeder` idempotente ampliado con sala demo, citas demo y visita demo cerrada
+  - credenciales demo fijas y branch default para `superadmin/admin/recepcion/veterinario`
+  - smoke script `scripts/smoke/spr-b011.ps1` para flujo core E2E (cita -> atencion -> cierre -> factura -> pago)
 
 ## Estado de sprints (alto nivel)
 
@@ -60,7 +64,8 @@
 - SPR-B008: READY_FOR_VALIDATION.
 - SPR-B009: READY_FOR_VALIDATION.
 - SPR-B010: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-B011 (Seeds demo + smoke flujo core).
+- SPR-B011: READY_FOR_VALIDATION.
+- Proximo sprint recomendado: SPR-F001 (inicio FRONT).
 
 ## Riesgos/bloqueos actuales
 

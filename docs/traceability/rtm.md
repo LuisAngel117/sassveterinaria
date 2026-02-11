@@ -58,10 +58,10 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-052 | Auditoría obligatoria | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | Cobertura en auth + agenda + visitas + facturacion + inventario + config IVA |
 | BRD-REQ-053 | Before/after sensibles | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | `INVOICE_VOID`, `VISIT_REOPEN`, `STOCK_ADJUST`, `APPT_OVERBOOK`, `CONFIG_TAX_UPDATE` con reason y before/after |
 | BRD-REQ-054 | Retención 90 días | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | Purga configurable por dias (`app.audit.retention-days`, default 90) con scheduler diario |
-| BRD-REQ-055 | Seed demo | SPR-B011, SPR-F010 | TBD | smoke | PLANNED |  |
-| BRD-REQ-056 | Credenciales demo | SPR-B011, SPR-F001 | TBD | manual | PLANNED |  |
+| BRD-REQ-055 | Seed demo | SPR-B011, SPR-F010 | PENDING_SPR-B011_COMMIT_HASH | `scripts/smoke/spr-b011.ps1` + revision seed | READY_FOR_VALIDATION | Seed demo idempotente ampliado con room/citas/visita. |
+| BRD-REQ-056 | Credenciales demo | SPR-B011, SPR-F001 | PENDING_SPR-B011_COMMIT_HASH | login manual + smoke | READY_FOR_VALIDATION | Credenciales demo fijas garantizadas por seeder. |
 | BRD-REQ-057 | Runbook + scripts verdad | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | manual | READY_FOR_VALIDATION | Runbook actualizado + smoke script |
-| BRD-REQ-058 | Smoke flujo core | SPR-B011 | TBD | smoke | PLANNED |  |
+| BRD-REQ-058 | Smoke flujo core | SPR-B011 | PENDING_SPR-B011_COMMIT_HASH | `scripts/smoke/spr-b011.ps1` | READY_FOR_VALIDATION | Flujo E2E: cita -> visita -> cierre -> factura -> pago. |
 
 <!-- EOF -->
 

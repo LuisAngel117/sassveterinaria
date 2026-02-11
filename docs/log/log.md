@@ -306,6 +306,30 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T19:59:53-05:00
+Item: SPR-B011
+Qué se hizo:
+- Se extendio `DemoDataSeeder` para seed demo idempotente con room, 2 citas y 1 visita de ejemplo, manteniendo usuarios/servicios/cliente/mascota demo.
+- Se aseguraron credenciales demo fijas (`superadmin`, `admin`, `recepcion`, `veterinario`) y branch default.
+- Se creo `scripts/smoke/spr-b011.ps1` para flujo core end-to-end (cita -> atencion -> cierre -> factura -> pago).
+- Se actualizo runbook y trazabilidad documental (status, RTM, state, changelog).
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- cd backend; ./mvnw test
+- pwsh -ExecutionPolicy Bypass -File .\scripts\verify\verify-docs-eof.ps1
+- ./mvnw spring-boot:run (N/A: no ejecutado en esta tanda; requiere backend interactivo con DB local para prueba manual)
+- pwsh -File scripts/smoke/spr-b011.ps1 (N/A: no ejecutado en esta tanda; requiere backend levantado)
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

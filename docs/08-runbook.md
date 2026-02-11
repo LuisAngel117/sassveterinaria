@@ -40,6 +40,7 @@ Credenciales por defecto en `application.properties`:
 - `APP_SECURITY_RATE_REFRESH_WINDOW_SECONDS` (default `900`)
 - `APP_SECURITY_RATE_REPORT_LIMIT` (default `20`)
 - `APP_SECURITY_RATE_REPORT_WINDOW_SECONDS` (default `300`)
+- `APP_DEMO_SEED_ENABLED` (default `true`)
 
 ## 4) Migraciones
 - Flyway corre al iniciar backend.
@@ -60,6 +61,10 @@ cd backend
 ./mvnw test
 ./mvnw spring-boot:run
 ```
+
+Seed demo:
+- El seeding demo se ejecuta al iniciar backend con `APP_DEMO_SEED_ENABLED=true` (default).
+- Para deshabilitarlo localmente: `APP_DEMO_SEED_ENABLED=false`.
 
 Healthcheck:
 ```powershell
@@ -112,6 +117,11 @@ Datos servicios demo:
 
 Branch demo:
 - `CENTRO` / `Sucursal Centro`
+
+Agenda/clinica demo:
+- 1 sala activa (`Consultorio 1`)
+- 2 citas demo (1 cerrada + 1 reservada)
+- 1 visita demo cerrada vinculada a cita
 
 ## 9) Smoke script SPR-B003
 Con backend corriendo:
@@ -249,5 +259,24 @@ Flujo que valida:
 3. lockout por intentos fallidos (4 fallos + locked)
 4. rate limit login (flood -> 429)
 5. 2FA admin: setup + enable + login challenge + completar 2FA (si aplica)
+
+## 18) Smoke script SPR-B011
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b011.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. `POST /api/v1/auth/login` (recepcion)
+3. `GET /api/v1/me` y resolución dinámica de branch
+4. `POST /api/v1/appointments` (crear cita)
+5. `POST /api/v1/auth/login` (veterinario)
+6. `POST /api/v1/appointments/{id}/confirm` + `/start`
+7. `POST/PATCH/POST /api/v1/visits` (crear, completar SOAP mínimo, cerrar)
+8. `POST /api/v1/appointments/{id}/close`
+9. `POST /api/v1/visits/{id}/invoices`
+10. `POST /api/v1/invoices/{id}/payments`
+11. `GET /api/v1/invoices/{id}` con estado final `PAID`
 
 <!-- EOF -->
