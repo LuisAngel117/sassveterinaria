@@ -508,6 +508,19 @@ public class InventoryService {
         movement.setCreatedBy(principal.getUserId());
         movement.setCreatedAt(OffsetDateTime.now());
         StockMovementEntity saved = stockMovementRepository.save(movement);
+        auditService.recordEvent(
+            principal,
+            "STOCK_MOVE_CREATE",
+            "stock_movement",
+            saved.getId(),
+            Map.of(
+                "type", saved.getType(),
+                "productId", saved.getProductId(),
+                "qty", saved.getQty(),
+                "unitCost", saved.getUnitCost(),
+                "reason", saved.getReason()
+            )
+        );
 
         if (type == StockMovementType.ADJUST) {
             Map<String, Object> before = new LinkedHashMap<>();
@@ -519,7 +532,7 @@ public class InventoryService {
             after.put("onHandQty", newQty);
             after.put("avgUnitCost", newAvg);
             after.put("qtyDelta", delta);
-            auditService.record(
+            auditService.recordSensitiveEvent(
                 principal,
                 "STOCK_ADJUST",
                 "product_stock",

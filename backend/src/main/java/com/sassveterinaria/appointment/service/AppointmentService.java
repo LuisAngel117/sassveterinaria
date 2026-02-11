@@ -82,11 +82,18 @@ public class AppointmentService {
         entity.setOverbookReason(overbookResult.overbookReason());
 
         AppointmentEntity saved = appointmentRepository.save(entity);
+        auditService.recordEvent(
+            principal,
+            "APPT_CREATE",
+            "appointment",
+            saved.getId(),
+            buildSnapshot(saved)
+        );
 
         if (saved.isOverbook()) {
             Map<String, Object> afterPayload = buildSnapshot(saved);
             afterPayload.put("overbookReason", saved.getOverbookReason());
-            auditService.record(
+            auditService.recordSensitiveEvent(
                 principal,
                 "APPT_OVERBOOK",
                 "appointment",
@@ -162,9 +169,16 @@ public class AppointmentService {
         appointment.setOverbookReason(overbookResult.overbookReason());
 
         AppointmentEntity saved = appointmentRepository.save(appointment);
+        auditService.recordEvent(
+            principal,
+            "APPT_UPDATE",
+            "appointment",
+            saved.getId(),
+            buildSnapshot(saved)
+        );
 
         if (saved.isOverbook()) {
-            auditService.record(
+            auditService.recordSensitiveEvent(
                 principal,
                 "APPT_OVERBOOK",
                 "appointment",
@@ -182,21 +196,27 @@ public class AppointmentService {
     public AppointmentResponse confirm(AuthPrincipal principal, UUID appointmentId) {
         AppointmentEntity appointment = requireAppointment(principal, appointmentId);
         requireTransition(appointment, AppointmentStatus.RESERVED, AppointmentStatus.CONFIRMED);
-        return toResponse(appointmentRepository.save(appointment));
+        AppointmentEntity saved = appointmentRepository.save(appointment);
+        auditService.recordEvent(principal, "APPT_CONFIRM", "appointment", saved.getId(), buildSnapshot(saved));
+        return toResponse(saved);
     }
 
     @Transactional
     public AppointmentResponse start(AuthPrincipal principal, UUID appointmentId) {
         AppointmentEntity appointment = requireAppointment(principal, appointmentId);
         requireTransition(appointment, AppointmentStatus.CONFIRMED, AppointmentStatus.IN_ATTENTION);
-        return toResponse(appointmentRepository.save(appointment));
+        AppointmentEntity saved = appointmentRepository.save(appointment);
+        auditService.recordEvent(principal, "APPT_START", "appointment", saved.getId(), buildSnapshot(saved));
+        return toResponse(saved);
     }
 
     @Transactional
     public AppointmentResponse close(AuthPrincipal principal, UUID appointmentId) {
         AppointmentEntity appointment = requireAppointment(principal, appointmentId);
         requireTransition(appointment, AppointmentStatus.IN_ATTENTION, AppointmentStatus.CLOSED);
-        return toResponse(appointmentRepository.save(appointment));
+        AppointmentEntity saved = appointmentRepository.save(appointment);
+        auditService.recordEvent(principal, "APPT_CLOSE", "appointment", saved.getId(), buildSnapshot(saved));
+        return toResponse(saved);
     }
 
     @Transactional
@@ -209,25 +229,31 @@ public class AppointmentService {
         }
 
         boolean sensitiveCancellation = currentStatus == AppointmentStatus.CONFIRMED || currentStatus == AppointmentStatus.IN_ATTENTION;
-        if (sensitiveCancellation && isBlank(reason)) {
-            throw reasonRequired("La cancelacion desde CONFIRMED o IN_ATTENTION requiere reason.");
-        }
+        String normalizedReason = sensitiveCancellation ? normalizeSensitiveReason(reason) : normalizeOptionalReason(reason);
 
         Map<String, Object> beforePayload = buildSnapshot(appointment);
         appointment.setStatus(AppointmentStatus.CANCELLED.name());
-        appointment.setReason(reason);
+        appointment.setReason(normalizedReason);
         appointment.setOverbook(false);
         appointment.setOverbookReason(null);
         AppointmentEntity saved = appointmentRepository.save(appointment);
 
         if (sensitiveCancellation) {
-            auditService.record(
+            auditService.recordSensitiveEvent(
                 principal,
-                "APPT_CANCEL_SENSITIVE",
+                "APPT_CANCEL",
                 "appointment",
                 saved.getId(),
-                reason,
+                normalizedReason,
                 beforePayload,
+                buildSnapshot(saved)
+            );
+        } else {
+            auditService.recordEvent(
+                principal,
+                "APPT_CANCEL",
+                "appointment",
+                saved.getId(),
                 buildSnapshot(saved)
             );
         }
@@ -244,7 +270,9 @@ public class AppointmentService {
         }
 
         appointment.setCheckedInAt(OffsetDateTime.now());
-        return toResponse(appointmentRepository.save(appointment));
+        AppointmentEntity saved = appointmentRepository.save(appointment);
+        auditService.recordEvent(principal, "APPT_CHECKIN", "appointment", saved.getId(), buildSnapshot(saved));
+        return toResponse(saved);
     }
 
     private OverbookResult resolveOverlap(
@@ -283,11 +311,7 @@ public class AppointmentService {
             );
         }
 
-        if (isBlank(overbookReason)) {
-            throw reasonRequired("Sobre-cupo requiere reason.");
-        }
-
-        return new OverbookResult(true, overbookReason.trim());
+        return new OverbookResult(true, normalizeSensitiveReason(overbookReason));
     }
 
     private AppointmentEntity requireAppointment(AuthPrincipal principal, UUID appointmentId) {
@@ -384,6 +408,22 @@ public class AppointmentService {
 
     private boolean isBlank(String value) {
         return value == null || value.isBlank();
+    }
+
+    private String normalizeOptionalReason(String value) {
+        if (value == null) {
+            return null;
+        }
+        String normalized = value.trim();
+        return normalized.isEmpty() ? null : normalized;
+    }
+
+    private String normalizeSensitiveReason(String value) {
+        String normalized = normalizeOptionalReason(value);
+        if (normalized == null || normalized.length() < 10) {
+            throw reasonRequired("reason es requerido (minimo 10 caracteres).");
+        }
+        return normalized;
     }
 
     private Map<String, Object> buildSnapshot(AppointmentEntity appointment) {

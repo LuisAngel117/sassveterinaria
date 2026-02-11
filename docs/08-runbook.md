@@ -25,6 +25,8 @@ Credenciales por defecto en `application.properties`:
 - `STORAGE_DIR` (default `storage`, usado por adjuntos de visitas)
 - `APP_VISIT_ATTACHMENTS_MAX_SIZE_BYTES` (default `10485760` = 10MB)
 - `APP_VISIT_ATTACHMENTS_MAX_PER_VISIT` (default `5`)
+- `APP_AUDIT_RETENTION_DAYS` (default `90`)
+- `APP_AUDIT_PURGE_CRON` (default `0 30 3 * * *`)
 
 ## 4) Migraciones
 - Flyway corre al iniciar backend.
@@ -205,5 +207,19 @@ Flujo que valida:
 8. `GET /api/v1/dashboard`
 9. `GET /api/v1/reports/appointments/export.csv`
 10. `GET /api/v1/reports/sales/export.pdf`
+
+## 16) Validacion manual SPR-B009 (auditoria avanzada)
+Con backend corriendo:
+```powershell
+cd backend
+./mvnw test
+./mvnw spring-boot:run
+```
+
+Flujo minimo sugerido:
+1. Login `superadmin` (`POST /api/v1/auth/login`)
+2. Ejecutar accion sensible disponible (p. ej. `PUT /api/v1/config/tax` con `reason` >= 10)
+3. Consultar `GET /api/v1/audit/events` con `X-Branch-Id` y token
+4. Verificar eventos `AUTH_LOGIN` y `CONFIG_TAX_UPDATE`
 
 <!-- EOF -->

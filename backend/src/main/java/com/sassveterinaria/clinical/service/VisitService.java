@@ -95,7 +95,9 @@ public class VisitService {
         entity.setCreatedAt(now);
         entity.setUpdatedAt(now);
 
-        return toResponse(visitRepository.save(entity));
+        VisitEntity saved = visitRepository.save(entity);
+        auditService.recordEvent(principal, "VISIT_CREATE", "visit", saved.getId(), snapshot(saved));
+        return toResponse(saved);
     }
 
     @Transactional(readOnly = true)
@@ -133,6 +135,7 @@ public class VisitService {
     public VisitResponse update(AuthPrincipal principal, UUID visitId, VisitPatchRequest request) {
         VisitEntity entity = requireVisit(principal, visitId);
         requireVisitOpen(entity);
+        Map<String, Object> before = snapshot(entity);
 
         if (request.sReason() != null) {
             String value = normalizeRequired(request.sReason(), "sReason no puede ser vacio.");
@@ -168,7 +171,17 @@ public class VisitService {
         }
         entity.setUpdatedAt(OffsetDateTime.now());
 
-        return toResponse(visitRepository.save(entity));
+        VisitEntity saved = visitRepository.save(entity);
+        auditService.record(
+            principal,
+            "VISIT_UPDATE",
+            "visit",
+            saved.getId(),
+            null,
+            before,
+            snapshot(saved)
+        );
+        return toResponse(saved);
     }
 
     @Transactional
@@ -180,7 +193,9 @@ public class VisitService {
         }
         entity.setStatus(VisitStatus.CLOSED.name());
         entity.setUpdatedAt(OffsetDateTime.now());
-        return toResponse(visitRepository.save(entity));
+        VisitEntity saved = visitRepository.save(entity);
+        auditService.recordEvent(principal, "VISIT_CLOSE", "visit", saved.getId(), snapshot(saved));
+        return toResponse(saved);
     }
 
     @Transactional
@@ -202,7 +217,7 @@ public class VisitService {
         entity.setStatus(VisitStatus.OPEN.name());
         entity.setUpdatedAt(OffsetDateTime.now());
         VisitEntity saved = visitRepository.save(entity);
-        auditService.record(
+        auditService.recordSensitiveEvent(
             principal,
             "VISIT_REOPEN",
             "visit",

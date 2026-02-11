@@ -11,6 +11,7 @@ import com.sassveterinaria.auth.repo.AppUserRepository;
 import com.sassveterinaria.auth.repo.BranchRepository;
 import com.sassveterinaria.auth.repo.RefreshTokenRepository;
 import com.sassveterinaria.auth.repo.UserBranchRepository;
+import com.sassveterinaria.audit.service.AuditService;
 import com.sassveterinaria.common.ApiProblemException;
 import com.sassveterinaria.security.JwtProperties;
 import com.sassveterinaria.security.JwtService;
@@ -20,6 +21,7 @@ import java.security.MessageDigest;
 import java.time.OffsetDateTime;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +38,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final JwtProperties jwtProperties;
+    private final AuditService auditService;
 
     public AuthService(
         AppUserRepository appUserRepository,
@@ -44,7 +47,8 @@ public class AuthService {
         RefreshTokenRepository refreshTokenRepository,
         PasswordEncoder passwordEncoder,
         JwtService jwtService,
-        JwtProperties jwtProperties
+        JwtProperties jwtProperties,
+        AuditService auditService
     ) {
         this.appUserRepository = appUserRepository;
         this.userBranchRepository = userBranchRepository;
@@ -53,6 +57,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.jwtProperties = jwtProperties;
+        this.auditService = auditService;
     }
 
     @Transactional
@@ -97,6 +102,15 @@ public class AuthService {
         );
 
         String refreshToken = createAndStoreRefreshToken(user.getId(), null);
+        auditService.recordAuthEvent(
+            user.getId(),
+            user.getEmail(),
+            branch.getId(),
+            "AUTH_LOGIN",
+            "auth_session",
+            user.getId(),
+            Map.of("roleCode", user.getRoleCode(), "branchId", branch.getId())
+        );
 
         return buildAuthResponse(user, branch, accessToken, refreshToken);
     }
@@ -140,6 +154,15 @@ public class AuthService {
         refreshTokenRepository.save(storedToken);
 
         String newRefreshToken = createAndStoreRefreshToken(user.getId(), storedToken.getId());
+        auditService.recordAuthEvent(
+            user.getId(),
+            user.getEmail(),
+            branch.getId(),
+            "AUTH_REFRESH",
+            "auth_session",
+            user.getId(),
+            Map.of("branchId", branch.getId(), "refreshTokenId", storedToken.getId())
+        );
 
         return buildAuthResponse(user, branch, accessToken, newRefreshToken);
     }
@@ -151,6 +174,16 @@ public class AuthService {
         refreshTokenRepository.findActiveByTokenHash(refreshHash, now).ifPresent(token -> {
             token.setRevokedAt(now);
             refreshTokenRepository.save(token);
+
+            appUserRepository.findById(token.getUserId()).ifPresent(user -> auditService.recordAuthEvent(
+                user.getId(),
+                user.getEmail(),
+                resolveBranchIdNullable(user.getId()),
+                "AUTH_LOGOUT",
+                "auth_session",
+                user.getId(),
+                Map.of("refreshTokenId", token.getId())
+            ));
         });
     }
 
@@ -184,6 +217,13 @@ public class AuthService {
                 "No se encontro la sucursal seleccionada.",
                 "BRANCH_NOT_FOUND"
             ));
+    }
+
+    private UUID resolveBranchIdNullable(UUID userId) {
+        return userBranchRepository.findFirstByIdUserIdAndIsDefaultTrue(userId)
+            .or(() -> userBranchRepository.findByIdUserId(userId).stream().findFirst())
+            .map(userBranch -> userBranch.getId().getBranchId())
+            .orElse(null);
     }
 
     private String createAndStoreRefreshToken(UUID userId, UUID replacedTokenId) {

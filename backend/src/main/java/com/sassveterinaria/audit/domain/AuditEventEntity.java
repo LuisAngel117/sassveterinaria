@@ -12,33 +12,46 @@ import java.util.UUID;
 public class AuditEventEntity {
 
     @Id
+    @Column(nullable = false)
     private UUID id;
 
-    @Column(nullable = true)
+    @Column(name = "branch_id")
     private UUID branchId;
 
-    @Column(nullable = false)
-    private UUID actorId;
+    @Column(name = "actor_id", nullable = false)
+    private UUID actorUserId;
 
-    @Column(nullable = false, length = 80)
+    @Column(name = "actor_username", length = 120)
+    private String actorUsername;
+
+    @Column(name = "action_code", nullable = false, length = 80)
     private String actionCode;
 
-    @Column(nullable = false, length = 80)
-    private String entityName;
+    @Column(name = "entity_name", nullable = false, length = 80)
+    private String entityType;
 
-    @Column(nullable = false)
+    @Column(name = "entity_id", nullable = false)
     private UUID entityId;
 
-    @Column(nullable = true, length = 255)
+    @Column(name = "is_sensitive", nullable = false)
+    private boolean sensitive;
+
+    @Column(length = 255)
     private String reason;
 
-    @Column(nullable = true, columnDefinition = "text")
+    @Column(name = "before_json", columnDefinition = "text")
     private String beforeJson;
 
-    @Column(nullable = true, columnDefinition = "text")
+    @Column(name = "after_json", columnDefinition = "text")
     private String afterJson;
 
-    @Column(nullable = false)
+    @Column(length = 64)
+    private String ip;
+
+    @Column(name = "user_agent", length = 255)
+    private String userAgent;
+
+    @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
     public UUID getId() {
@@ -57,12 +70,20 @@ public class AuditEventEntity {
         this.branchId = branchId;
     }
 
-    public UUID getActorId() {
-        return actorId;
+    public UUID getActorUserId() {
+        return actorUserId;
     }
 
-    public void setActorId(UUID actorId) {
-        this.actorId = actorId;
+    public void setActorUserId(UUID actorUserId) {
+        this.actorUserId = actorUserId;
+    }
+
+    public String getActorUsername() {
+        return actorUsername;
+    }
+
+    public void setActorUsername(String actorUsername) {
+        this.actorUsername = actorUsername;
     }
 
     public String getActionCode() {
@@ -73,12 +94,12 @@ public class AuditEventEntity {
         this.actionCode = actionCode;
     }
 
-    public String getEntityName() {
-        return entityName;
+    public String getEntityType() {
+        return entityType;
     }
 
-    public void setEntityName(String entityName) {
-        this.entityName = entityName;
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
     public UUID getEntityId() {
@@ -87,6 +108,14 @@ public class AuditEventEntity {
 
     public void setEntityId(UUID entityId) {
         this.entityId = entityId;
+    }
+
+    public boolean isSensitive() {
+        return sensitive;
+    }
+
+    public void setSensitive(boolean sensitive) {
+        this.sensitive = sensitive;
     }
 
     public String getReason() {
@@ -111,6 +140,22 @@ public class AuditEventEntity {
 
     public void setAfterJson(String afterJson) {
         this.afterJson = afterJson;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 
     public OffsetDateTime getCreatedAt() {

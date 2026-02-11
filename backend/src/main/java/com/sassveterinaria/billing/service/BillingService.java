@@ -133,6 +133,13 @@ public class BillingService {
         }
         invoiceItemRepository.saveAll(items);
         InvoiceEntity recalculated = recalculateAndSave(savedInvoice);
+        auditService.recordEvent(
+            principal,
+            "INVOICE_CREATE",
+            "invoice",
+            recalculated.getId(),
+            snapshotInvoice(recalculated)
+        );
         return buildDetail(recalculated);
     }
 
@@ -181,7 +188,7 @@ public class BillingService {
 
         String reason = normalizeReason(request.reason());
         InvoiceEntity saved = recalculateAndSave(invoice);
-        auditService.record(
+        auditService.recordSensitiveEvent(
             principal,
             "INVOICE_UPDATE",
             "invoice",
@@ -200,6 +207,13 @@ public class BillingService {
         InvoiceItemEntity item = buildItemEntity(principal, invoice, request, OffsetDateTime.now(), null);
         invoiceItemRepository.save(item);
         InvoiceEntity saved = recalculateAndSave(invoice);
+        auditService.recordEvent(
+            principal,
+            "INVOICE_UPDATE",
+            "invoice",
+            saved.getId(),
+            Map.of("invoice", snapshotInvoice(saved), "itemId", item.getId(), "operation", "ADD_ITEM")
+        );
         return buildDetail(saved);
     }
 
@@ -270,7 +284,7 @@ public class BillingService {
             Map<String, Object> afterPayload = new LinkedHashMap<>();
             afterPayload.put("invoice", snapshotInvoice(savedInvoice));
             afterPayload.put("item", after);
-            auditService.record(
+            auditService.recordSensitiveEvent(
                 principal,
                 "INVOICE_UPDATE",
                 "invoice",
@@ -278,6 +292,16 @@ public class BillingService {
                 reason,
                 beforePayload,
                 afterPayload
+            );
+        } else {
+            auditService.record(
+                principal,
+                "INVOICE_UPDATE",
+                "invoice",
+                savedInvoice.getId(),
+                null,
+                before,
+                snapshotItem(item)
             );
         }
         return buildDetail(savedInvoice);
@@ -288,8 +312,18 @@ public class BillingService {
         InvoiceItemEntity item = requireItem(principal, itemId);
         InvoiceEntity invoice = requireInvoice(principal, item.getInvoiceId());
         ensurePending(invoice);
+        Map<String, Object> before = snapshotItem(item);
         invoiceItemRepository.delete(item);
         InvoiceEntity saved = recalculateAndSave(invoice);
+        auditService.record(
+            principal,
+            "INVOICE_UPDATE",
+            "invoice",
+            saved.getId(),
+            null,
+            before,
+            Map.of("invoice", snapshotInvoice(saved), "deletedItemId", item.getId(), "operation", "DELETE_ITEM")
+        );
         return buildDetail(saved);
     }
 
@@ -319,7 +353,14 @@ public class BillingService {
         payment.setCreatedAt(OffsetDateTime.now());
         InvoicePaymentEntity saved = invoicePaymentRepository.save(payment);
 
-        recalculateAndSave(invoice);
+        InvoiceEntity recalculated = recalculateAndSave(invoice);
+        auditService.recordEvent(
+            principal,
+            "INVOICE_PAY",
+            "invoice",
+            recalculated.getId(),
+            Map.of("invoice", snapshotInvoice(recalculated), "paymentId", saved.getId(), "method", saved.getMethod())
+        );
         return toPaymentResponse(saved);
     }
 
@@ -351,7 +392,7 @@ public class BillingService {
         invoice.setVoidedAt(OffsetDateTime.now());
         invoice.setUpdatedAt(OffsetDateTime.now());
         InvoiceEntity saved = invoiceRepository.save(invoice);
-        auditService.record(
+        auditService.recordSensitiveEvent(
             principal,
             "INVOICE_VOID",
             "invoice",
@@ -363,7 +404,7 @@ public class BillingService {
         return toInvoiceResponse(saved);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public byte[] exportInvoiceCsv(AuthPrincipal principal, UUID invoiceId) {
         InvoiceDetailResponse detail = getById(principal, invoiceId);
         StringBuilder csv = new StringBuilder();
@@ -397,13 +438,20 @@ public class BillingService {
                 .append(payment.createdAt()).append('\n');
         }
 
+        auditService.recordEvent(
+            principal,
+            "INVOICE_EXPORT",
+            "invoice",
+            detail.invoice().id(),
+            Map.of("format", "CSV")
+        );
         return csv.toString().getBytes(StandardCharsets.UTF_8);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public byte[] exportInvoicePdf(AuthPrincipal principal, UUID invoiceId) {
         InvoiceDetailResponse detail = getById(principal, invoiceId);
-        return writePdf(document -> {
+        byte[] pdf = writePdf(document -> {
             document.add(new Paragraph("Factura " + detail.invoice().invoiceNumber()));
             document.add(new Paragraph("Estado: " + detail.invoice().status()));
             document.add(new Paragraph("Subtotal: " + detail.invoice().itemsSubtotal()));
@@ -440,6 +488,14 @@ public class BillingService {
             }
             document.add(paymentsTable);
         });
+        auditService.recordEvent(
+            principal,
+            "INVOICE_EXPORT",
+            "invoice",
+            detail.invoice().id(),
+            Map.of("format", "PDF")
+        );
+        return pdf;
     }
 
     @Transactional(readOnly = true)

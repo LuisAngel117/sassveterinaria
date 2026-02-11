@@ -253,6 +253,32 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T19:16:21-05:00
+Item: SPR-B009
+Qué se hizo:
+- Se extendio auditoria backend con modelo avanzado (`actor_username`, `is_sensitive`, `ip`, `user_agent`) y migracion `V8__audit_advanced.sql`.
+- Se implemento `AuditService` reutilizable con: eventos no-sensibles, eventos sensibles (`reason` + before/after), consulta paginada con filtros y purga por retencion configurable.
+- Se agrego API protegida `GET /api/v1/audit/events` con permiso `AUDIT_READ`.
+- Se implemento retencion (default 90 dias) via scheduler diario (`AuditRetentionScheduler`) y propiedades `app.audit.*`.
+- Se integraron eventos de auditoria en auth (`AUTH_LOGIN`, `AUTH_REFRESH`, `AUTH_LOGOUT`) y modulos core (agenda, visitas, facturacion, inventario, config IVA).
+- Se actualizaron permisos en `PermissionMatrix` para `AUDIT_READ`.
+- Se agregaron pruebas `AuditServiceIntegrationTests` para creacion de evento, before/after sensible y purga de retencion.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- cd backend; ./mvnw test
+- pwsh -ExecutionPolicy Bypass -File .\scripts\verify\verify-docs-eof.ps1
+- ./mvnw spring-boot:run (N/A: no ejecutado en esta tanda)
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

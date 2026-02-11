@@ -30,9 +30,11 @@ public class TaxConfigService {
         this.auditService = auditService;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public TaxConfigResponse get(AuthPrincipal principal) {
-        return toResponse(requireOrCreate(principal));
+        TaxConfigEntity entity = requireOrCreate(principal);
+        auditService.recordEvent(principal, "CONFIG_TAX_READ", "tax_config", entity.getId(), snapshot(entity));
+        return toResponse(entity);
     }
 
     @Transactional
@@ -46,7 +48,7 @@ public class TaxConfigService {
             entity.setUpdatedBy(principal.getUserId());
             entity.setUpdatedAt(OffsetDateTime.now());
             TaxConfigEntity saved = taxConfigRepository.save(entity);
-            auditService.record(
+            auditService.recordSensitiveEvent(
                 principal,
                 "CONFIG_TAX_UPDATE",
                 "tax_config",

@@ -89,7 +89,7 @@ public class ServiceCatalogService {
 
         if (priceChanged) {
             String reason = normalizeReason(request.reason());
-            auditService.record(
+            auditService.recordSensitiveEvent(
                 principal,
                 "SERVICE_PRICE_UPDATE",
                 "service",

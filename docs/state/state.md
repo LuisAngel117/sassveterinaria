@@ -2,7 +2,7 @@
 
 ## Resumen actual (hoy)
 
-- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006, SPR-B007 y SPR-B008 implementados en backend.
+- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006, SPR-B007, SPR-B008 y SPR-B009 implementados en backend.
 - Agenda Core (B002) activo con no-solape/estados/check-in/bloqueos.
 - CRM base (B003) activo para clientes y mascotas.
 - Servicios (B004) activo:
@@ -35,6 +35,12 @@
   - endpoint `GET /api/v1/dashboard` con KPIs minimos para home
   - validaciones de rango y parametros (`from/to`, `from<=to`, `limit<=100`)
 - Se creó smoke script `scripts/smoke/spr-b008.ps1`.
+- Auditoria avanzada (B009) activo:
+  - API branch-scoped `GET /api/v1/audit/events` con filtros por rango, accion, entidad y actor
+  - eventos de auditoria en auth (`AUTH_LOGIN`, `AUTH_REFRESH`, `AUTH_LOGOUT`) y en modulos core
+  - eventos sensibles con `reason` (min 10) + before/after (`INVOICE_VOID`, `VISIT_REOPEN`, `STOCK_ADJUST`, `APPT_OVERBOOK`, `CONFIG_TAX_UPDATE`)
+  - retencion configurable de auditoria (default 90 dias) con purga programada diaria
+  - pruebas `AuditServiceIntegrationTests` para alta de evento, before/after sensible y purga
 
 ## Estado de sprints (alto nivel)
 
@@ -46,7 +52,8 @@
 - SPR-B006: READY_FOR_VALIDATION.
 - SPR-B007: READY_FOR_VALIDATION.
 - SPR-B008: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-B009 (Auditoria avanzada).
+- SPR-B009: READY_FOR_VALIDATION.
+- Proximo sprint recomendado: SPR-B010 (Hardening de seguridad).
 
 ## Riesgos/bloqueos actuales
 

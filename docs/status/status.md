@@ -22,5 +22,6 @@ Regla:
 | SPR-B006 | Facturacion (factura + IVA config + pagos + anulacion + export) | READY_FOR_VALIDATION | PENDING_SPR-B006_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b006.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B007 | Inventario (stock + movimientos + costeo + override + BOM) | READY_FOR_VALIDATION | PENDING_SPR-B007_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b007.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B008 | Reportes (endpoints + export) | READY_FOR_VALIDATION | PENDING_SPR-B008_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b008.ps1` creado; ejecucion local pendiente con backend+Postgres. |
+| SPR-B009 | Auditoria avanzada (before/after + retencion) | READY_FOR_VALIDATION | PENDING_SPR-B009_COMMIT_HASH | Build OK (`./mvnw test`). API `GET /api/v1/audit/events`, retencion configurable (90d default) y pruebas de auditoria/purga implementadas. |
 
 <!-- EOF -->

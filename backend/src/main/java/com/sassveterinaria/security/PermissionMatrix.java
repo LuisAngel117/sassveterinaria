@@ -41,6 +41,7 @@ public final class PermissionMatrix {
         "INVOICE_EXPORT",
         "REPORT_READ",
         "REPORT_EXPORT",
+        "AUDIT_READ",
         "PRODUCT_READ",
         "PRODUCT_CREATE",
         "PRODUCT_UPDATE",
@@ -87,6 +88,7 @@ public final class PermissionMatrix {
         "INVOICE_EXPORT",
         "REPORT_READ",
         "REPORT_EXPORT",
+        "AUDIT_READ",
         "PRODUCT_READ",
         "PRODUCT_CREATE",
         "PRODUCT_UPDATE",
@@ -138,7 +140,8 @@ public final class PermissionMatrix {
             "INVOICE_READ",
             "PRODUCT_READ",
             "STOCK_READ",
-            "REPORT_READ"
+            "REPORT_READ",
+            "AUDIT_READ"
         )
     );
 

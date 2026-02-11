@@ -14,5 +14,10 @@
 
 ## 2026-02-10
 - T2: docs base detallados (brief+brd+arquitectura+ux+runbook+masters).  
-<!-- EOF -->
 
+## 2026-02-10 - SPR-B009
+- Se implementa auditoria avanzada backend con consulta `GET /api/v1/audit/events` (AUDIT_READ, branch-scoped).
+- Se agrega retencion configurable de auditoria (`app.audit.retention-days`, default 90) con purga programada diaria.
+- Se auditan eventos de auth (`AUTH_LOGIN`, `AUTH_REFRESH`, `AUTH_LOGOUT`) y acciones core/sensibles con before/after.
+- Se agrega migracion `V8__audit_advanced.sql` y pruebas de auditoria/purga (`AuditServiceIntegrationTests`).
+<!-- EOF -->

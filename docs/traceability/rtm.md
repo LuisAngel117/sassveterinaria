@@ -35,7 +35,7 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-029 | Prescripción estructurada | SPR-B005, SPR-F004 | PENDING_SPR-B005_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Prescripciones estructuradas create/list/patch solo con visita OPEN |
 | BRD-REQ-030 | Export indicaciones | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Export PDF desde visita (`/visits/{id}/instructions.pdf`) |
 | BRD-REQ-031 | Factura interna | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Factura branch-scoped asociada a `visit_id` |
-| BRD-REQ-032 | IVA configurable auditado | SPR-B006, SPR-B009 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `GET/PUT /config/tax`; update solo SUPERADMIN con reason + auditoria |
+| BRD-REQ-032 | IVA configurable auditado | SPR-B006, SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | `CONFIG_TAX_UPDATE` queda como evento sensible con reason + before/after en auditoria avanzada |
 | BRD-REQ-033 | Descuentos | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Descuento por item y descuento total con validaciones |
 | BRD-REQ-034 | Pagos mixtos/parciales | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Pagos CASH/CARD/TRANSFER; suma de pagos determina estado |
 | BRD-REQ-035 | Estados factura | SPR-B006, SPR-F005 | PENDING_SPR-B006_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Estados `PENDING`/`PAID`/`VOID` con reglas de transicion |
@@ -55,9 +55,9 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-049 | Frecuentes | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Endpoint `frequent` por `dimension=client|pet` y top por conteo |
 | BRD-REQ-050 | Export reportes | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Export CSV/PDF habilitado para reportes de citas/ventas/top-services/consumo/frecuentes |
 | BRD-REQ-051 | Dashboard por rol | SPR-B008, SPR-F007 | PENDING_SPR-B008_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | `GET /api/v1/dashboard` branch-scoped con KPIs minimos |
-| BRD-REQ-052 | Auditoría obligatoria | SPR-B009 | TBD | manual | PLANNED |  |
-| BRD-REQ-053 | Before/after sensibles | SPR-B009 | TBD | manual | PLANNED |  |
-| BRD-REQ-054 | Retención 90 días | SPR-B009 | TBD | manual | PLANNED |  |
+| BRD-REQ-052 | Auditoría obligatoria | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | Cobertura en auth + agenda + visitas + facturacion + inventario + config IVA |
+| BRD-REQ-053 | Before/after sensibles | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | `INVOICE_VOID`, `VISIT_REOPEN`, `STOCK_ADJUST`, `APPT_OVERBOOK`, `CONFIG_TAX_UPDATE` con reason y before/after |
+| BRD-REQ-054 | Retención 90 días | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | Purga configurable por dias (`app.audit.retention-days`, default 90) con scheduler diario |
 | BRD-REQ-055 | Seed demo | SPR-B011, SPR-F010 | TBD | smoke | PLANNED |  |
 | BRD-REQ-056 | Credenciales demo | SPR-B011, SPR-F001 | TBD | manual | PLANNED |  |
 | BRD-REQ-057 | Runbook + scripts verdad | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | manual | READY_FOR_VALIDATION | Runbook actualizado + smoke script |
