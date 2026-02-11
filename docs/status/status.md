@@ -26,5 +26,6 @@ Regla:
 | SPR-B010 | Hardening seguridad (2FA + lockout + rate limit + permisos finos) | READY_FOR_VALIDATION | PENDING_SPR-B010_COMMIT_HASH | Build OK (`./mvnw test`). 2FA TOTP + lockout + rate limit + smoke `scripts/smoke/spr-b010.ps1`. |
 | SPR-B011 | Seeds demo + Smoke scripts flujo core | READY_FOR_VALIDATION | PENDING_SPR-B011_COMMIT_HASH | Seed demo idempotente ampliado (room+citas+visit) y smoke `scripts/smoke/spr-b011.ps1` creado. |
 | SPR-F001 | Shell + Auth UI + Selector de Sucursal | READY_FOR_VALIDATION | PENDING_SPR-F001_COMMIT_HASH | Front implementado en `frontend/`: rutas `/login`, `/select-branch`, `/`; cliente API unico con auth + `X-Branch-Id`; sesion persistente + logout; build OK (`npm run build`). |
+| SPR-F002 | Agenda UI (semana + crear/editar + estados + conflictos + check-in + bloqueos) | READY_FOR_VALIDATION | PENDING_SPR-F002_COMMIT_HASH | Front implementado en `frontend/src/app/agenda/page.tsx`; integra appointments/room-blocks/CRM real; `npm run lint` y `npm run build` OK; `npm run dev` ejecutado con timeout controlado. |
 
 <!-- EOF -->

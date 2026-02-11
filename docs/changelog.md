@@ -51,4 +51,12 @@
 - Se agrega session store local (tokens, permisos, branchId) y guardas de rutas.
 - Se agrega helper de credenciales demo en login con fuente `docs/08-runbook.md`.
 - Validacion tecnica: `npm run build` OK en `frontend/`.
+
+## 2026-02-11 - SPR-F002
+- Se implementa ruta frontend `/agenda` con vista semanal (lunes-domingo), filtros por sala/estado y carga real desde backend (`/api/v1/appointments`).
+- Se habilita flujo de citas crear/editar con contratos reales (create + patch) y selector minimo de cliente/mascota usando CRM (`/api/v1/clients`, `/api/v1/clients/{id}/pets`).
+- Se agregan acciones de transicion en UI: check-in, confirmar, iniciar atencion, cerrar y cancelar segun permisos de sesion (`APPT_*`).
+- Se implementa manejo de conflicto de solape (`APPT_OVERLAP`) con reintento de sobre-cupo (`overbookReason`) mediante modal de motivo.
+- Se integra UI minima de bloqueos manuales (`/api/v1/room-blocks`) para crear/listar cuando existe permiso `BRANCH_MANAGE`.
+- Validacion tecnica frontend: `npm run lint` y `npm run build` OK; `npm run dev` ejecutado con timeout controlado.
 <!-- EOF -->

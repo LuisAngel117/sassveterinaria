@@ -60,6 +60,12 @@
   - cliente API unico con `Authorization` y `X-Branch-Id` cuando hay sucursal seleccionada
   - session store local (tokens + branchId + permisos) y logout integrado
   - helper de credenciales demo en login (fuente: `docs/08-runbook.md`)
+- Frontend F002 implementado:
+  - ruta `/agenda` con vista semanal (lunes-domingo) y filtros por sala/estado
+  - create/update de citas con contratos reales de B002 y manejo de conflictos `APPT_OVERLAP`
+  - transiciones de cita en UI (check-in, confirmar, iniciar atencion, cerrar, cancelar) segun permisos `APPT_*`
+  - modal de motivo para sobre-cupo/cancelacion sensible cuando backend exige `reason`
+  - bloqueos manuales en UI (crear/listar) via `/api/v1/room-blocks` con permiso `BRANCH_MANAGE`
 
 ## Estado de sprints (alto nivel)
 
@@ -75,12 +81,13 @@
 - SPR-B010: READY_FOR_VALIDATION.
 - SPR-B011: READY_FOR_VALIDATION.
 - SPR-F001: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-F002.
+- SPR-F002: READY_FOR_VALIDATION.
+- Proximo sprint recomendado: SPR-F003.
 
 ## Riesgos/bloqueos actuales
 
 - Smokes B002/B003/B004/B005/B006/B007 requieren backend corriendo con PostgreSQL local y datos seed demo.
 - La validacion funcional final (READY_FOR_VALIDATION -> DONE) depende de ejecucion local del usuario y evidencia en LOG.
-- F002 depende de validar localmente F001 (login + shell + branch scope) con backend corriendo.
+- Validar manualmente F002 con backend+DB arriba para evidenciar flujo: crear cita, conflicto, sobre-cupo, check-in y bloqueos.
 
 <!-- EOF -->

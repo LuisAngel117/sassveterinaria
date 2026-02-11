@@ -441,6 +441,50 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-11T11:35:00-05:00
+Item: SPR-F002
+Qué se hizo:
+- Se ejecuto pre-check obligatorio y lectura documental completa en orden para sprint FRONT.
+- Se valido DoR: PASS (dependencia `SPR-B002` en `READY_FOR_VALIDATION`, contratos backend agenda/bloqueos disponibles y scripts frontend reales en `frontend/`).
+- Se implemento la ruta `frontend/src/app/agenda/page.tsx` con:
+  - vista semanal lunes-domingo y filtros por sala/estado,
+  - crear/editar cita segun contrato real (`POST/PATCH /api/v1/appointments`),
+  - acciones de estado (`checkin/confirm/start/close/cancel`) con permisos de sesion,
+  - manejo de conflicto `APPT_OVERLAP` con reintento sobre-cupo (`overbookReason`) via modal de motivo,
+  - bloqueos manuales crear/listar (`/api/v1/room-blocks`) cuando existe `BRANCH_MANAGE`,
+  - selector minimo cliente/mascota con endpoints CRM reales (`/api/v1/clients`, `/api/v1/clients/{id}/pets`).
+- Se actualizo evidencia en `docs/changelog.md`, `docs/status/status.md`, `docs/traceability/rtm.md`, `docs/state/state.md`.
+- Se valido DoD tecnico frontend.
+
+Comandos ejecutados:
+- `git status --porcelain`
+- `git config user.name; git config user.email`
+- `git remote -v`
+- `git rev-parse --abbrev-ref HEAD`
+- `Test-Path docs/sprints/spr-f002.md`
+- lectura obligatoria de docs (`project-lock`, `AGENTS`, indice, state, DoR/DoD, BRD, arquitectura, seguridad, permisos, runbook, master FRONT, sprint, status, log, handoff)
+- `Get-Content scripts/smoke/spr-b002.ps1`
+- `Get-Content scripts/smoke/spr-b011.ps1`
+- `npm run lint` (en `frontend/`)
+- `npm run build` (en `frontend/`)
+- `npm run dev` (en `frontend/`, timeout controlado)
+- `pwsh -File scripts/verify/verify-docs-eof.ps1`
+
+Output:
+- `git status --porcelain` => (vacio)
+- `git config user.name` => `LuisSigsig`
+- `git config user.email` => `luis.angel1995117@gmail.com`
+- `git remote -v` => `origin https://github.com/LuisAngel117/sassveterinaria.git` (fetch/push)
+- `git rev-parse --abbrev-ref HEAD` => `main`
+- `Test-Path docs/sprints/spr-f002.md` => `True`
+- `npm run lint` => sin errores
+- `npm run build` => build exitoso (ruta `app/agenda` incluida)
+- `npm run dev` => timeout controlado (proceso interactivo/long-running)
+- `pwsh -File scripts/verify/verify-docs-eof.ps1` => `OK: Todos los docs .md bajo 'docs' terminan con '<!-- EOF -->'.`
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 
