@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { logout } from "@/lib/api/auth";
 import { clearSession } from "@/lib/session/store";
@@ -7,10 +9,16 @@ import { SessionData } from "@/lib/session/types";
 
 type AppShellProps = {
   session: SessionData;
+  activeNav: "home" | "agenda";
+  children: ReactNode;
 };
 
-const PLACEHOLDER_MODULES = [
-  "Agenda",
+const NAV_ITEMS = [
+  { key: "home", href: "/", label: "Inicio" },
+  { key: "agenda", href: "/agenda", label: "Agenda" },
+] as const;
+
+const PLACEHOLDER_ITEMS = [
   "Clientes",
   "Mascotas",
   "Historia clinica",
@@ -20,7 +28,7 @@ const PLACEHOLDER_MODULES = [
   "Auditoria",
 ];
 
-export function AppShell({ session }: AppShellProps) {
+export function AppShell({ session, activeNav, children }: AppShellProps) {
   const router = useRouter();
 
   const onLogout = async () => {
@@ -62,10 +70,24 @@ export function AppShell({ session }: AppShellProps) {
             Navegacion
           </p>
           <ul className="space-y-2 text-sm">
-            {PLACEHOLDER_MODULES.map((item) => (
+            {NAV_ITEMS.map((item) => (
+              <li key={item.key}>
+                <Link
+                  href={item.href}
+                  className={`block rounded-lg border px-3 py-2 ${
+                    activeNav === item.key
+                      ? "border-slate-900 bg-slate-900 text-white"
+                      : "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            {PLACEHOLDER_ITEMS.map((item) => (
               <li
                 key={item}
-                className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700"
+                className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-500"
               >
                 {item} (placeholder)
               </li>
@@ -73,49 +95,7 @@ export function AppShell({ session }: AppShellProps) {
           </ul>
         </aside>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-6">
-          <h2 className="text-xl font-bold">Home</h2>
-          <p className="mt-4 text-sm text-slate-600">
-            Sesion activa:{" "}
-            <span className="font-semibold text-slate-900">{session.user.username}</span>
-          </p>
-          <p className="mt-1 text-sm text-slate-600">
-            Nombre:{" "}
-            <span className="font-semibold text-slate-900">{session.user.fullName}</span>
-          </p>
-          <p className="mt-1 text-sm text-slate-600">
-            Rol:{" "}
-            <span className="font-semibold text-slate-900">{session.user.roleCode}</span>
-          </p>
-          <p className="mt-1 text-sm text-slate-600">
-            Sucursal:{" "}
-            <span className="font-semibold text-slate-900">
-              {session.branch?.name ?? session.branchId ?? "N/D"}
-            </span>
-          </p>
-          <p className="mt-1 text-sm text-slate-600">
-            BranchId:{" "}
-            <span className="font-mono text-xs text-slate-900">
-              {session.branchId ?? "N/D"}
-            </span>
-          </p>
-
-          <div className="mt-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Permisos en sesion
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {session.permissions.map((permission) => (
-                <span
-                  key={permission}
-                  className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 font-mono text-xs"
-                >
-                  {permission}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
+        <section className="rounded-xl border border-slate-200 bg-white p-6">{children}</section>
       </main>
     </div>
   );
