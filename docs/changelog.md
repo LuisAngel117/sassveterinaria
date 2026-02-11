@@ -37,4 +37,10 @@
 - Se detecta bloqueo por ausencia de `FRONT_DIR` (no existe `package.json` de frontend en el repo).
 - Se crea RFC de bloqueo `docs/rfcs/rfc-front-missing.md`.
 - `SPR-F001` queda en `BLOCKED` en `docs/status/status.md`, sin implementacion de codigo.
+
+## 2026-02-10 - Unblock FRONT bootstrap
+- Se crea `frontend/` como root real frontend (Next.js + TypeScript + Tailwind, App Router).
+- Se agrega `frontend/.env.example` con `NEXT_PUBLIC_API_BASE_URL`.
+- Se actualiza runbook con comandos reales frontend (`npm install`, `npm run build`, `npm run dev`).
+- Se levanta bloqueo tecnico de `SPR-F001` en status a `NOT_STARTED` para re-ejecucion del sprint.
 <!-- EOF -->

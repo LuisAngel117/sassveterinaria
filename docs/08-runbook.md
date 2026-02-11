@@ -279,4 +279,21 @@ Flujo que valida:
 10. `POST /api/v1/invoices/{id}/payments`
 11. `GET /api/v1/invoices/{id}` con estado final `PAID`
 
+## 19) Frontend base (bootstrap para SPR-F001+)
+FRONT_DIR real del repo:
+- `frontend`
+
+Variables de entorno frontend:
+- Archivo ejemplo commit-eable: `frontend/.env.example`
+- Variable minima:
+  - `NEXT_PUBLIC_API_BASE_URL=http://localhost:8080`
+
+Levantar frontend:
+```powershell
+cd frontend
+npm install
+npm run build
+npm run dev
+```
+
 <!-- EOF -->

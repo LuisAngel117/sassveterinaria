@@ -51,6 +51,10 @@
   - `DemoDataSeeder` idempotente ampliado con sala demo, citas demo y visita demo cerrada
   - credenciales demo fijas y branch default para `superadmin/admin/recepcion/veterinario`
   - smoke script `scripts/smoke/spr-b011.ps1` para flujo core E2E (cita -> atencion -> cierre -> factura -> pago)
+- Frontend bootstrap creado:
+  - `FRONT_DIR` definido en `frontend/` (Next.js + TypeScript + Tailwind + App Router)
+  - scripts reales disponibles: `npm run dev`, `npm run build`
+  - archivo de entorno ejemplo: `frontend/.env.example`
 
 ## Estado de sprints (alto nivel)
 
@@ -65,11 +69,12 @@
 - SPR-B009: READY_FOR_VALIDATION.
 - SPR-B010: READY_FOR_VALIDATION.
 - SPR-B011: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-F001 (inicio FRONT).
+- Proximo sprint recomendado: SPR-F001.
 
 ## Riesgos/bloqueos actuales
 
 - Smokes B002/B003/B004/B005/B006/B007 requieren backend corriendo con PostgreSQL local y datos seed demo.
 - La validacion funcional final (READY_FOR_VALIDATION -> DONE) depende de ejecucion local del usuario y evidencia en LOG.
+- F001/F002 dependen de ejecutar el flujo FRONT sobre el root `frontend/` ya creado y contratos backend reales (OpenAPI/smokes).
 
 <!-- EOF -->

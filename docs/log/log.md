@@ -367,6 +367,38 @@ Output:
 
 Resultado:
 - BLOCKED (DoR FAIL: falta FRONT_DIR; ver RFC `docs/rfcs/rfc-front-missing.md`)
+
+## 2026-02-10T20:56:20-05:00
+Item: UNBLOCK-FRONT
+Qué se hizo:
+- Se creo `FRONT_DIR` real en `frontend/` usando Next.js + TypeScript + Tailwind.
+- Se agrego `frontend/.env.example` con `NEXT_PUBLIC_API_BASE_URL`.
+- Se ejecuto build del frontend para validar bootstrap.
+- Se actualizo runbook/state/status/changelog para reflejar desbloqueo tecnico de SPR-F001.
+
+Comandos ejecutados:
+- `git status --porcelain`
+- `git config user.name; git config user.email`
+- `git remote -v`
+- `git rev-parse --abbrev-ref HEAD`
+- `npx create-next-app@latest frontend --typescript --tailwind --eslint --app --src-dir --use-npm --import-alias \"@/*\" --yes`
+- `cd frontend; npm run build`
+- `cd frontend; npm run dev -- --help`
+- `pwsh -File scripts/verify/verify-docs-eof.ps1`
+
+Output:
+- `git status --porcelain` => (vacio)
+- `git config user.name` => `LuisSigsig`
+- `git config user.email` => `luis.angel1995117@gmail.com`
+- `git remote -v` => `origin https://github.com/LuisAngel117/sassveterinaria.git` (fetch/push)
+- `git rev-parse --abbrev-ref HEAD` => `main`
+- `create-next-app` => `Success! Created frontend at C:\\Users\\luisa\\Proyecto\\sassveterinaria\\frontend`
+- `npm run build` => `Compiled successfully` (Next.js 16.1.6)
+- `npm run dev -- --help` => script `dev` disponible y ayuda de `next dev`
+- `verify-docs-eof.ps1` => `OK: Todos los docs .md bajo 'docs' terminan con '<!-- EOF -->'.`
+
+Resultado:
+- READY_FOR_VALIDATION (bootstrap frontend creado; pendiente ejecutar sprint SPR-F001)
 <!-- EOF -->
 
 

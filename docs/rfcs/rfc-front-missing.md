@@ -5,7 +5,7 @@
 - Titulo: Bloqueo por ausencia de `FRONT_DIR` para `SPR-F001`
 - Autor: Codex
 - Fecha: 2026-02-10
-- Estado: DRAFT
+- Estado: IMPLEMENTED
 
 ## Contexto
 Se solicito ejecutar `SPR-F001` (frontend: shell + auth UI + selector de sucursal) con reglas de alcance estricto y sin inventar contratos.
@@ -62,5 +62,8 @@ No aplica.
 
 ## Validacion
 - Criterio para desbloquear: existe `FRONT_DIR` con `package.json` y scripts frontend (`dev` y `build`) ejecutables.
+- Estado actual:
+  - `frontend/package.json` existe.
+  - `npm run build` en `frontend/` compila correctamente.
 
 <!-- EOF -->
