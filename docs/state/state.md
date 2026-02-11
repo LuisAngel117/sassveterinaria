@@ -55,6 +55,11 @@
   - `FRONT_DIR` definido en `frontend/` (Next.js + TypeScript + Tailwind + App Router)
   - scripts reales disponibles: `npm run dev`, `npm run build`
   - archivo de entorno ejemplo: `frontend/.env.example`
+- Frontend F001 implementado:
+  - rutas `/login`, `/select-branch` y `/` con guardas de sesion
+  - cliente API unico con `Authorization` y `X-Branch-Id` cuando hay sucursal seleccionada
+  - session store local (tokens + branchId + permisos) y logout integrado
+  - helper de credenciales demo en login (fuente: `docs/08-runbook.md`)
 
 ## Estado de sprints (alto nivel)
 
@@ -69,12 +74,13 @@
 - SPR-B009: READY_FOR_VALIDATION.
 - SPR-B010: READY_FOR_VALIDATION.
 - SPR-B011: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-F001.
+- SPR-F001: READY_FOR_VALIDATION.
+- Proximo sprint recomendado: SPR-F002.
 
 ## Riesgos/bloqueos actuales
 
 - Smokes B002/B003/B004/B005/B006/B007 requieren backend corriendo con PostgreSQL local y datos seed demo.
 - La validacion funcional final (READY_FOR_VALIDATION -> DONE) depende de ejecucion local del usuario y evidencia en LOG.
-- F001/F002 dependen de ejecutar el flujo FRONT sobre el root `frontend/` ya creado y contratos backend reales (OpenAPI/smokes).
+- F002 depende de validar localmente F001 (login + shell + branch scope) con backend corriendo.
 
 <!-- EOF -->

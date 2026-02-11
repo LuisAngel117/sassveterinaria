@@ -4,13 +4,13 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 
 | BRD-REQ | Descripción | Sprint(s) | Evidencia (commit) | Verificación | Estado | Notas |
 |---|---|---|---|---|---|---|
-| BRD-REQ-001 | Login access+refresh | SPR-B001, SPR-F001 | PENDING_SPR-B001_COMMIT_HASH | smoke+manual | READY_FOR_VALIDATION | Implementado en backend |
+| BRD-REQ-001 | Login access+refresh | SPR-B001, SPR-F001 | PENDING_SPR-B001_COMMIT_HASH; PENDING_SPR-F001_COMMIT_HASH | smoke+manual+frontend build | READY_FOR_VALIDATION | Front integra `/api/v1/auth/login` + `/api/v1/me` con session store local. |
 | BRD-REQ-002 | Refresh con rotación | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests+smoke | READY_FOR_VALIDATION | Rotación y revocación del refresh previo |
 | BRD-REQ-003 | Logout revoca refresh | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | smoke | READY_FOR_VALIDATION | Logout revoca refresh token |
 | BRD-REQ-004 | Permisos granulares | SPR-B001, SPR-B010, SPR-F008 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Endpoints sensibles validados con permisos finos y test 403 en endpoint protegido |
 | BRD-REQ-005 | 2FA TOTP admin/superadmin | SPR-B010, SPR-F001 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Setup/enable/challenge/login-2fa implementado para ADMIN/SUPERADMIN |
 | BRD-REQ-006 | Lockout 4 intentos | SPR-B010 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Lockout configurable: 4 fallos en 15 min -> lock 15 min (default) |
-| BRD-REQ-007 | Scope X-Branch-Id validado | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests+smoke | READY_FOR_VALIDATION | Filtro branch scope activo |
+| BRD-REQ-007 | Scope X-Branch-Id validado | SPR-B001, SPR-F001 | PENDING_SPR-B001_COMMIT_HASH; PENDING_SPR-F001_COMMIT_HASH | tests+smoke+frontend manual | READY_FOR_VALIDATION | Front agrega `X-Branch-Id` solo cuando existe branch seleccionado. |
 | BRD-REQ-008 | Respuestas 400/403/401 por scope | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests | READY_FOR_VALIDATION | Problem Details para casos de scope/auth |
 | BRD-REQ-009 | Rate limit básico (429) | SPR-B010 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Rate limit in-memory para login/refresh/reportes con 429 + Retry-After |
 | BRD-REQ-010 | CRUD citas + estados | SPR-B002, SPR-F002 | PENDING_SPR-B002_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Estados y transiciones minimas implementadas en backend |
@@ -59,7 +59,7 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-053 | Before/after sensibles | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | `INVOICE_VOID`, `VISIT_REOPEN`, `STOCK_ADJUST`, `APPT_OVERBOOK`, `CONFIG_TAX_UPDATE` con reason y before/after |
 | BRD-REQ-054 | Retención 90 días | SPR-B009 | PENDING_SPR-B009_COMMIT_HASH | `./mvnw test` + audit tests | READY_FOR_VALIDATION | Purga configurable por dias (`app.audit.retention-days`, default 90) con scheduler diario |
 | BRD-REQ-055 | Seed demo | SPR-B011, SPR-F010 | PENDING_SPR-B011_COMMIT_HASH | `scripts/smoke/spr-b011.ps1` + revision seed | READY_FOR_VALIDATION | Seed demo idempotente ampliado con room/citas/visita. |
-| BRD-REQ-056 | Credenciales demo | SPR-B011, SPR-F001 | PENDING_SPR-B011_COMMIT_HASH | login manual + smoke | READY_FOR_VALIDATION | Credenciales demo fijas garantizadas por seeder. |
+| BRD-REQ-056 | Credenciales demo | SPR-B011, SPR-F001 | PENDING_SPR-B011_COMMIT_HASH; PENDING_SPR-F001_COMMIT_HASH | login manual + smoke + frontend manual | READY_FOR_VALIDATION | Front muestra helper de credenciales demo alineadas a `docs/08-runbook.md`. |
 | BRD-REQ-057 | Runbook + scripts verdad | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | manual | READY_FOR_VALIDATION | Runbook actualizado + smoke script |
 | BRD-REQ-058 | Smoke flujo core | SPR-B011 | PENDING_SPR-B011_COMMIT_HASH | `scripts/smoke/spr-b011.ps1` | READY_FOR_VALIDATION | Flujo E2E: cita -> visita -> cierre -> factura -> pago. |
 

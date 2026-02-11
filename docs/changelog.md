@@ -43,4 +43,12 @@
 - Se agrega `frontend/.env.example` con `NEXT_PUBLIC_API_BASE_URL`.
 - Se actualiza runbook con comandos reales frontend (`npm install`, `npm run build`, `npm run dev`).
 - Se levanta bloqueo tecnico de `SPR-F001` en status a `NOT_STARTED` para re-ejecucion del sprint.
+
+## 2026-02-10 - SPR-F001
+- Se implementa shell frontend minimo con rutas `/login`, `/select-branch` y `/`.
+- Se integra contrato real de auth (`/api/v1/auth/login`, `/api/v1/me`, `/api/v1/auth/logout`) sin inventar campos.
+- Se crea cliente API unico con soporte de `Authorization` y `X-Branch-Id` segun sesion.
+- Se agrega session store local (tokens, permisos, branchId) y guardas de rutas.
+- Se agrega helper de credenciales demo en login con fuente `docs/08-runbook.md`.
+- Validacion tecnica: `npm run build` OK en `frontend/`.
 <!-- EOF -->

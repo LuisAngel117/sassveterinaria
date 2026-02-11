@@ -399,6 +399,48 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION (bootstrap frontend creado; pendiente ejecutar sprint SPR-F001)
+
+## 2026-02-10T21:18:53-05:00
+Item: SPR-F001
+Qué se hizo:
+- Se ejecuto pre-check obligatorio y lectura documental completa en orden.
+- Se valido DoR: PASS (existe `FRONT_DIR`, scripts verdad y dependencia backend lista).
+- Se implemento frontend del sprint en `frontend/`:
+  - cliente API unico (`src/lib/api/client.ts`) + auth API (`src/lib/api/auth.ts`),
+  - session store local (`src/lib/session/*`) con `branchId`, permisos y logout,
+  - rutas `/login`, `/select-branch`, `/` con guardas y shell minimo.
+- Se integro login real (`/api/v1/auth/login`) y consulta `/api/v1/me` usando `X-Branch-Id` del contrato backend.
+- Se agrego bloque de credenciales demo en login alineado a `docs/08-runbook.md`.
+- Se valido DoD tecnico con build frontend.
+
+Comandos ejecutados:
+- `git status --porcelain`
+- `git config user.name; git config user.email`
+- `git remote -v`
+- `git rev-parse --abbrev-ref HEAD`
+- `Test-Path docs/sprints/spr-f001.md`
+- lectura obligatoria de docs (`project-lock`, `AGENTS`, indice, state, DoR/DoD, BRD, arquitectura, seguridad, permisos, runbook, master FRONT, sprint, status, log, handoff)
+- `Get-Content scripts/smoke/spr-b001.ps1`
+- `Get-Content scripts/smoke/spr-b011.ps1`
+- `npm run lint` (en `frontend/`)
+- `npm run build` (en `frontend/`)
+- `npm run dev` (en `frontend/`, ver nota)
+- `pwsh -File scripts/verify/verify-docs-eof.ps1`
+
+Output:
+- `git status --porcelain` => (vacio)
+- `git config user.name` => `LuisSigsig`
+- `git config user.email` => `luis.angel1995117@gmail.com`
+- `git remote -v` => `origin https://github.com/LuisAngel117/sassveterinaria.git` (fetch/push)
+- `git rev-parse --abbrev-ref HEAD` => `main`
+- `Test-Path docs/sprints/spr-f001.md` => `True`
+- `npm run lint` => sin errores
+- `npm run build` => `Compiled successfully` (Next.js 16.1.6)
+- `npm run dev` => timeout controlado (proceso interactivo/long-running); se detuvo proceso para dejar arbol limpio
+- `verify-docs-eof.ps1` => `OK: Todos los docs .md bajo 'docs' terminan con '<!-- EOF -->'.`
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

@@ -25,6 +25,6 @@ Regla:
 | SPR-B009 | Auditoria avanzada (before/after + retencion) | READY_FOR_VALIDATION | PENDING_SPR-B009_COMMIT_HASH | Build OK (`./mvnw test`). API `GET /api/v1/audit/events`, retencion configurable (90d default) y pruebas de auditoria/purga implementadas. |
 | SPR-B010 | Hardening seguridad (2FA + lockout + rate limit + permisos finos) | READY_FOR_VALIDATION | PENDING_SPR-B010_COMMIT_HASH | Build OK (`./mvnw test`). 2FA TOTP + lockout + rate limit + smoke `scripts/smoke/spr-b010.ps1`. |
 | SPR-B011 | Seeds demo + Smoke scripts flujo core | READY_FOR_VALIDATION | PENDING_SPR-B011_COMMIT_HASH | Seed demo idempotente ampliado (room+citas+visit) y smoke `scripts/smoke/spr-b011.ps1` creado. |
-| SPR-F001 | Shell + Auth UI + Selector de Sucursal | NOT_STARTED | PENDING_SPR-F001_COMMIT_HASH | Bloqueo tecnico levantado: existe `FRONT_DIR` en `frontend/` con scripts `dev/build`. Re-ejecutar SPR-F001 con contrato real de auth/me. |
+| SPR-F001 | Shell + Auth UI + Selector de Sucursal | READY_FOR_VALIDATION | PENDING_SPR-F001_COMMIT_HASH | Front implementado en `frontend/`: rutas `/login`, `/select-branch`, `/`; cliente API unico con auth + `X-Branch-Id`; sesion persistente + logout; build OK (`npm run build`). |
 
 <!-- EOF -->
