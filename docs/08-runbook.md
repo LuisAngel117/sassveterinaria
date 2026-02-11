@@ -27,6 +27,19 @@ Credenciales por defecto en `application.properties`:
 - `APP_VISIT_ATTACHMENTS_MAX_PER_VISIT` (default `5`)
 - `APP_AUDIT_RETENTION_DAYS` (default `90`)
 - `APP_AUDIT_PURGE_CRON` (default `0 30 3 * * *`)
+- `APP_SECURITY_2FA_ENFORCEMENT_ENABLED` (default `true`)
+- `APP_SECURITY_2FA_ALLOW_LOGIN_WITHOUT_ENROLLMENT` (default `true`)
+- `APP_SECURITY_2FA_CHALLENGE_SECONDS` (default `300`)
+- `APP_SECURITY_2FA_ISSUER` (default `SaaSVeterinaria`)
+- `APP_SECURITY_LOCKOUT_MAX_ATTEMPTS` (default `4`)
+- `APP_SECURITY_LOCKOUT_WINDOW_MINUTES` (default `15`)
+- `APP_SECURITY_LOCKOUT_DURATION_MINUTES` (default `15`)
+- `APP_SECURITY_RATE_LOGIN_LIMIT` (default `10`)
+- `APP_SECURITY_RATE_LOGIN_WINDOW_SECONDS` (default `900`)
+- `APP_SECURITY_RATE_REFRESH_LIMIT` (default `30`)
+- `APP_SECURITY_RATE_REFRESH_WINDOW_SECONDS` (default `900`)
+- `APP_SECURITY_RATE_REPORT_LIMIT` (default `20`)
+- `APP_SECURITY_RATE_REPORT_WINDOW_SECONDS` (default `300`)
 
 ## 4) Migraciones
 - Flyway corre al iniciar backend.
@@ -38,6 +51,8 @@ Credenciales por defecto en `application.properties`:
   - `backend/src/main/resources/db/migration/V5__clinical_visits.sql`
   - `backend/src/main/resources/db/migration/V6__billing_invoices.sql`
   - `backend/src/main/resources/db/migration/V7__inventory_core.sql`
+  - `backend/src/main/resources/db/migration/V8__audit_advanced.sql`
+  - `backend/src/main/resources/db/migration/V9__security_hardening.sql`
 
 ## 5) Levantar backend (SPR-B001)
 ```powershell
@@ -221,5 +236,18 @@ Flujo minimo sugerido:
 2. Ejecutar accion sensible disponible (p. ej. `PUT /api/v1/config/tax` con `reason` >= 10)
 3. Consultar `GET /api/v1/audit/events` con `X-Branch-Id` y token
 4. Verificar eventos `AUTH_LOGIN` y `CONFIG_TAX_UPDATE`
+
+## 17) Smoke script SPR-B010
+Con backend corriendo:
+```powershell
+pwsh -File scripts/smoke/spr-b010.ps1
+```
+
+Flujo que valida:
+1. `GET /actuator/health`
+2. login normal (`recepcion`)
+3. lockout por intentos fallidos (4 fallos + locked)
+4. rate limit login (flood -> 429)
+5. 2FA admin: setup + enable + login challenge + completar 2FA (si aplica)
 
 <!-- EOF -->

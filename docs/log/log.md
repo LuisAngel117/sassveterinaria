@@ -279,6 +279,33 @@ Output:
 
 Resultado:
 - READY_FOR_VALIDATION
+
+## 2026-02-10T19:40:05-05:00
+Item: SPR-B010
+Qué se hizo:
+- Se implemento hardening de seguridad backend: 2FA TOTP (setup/enable/challenge/login-2fa), lockout configurable y rate limit para login/refresh/reportes.
+- Se agrego persistencia para seguridad (`totp_*` en `app_user`, `auth_login_attempt`, `auth_2fa_challenge`) con migracion `V9__security_hardening.sql`.
+- Se implemento cifrado de secreto TOTP, validacion RFC6238 y flujo de challenge temporal para ADMIN/SUPERADMIN.
+- Se aplico lockout por intentos fallidos (default 4/15 -> lock 15) y auditoria de eventos auth (`AUTH_LOGIN_FAILED`, `AUTH_LOCKOUT`, `AUTH_UNLOCK`).
+- Se agrego rate limit in-memory con respuesta 429 + `Retry-After` para login/refresh/reportes/export.
+- Se agrego smoke script `scripts/smoke/spr-b010.ps1`.
+- Se agregaron pruebas de hardening (`SecurityHardeningIntegrationTests`) para 2FA, lockout, rate limit y 403 por permisos.
+
+Comandos ejecutados:
+- git status --porcelain
+- git config user.name; git config user.email
+- git remote -v
+- git rev-parse --abbrev-ref HEAD
+- cd backend; ./mvnw test
+- pwsh -ExecutionPolicy Bypass -File .\scripts\verify\verify-docs-eof.ps1
+- pwsh -File scripts/smoke/spr-b010.ps1 (N/A: no ejecutado en esta tanda)
+- ./mvnw spring-boot:run (N/A: no ejecutado en esta tanda)
+
+Output:
+- PEGAR OUTPUT AQUÍ
+
+Resultado:
+- READY_FOR_VALIDATION
 <!-- EOF -->
 
 

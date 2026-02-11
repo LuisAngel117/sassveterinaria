@@ -2,7 +2,7 @@
 
 ## Resumen actual (hoy)
 
-- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006, SPR-B007, SPR-B008 y SPR-B009 implementados en backend.
+- SPR-B001, SPR-B002, SPR-B003, SPR-B004, SPR-B005, SPR-B006, SPR-B007, SPR-B008, SPR-B009 y SPR-B010 implementados en backend.
 - Agenda Core (B002) activo con no-solape/estados/check-in/bloqueos.
 - CRM base (B003) activo para clientes y mascotas.
 - Servicios (B004) activo:
@@ -41,6 +41,12 @@
   - eventos sensibles con `reason` (min 10) + before/after (`INVOICE_VOID`, `VISIT_REOPEN`, `STOCK_ADJUST`, `APPT_OVERBOOK`, `CONFIG_TAX_UPDATE`)
   - retencion configurable de auditoria (default 90 dias) con purga programada diaria
   - pruebas `AuditServiceIntegrationTests` para alta de evento, before/after sensible y purga
+- Hardening de seguridad (B010) activo:
+  - 2FA TOTP para ADMIN/SUPERADMIN con endpoints setup/enable/login challenge (`/auth/login/2fa`)
+  - lockout configurable por intentos fallidos (`4/15 -> 15` por default)
+  - rate limit in-memory para login/refresh/reportes con 429 + `Retry-After`
+  - pruebas `SecurityHardeningIntegrationTests` para 2FA, lockout, rate limit y permisos (403)
+  - smoke script `scripts/smoke/spr-b010.ps1`
 
 ## Estado de sprints (alto nivel)
 
@@ -53,7 +59,8 @@
 - SPR-B007: READY_FOR_VALIDATION.
 - SPR-B008: READY_FOR_VALIDATION.
 - SPR-B009: READY_FOR_VALIDATION.
-- Proximo sprint recomendado: SPR-B010 (Hardening de seguridad).
+- SPR-B010: READY_FOR_VALIDATION.
+- Proximo sprint recomendado: SPR-B011 (Seeds demo + smoke flujo core).
 
 ## Riesgos/bloqueos actuales
 

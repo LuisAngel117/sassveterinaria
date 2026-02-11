@@ -9,6 +9,7 @@ import com.sassveterinaria.reports.dto.SalesReportResponse;
 import com.sassveterinaria.reports.dto.TopServicesReportResponse;
 import com.sassveterinaria.reports.service.ReportsService;
 import com.sassveterinaria.security.AuthPrincipal;
+import com.sassveterinaria.security.RateLimitService;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.springframework.http.ContentDisposition;
@@ -27,9 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportsController {
 
     private final ReportsService reportsService;
+    private final RateLimitService rateLimitService;
 
-    public ReportsController(ReportsService reportsService) {
+    public ReportsController(ReportsService reportsService, RateLimitService rateLimitService) {
         this.reportsService = reportsService;
+        this.rateLimitService = rateLimitService;
     }
 
     @GetMapping("/reports/appointments")
@@ -44,6 +47,7 @@ public class ReportsController {
         @RequestParam(value = "page", required = false) Integer page,
         @RequestParam(value = "size", required = false) Integer size
     ) {
+        enforceReportsLimit(principal);
         return ResponseEntity.ok(reportsService.appointments(principal, from, to, roomId, status, groupBy, page, size));
     }
 
@@ -57,6 +61,7 @@ public class ReportsController {
         @RequestParam(value = "paymentMethod", required = false) String paymentMethod,
         @RequestParam(value = "status", required = false) String status
     ) {
+        enforceReportsLimit(principal);
         return ResponseEntity.ok(reportsService.sales(principal, from, to, groupBy, paymentMethod, status));
     }
 
@@ -69,6 +74,7 @@ public class ReportsController {
         @RequestParam(value = "metric", required = false) String metric,
         @RequestParam(value = "limit", required = false) Integer limit
     ) {
+        enforceReportsLimit(principal);
         return ResponseEntity.ok(reportsService.topServices(principal, from, to, metric, limit));
     }
 
@@ -81,6 +87,7 @@ public class ReportsController {
         @RequestParam(value = "productId", required = false) UUID productId,
         @RequestParam(value = "groupBy", required = false) String groupBy
     ) {
+        enforceReportsLimit(principal);
         return ResponseEntity.ok(reportsService.inventoryConsumption(principal, from, to, productId, groupBy));
     }
 
@@ -93,12 +100,14 @@ public class ReportsController {
         @RequestParam(value = "limit", required = false) Integer limit,
         @RequestParam(value = "dimension", required = false) String dimension
     ) {
+        enforceReportsLimit(principal);
         return ResponseEntity.ok(reportsService.frequent(principal, from, to, limit, dimension));
     }
 
     @GetMapping("/dashboard")
     @PreAuthorize("hasAuthority('REPORT_READ')")
     public ResponseEntity<DashboardResponse> dashboard(@AuthenticationPrincipal AuthPrincipal principal) {
+        enforceReportsLimit(principal);
         return ResponseEntity.ok(reportsService.dashboard(principal));
     }
 
@@ -112,6 +121,7 @@ public class ReportsController {
         @RequestParam(value = "status", required = false) String status,
         @RequestParam(value = "groupBy", required = false) String groupBy
     ) {
+        enforceReportsLimit(principal);
         return csvResponse(reportsService.exportAppointmentsCsv(principal, from, to, roomId, status, groupBy));
     }
 
@@ -125,6 +135,7 @@ public class ReportsController {
         @RequestParam(value = "paymentMethod", required = false) String paymentMethod,
         @RequestParam(value = "status", required = false) String status
     ) {
+        enforceReportsLimit(principal);
         return csvResponse(reportsService.exportSalesCsv(principal, from, to, groupBy, paymentMethod, status));
     }
 
@@ -137,6 +148,7 @@ public class ReportsController {
         @RequestParam(value = "metric", required = false) String metric,
         @RequestParam(value = "limit", required = false) Integer limit
     ) {
+        enforceReportsLimit(principal);
         return csvResponse(reportsService.exportTopServicesCsv(principal, from, to, metric, limit));
     }
 
@@ -149,6 +161,7 @@ public class ReportsController {
         @RequestParam(value = "productId", required = false) UUID productId,
         @RequestParam(value = "groupBy", required = false) String groupBy
     ) {
+        enforceReportsLimit(principal);
         return csvResponse(reportsService.exportInventoryConsumptionCsv(principal, from, to, productId, groupBy));
     }
 
@@ -161,6 +174,7 @@ public class ReportsController {
         @RequestParam(value = "limit", required = false) Integer limit,
         @RequestParam(value = "dimension", required = false) String dimension
     ) {
+        enforceReportsLimit(principal);
         return csvResponse(reportsService.exportFrequentCsv(principal, from, to, limit, dimension));
     }
 
@@ -174,6 +188,7 @@ public class ReportsController {
         @RequestParam(value = "status", required = false) String status,
         @RequestParam(value = "groupBy", required = false) String groupBy
     ) {
+        enforceReportsLimit(principal);
         return pdfResponse(reportsService.exportAppointmentsPdf(principal, from, to, roomId, status, groupBy));
     }
 
@@ -187,6 +202,7 @@ public class ReportsController {
         @RequestParam(value = "paymentMethod", required = false) String paymentMethod,
         @RequestParam(value = "status", required = false) String status
     ) {
+        enforceReportsLimit(principal);
         return pdfResponse(reportsService.exportSalesPdf(principal, from, to, groupBy, paymentMethod, status));
     }
 
@@ -199,6 +215,7 @@ public class ReportsController {
         @RequestParam(value = "metric", required = false) String metric,
         @RequestParam(value = "limit", required = false) Integer limit
     ) {
+        enforceReportsLimit(principal);
         return pdfResponse(reportsService.exportTopServicesPdf(principal, from, to, metric, limit));
     }
 
@@ -211,6 +228,7 @@ public class ReportsController {
         @RequestParam(value = "productId", required = false) UUID productId,
         @RequestParam(value = "groupBy", required = false) String groupBy
     ) {
+        enforceReportsLimit(principal);
         return pdfResponse(reportsService.exportInventoryConsumptionPdf(principal, from, to, productId, groupBy));
     }
 
@@ -223,7 +241,12 @@ public class ReportsController {
         @RequestParam(value = "limit", required = false) Integer limit,
         @RequestParam(value = "dimension", required = false) String dimension
     ) {
+        enforceReportsLimit(principal);
         return pdfResponse(reportsService.exportFrequentPdf(principal, from, to, limit, dimension));
+    }
+
+    private void enforceReportsLimit(AuthPrincipal principal) {
+        rateLimitService.checkReports(principal);
     }
 
     private ResponseEntity<byte[]> csvResponse(ReportExportPayload payload) {

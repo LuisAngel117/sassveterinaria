@@ -32,6 +32,15 @@ public class AppUserEntity {
     @Column(nullable = true)
     private OffsetDateTime lockedUntil;
 
+    @Column(nullable = true, length = 512)
+    private String totpSecret;
+
+    @Column(nullable = false)
+    private boolean totpEnabled;
+
+    @Column(nullable = true)
+    private OffsetDateTime totpVerifiedAt;
+
     @Column(nullable = false)
     private OffsetDateTime createdAt;
 
@@ -89,6 +98,30 @@ public class AppUserEntity {
 
     public void setLockedUntil(OffsetDateTime lockedUntil) {
         this.lockedUntil = lockedUntil;
+    }
+
+    public String getTotpSecret() {
+        return totpSecret;
+    }
+
+    public void setTotpSecret(String totpSecret) {
+        this.totpSecret = totpSecret;
+    }
+
+    public boolean isTotpEnabled() {
+        return totpEnabled;
+    }
+
+    public void setTotpEnabled(boolean totpEnabled) {
+        this.totpEnabled = totpEnabled;
+    }
+
+    public OffsetDateTime getTotpVerifiedAt() {
+        return totpVerifiedAt;
+    }
+
+    public void setTotpVerifiedAt(OffsetDateTime totpVerifiedAt) {
+        this.totpVerifiedAt = totpVerifiedAt;
     }
 
     public OffsetDateTime getCreatedAt() {

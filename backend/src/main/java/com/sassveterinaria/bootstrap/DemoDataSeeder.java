@@ -118,6 +118,9 @@ public class DemoDataSeeder implements ApplicationRunner {
         user.setPasswordHash(passwordEncoder.encode(password));
         user.setActive(true);
         user.setLockedUntil(null);
+        user.setTotpSecret(null);
+        user.setTotpEnabled(false);
+        user.setTotpVerifiedAt(null);
         user.setCreatedAt(OffsetDateTime.now());
         appUserRepository.save(user);
 

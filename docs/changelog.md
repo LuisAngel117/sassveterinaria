@@ -20,4 +20,10 @@
 - Se agrega retencion configurable de auditoria (`app.audit.retention-days`, default 90) con purga programada diaria.
 - Se auditan eventos de auth (`AUTH_LOGIN`, `AUTH_REFRESH`, `AUTH_LOGOUT`) y acciones core/sensibles con before/after.
 - Se agrega migracion `V8__audit_advanced.sql` y pruebas de auditoria/purga (`AuditServiceIntegrationTests`).
+
+## 2026-02-10 - SPR-B010
+- Se implementa hardening de seguridad backend: 2FA TOTP (setup/enable/challenge/login-2fa), lockout configurable y rate limit 429.
+- Se agrega migracion `V9__security_hardening.sql` para `totp_*`, `auth_login_attempt` y `auth_2fa_challenge`.
+- Se agrega rate limit para login/refresh/reportes + header `Retry-After` en respuestas 429.
+- Se agregan pruebas `SecurityHardeningIntegrationTests` y smoke script `scripts/smoke/spr-b010.ps1`.
 <!-- EOF -->

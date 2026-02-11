@@ -23,5 +23,6 @@ Regla:
 | SPR-B007 | Inventario (stock + movimientos + costeo + override + BOM) | READY_FOR_VALIDATION | PENDING_SPR-B007_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b007.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B008 | Reportes (endpoints + export) | READY_FOR_VALIDATION | PENDING_SPR-B008_COMMIT_HASH | Build OK (`./mvnw test`). Smoke script `scripts/smoke/spr-b008.ps1` creado; ejecucion local pendiente con backend+Postgres. |
 | SPR-B009 | Auditoria avanzada (before/after + retencion) | READY_FOR_VALIDATION | PENDING_SPR-B009_COMMIT_HASH | Build OK (`./mvnw test`). API `GET /api/v1/audit/events`, retencion configurable (90d default) y pruebas de auditoria/purga implementadas. |
+| SPR-B010 | Hardening seguridad (2FA + lockout + rate limit + permisos finos) | READY_FOR_VALIDATION | PENDING_SPR-B010_COMMIT_HASH | Build OK (`./mvnw test`). 2FA TOTP + lockout + rate limit + smoke `scripts/smoke/spr-b010.ps1`. |
 
 <!-- EOF -->

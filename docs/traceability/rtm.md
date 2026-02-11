@@ -7,12 +7,12 @@ Regla: todo `BRD-REQ-###` debe mapear a sprint(s) o quedar RFC/BLOCKED.
 | BRD-REQ-001 | Login access+refresh | SPR-B001, SPR-F001 | PENDING_SPR-B001_COMMIT_HASH | smoke+manual | READY_FOR_VALIDATION | Implementado en backend |
 | BRD-REQ-002 | Refresh con rotación | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests+smoke | READY_FOR_VALIDATION | Rotación y revocación del refresh previo |
 | BRD-REQ-003 | Logout revoca refresh | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | smoke | READY_FOR_VALIDATION | Logout revoca refresh token |
-| BRD-REQ-004 | Permisos granulares | SPR-B001, SPR-B010, SPR-F008 | TBD | tests+manual | PLANNED |  |
-| BRD-REQ-005 | 2FA TOTP admin/superadmin | SPR-B010, SPR-F001 | TBD | manual | PLANNED |  |
-| BRD-REQ-006 | Lockout 4 intentos | SPR-B010 | TBD | tests+manual | PLANNED |  |
+| BRD-REQ-004 | Permisos granulares | SPR-B001, SPR-B010, SPR-F008 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Endpoints sensibles validados con permisos finos y test 403 en endpoint protegido |
+| BRD-REQ-005 | 2FA TOTP admin/superadmin | SPR-B010, SPR-F001 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Setup/enable/challenge/login-2fa implementado para ADMIN/SUPERADMIN |
+| BRD-REQ-006 | Lockout 4 intentos | SPR-B010 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Lockout configurable: 4 fallos en 15 min -> lock 15 min (default) |
 | BRD-REQ-007 | Scope X-Branch-Id validado | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests+smoke | READY_FOR_VALIDATION | Filtro branch scope activo |
 | BRD-REQ-008 | Respuestas 400/403/401 por scope | SPR-B001 | PENDING_SPR-B001_COMMIT_HASH | tests | READY_FOR_VALIDATION | Problem Details para casos de scope/auth |
-| BRD-REQ-009 | Rate limit básico (429) | SPR-B010 | TBD | manual | PLANNED |  |
+| BRD-REQ-009 | Rate limit básico (429) | SPR-B010 | PENDING_SPR-B010_COMMIT_HASH | `./mvnw test` + security tests | READY_FOR_VALIDATION | Rate limit in-memory para login/refresh/reportes con 429 + Retry-After |
 | BRD-REQ-010 | CRUD citas + estados | SPR-B002, SPR-F002 | PENDING_SPR-B002_COMMIT_HASH | `./mvnw test` + smoke | READY_FOR_VALIDATION | Estados y transiciones minimas implementadas en backend |
 | BRD-REQ-011 | Calendario semana + filtros | SPR-B002, SPR-F002 | PENDING_SPR-B002_COMMIT_HASH | manual + smoke | READY_FOR_VALIDATION | API week list con filtros `roomId` y `status` |
 | BRD-REQ-012 | No-solape por sala | SPR-B002 | PENDING_SPR-B002_COMMIT_HASH | tests+manual | READY_FOR_VALIDATION | Regla dura en backend contra citas no canceladas + room blocks |
